@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DynamicBakeNavMesh">
+    <Position X="3.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\DynamicBakeNavMesh.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AttackAnimationHandler">
+    <Position X="0.5" Y="0.5" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="AttackAnimationHandler.AttackMiss" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Enemy\AttackAnimationHandler.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAggAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Enemy\AttackAnimationHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChasePlayerAI">
+    <Position X="8.25" Y="0.5" Width="2" />
+    <AssociationLine Name="attackAnimationHandler" Type="AttackAnimationHandler">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-7.203" Y="0.087" Height="0.182" Width="3.151" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQEAAABACAAAQACIAAAAAAAAQAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Enemy\ChasePlayerAI.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="attackAnimationHandler" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EnemyStats">
+    <Position X="10.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAACAAgAAAAAAAAAAAAAAgAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Assets\Scripts\Enemy\EnemyStats.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Hitbox">
+    <Position X="14.75" Y="0.5" Width="3" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="Hitbox.HitBoxCollided" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Enemy\Hitbox.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAI=</HashCode>
+      <FileName>Assets\Scripts\Enemy\Hitbox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ConnectToNetwork">
+    <Position X="5.75" Y="2.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Assets\Scripts\Online\ConnectToNetwork.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerOnlineHandler">
+    <Position X="3.75" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Online\PlayerOnlineHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpawnPlayerOnNetwork">
+    <Position X="12" Y="6.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAACIAAAAAAAAAAAAAAAAAACAAAAAAABAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Online\SpawnPlayerOnNetwork.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerMovement">
+    <Position X="3.25" Y="5.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAwIQCAAAAAQAAAAIAAEAAAACAAAAAQAAAIAAAA=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerMovement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerRotation">
+    <Position X="12.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAJAAAACAAgAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerRotation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerShoot">
+    <Position X="6.5" Y="4.75" Width="2.5" />
+    <AssociationLine Name="currentGun" Type="GunObject">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="1.812" Y="0.096" Height="0.182" Width="1.687" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="playerUI" Type="PlayerUI">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="4.368" Y="3.115" Height="0.182" Width="1.36" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQEAAJgECAAABCAgAAAAEIRAAAAEAAQEAAAAAQAACA=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerShoot.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="currentGun" />
+      <Field Name="playerUI" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PlayerStats">
+    <Position X="9.25" Y="4.75" Width="2.25" />
+    <AssociationLine Name="playerUI" Type="PlayerUI">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.309" Y="0.069" Height="0.182" Width="1.337" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAEAACIACAAAAAAAgAAABAAAAAAAAAAAAAAAAAAACg=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerStats.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="playerUI" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="LobbyUI">
+    <Position X="5.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAgAAAAAAAEAAAAAAAEAA=</HashCode>
+      <FileName>Assets\Scripts\UI\LobbyUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerUI">
+    <Position X="13.25" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IAAACAAAAAAQAEAAIAAAAAAAAAAAICAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\PlayerUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GunObject">
+    <Position X="0.5" Y="3.5" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="GunObject.ShootTypes" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Weapons\GunObject.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAIEAIiAAACIkAAAAAIAAAACAAAAAogAAACIAAAQhAA=</HashCode>
+      <FileName>Assets\Scripts\Weapons\GunObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
