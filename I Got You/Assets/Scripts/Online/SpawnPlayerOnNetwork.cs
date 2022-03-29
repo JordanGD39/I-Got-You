@@ -33,6 +33,7 @@ public class SpawnPlayerOnNetwork : MonoBehaviour
 
         playerManager.Players.Add(playerStats);
         int photonId = player.GetComponent<PhotonView>().ViewID;
+
         GetComponent<PhotonView>().RPC("AddPlayerToManager", RpcTarget.OthersBuffered, photonId);
     }
 

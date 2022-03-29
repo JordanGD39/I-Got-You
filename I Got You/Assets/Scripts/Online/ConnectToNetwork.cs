@@ -9,12 +9,15 @@ public class ConnectToNetwork : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        PhotonNetwork.ConnectUsingSettings();
+        PhotonNetwork.ConnectUsingSettings();        
     }
 
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby();
+        PhotonNetwork.SendRate = 10;
+        PhotonNetwork.SerializationRate = 10;
+        Debug.Log(PhotonNetwork.CountOfPlayers);
     }
 
     public override void OnJoinedLobby()
