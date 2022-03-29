@@ -18,6 +18,7 @@ public class PlayerOnlineHandler : MonoBehaviour
             {
                 if (item is PhotonView) { continue; }
                 if (item is PhotonTransformViewClassic){ continue; }
+                if (item is PlayerStats){ continue; }
 
                 if (item != this)
                 {
