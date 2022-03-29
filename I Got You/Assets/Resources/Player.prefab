@@ -210,7 +210,8 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_Cameras: []
+  m_Cameras:
+  - {fileID: 2580384564415295053}
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
@@ -237,7 +238,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6712501812712568118}
   - component: {fileID: 6712501812712568117}
-  m_Layer: 3
+  m_Layer: 7
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -290,7 +291,7 @@ GameObject:
   - component: {fileID: 6712501812731350748}
   - component: {fileID: 6712501812731350690}
   - component: {fileID: 6712501812731350691}
-  m_Layer: 3
+  m_Layer: 7
   m_Name: MuzzleFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5184,7 +5185,7 @@ GameObject:
   - component: {fileID: 6712501813235165631}
   - component: {fileID: 6712501813235165629}
   - component: {fileID: 6712501813235165630}
-  m_Layer: 3
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5359,7 +5360,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6712501813893544449}
-  m_Layer: 3
+  m_Layer: 7
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5586,7 +5587,7 @@ GameObject:
   - component: {fileID: 6712501813958970233}
   - component: {fileID: 6712501813958970239}
   - component: {fileID: 6712501813958970232}
-  m_Layer: 3
+  m_Layer: 7
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5666,7 +5667,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6712501814316546409}
   - component: {fileID: 6712501814316546408}
-  m_Layer: 3
+  m_Layer: 7
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
