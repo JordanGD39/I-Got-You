@@ -881,7 +881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42df37c71d0ffce4abf4f25cb272c6dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomInput: {fileID: 606431385}
+  roomInput_InputField: {fileID: 606431385}
 --- !u!1 &1191968217
 GameObject:
   m_ObjectHideFlags: 0
