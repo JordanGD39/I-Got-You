@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerStats : MonoBehaviour
 {
+    public enum ClassNames { SCOUT, TANK, SUPPORT, BOMBER }
+    [SerializeField] private ClassNames currentClass;
     [SerializeField] private int health = 100;
     [SerializeField] private int maxHealth = 100;
     private int currentMaxHealth = 100;
@@ -29,7 +31,7 @@ public class PlayerStats : MonoBehaviour
 
         if (health <= 0)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            Destroy(GetComponent<PlayerMovement>());
         }
     }
 
