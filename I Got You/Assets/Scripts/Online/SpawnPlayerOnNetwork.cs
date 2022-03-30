@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class SpawnPlayerOnNetwork : MonoBehaviour
+public class SpawnPlayerOnNetwork : MonoBehaviourPun
 {
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject playerOffline;
@@ -19,7 +19,7 @@ public class SpawnPlayerOnNetwork : MonoBehaviour
             playerManager = GetComponent<PlayerManager>();
         }
 
-        if (PhotonNetwork.OfflineMode || !PhotonNetwork.InRoom)
+        if (!PhotonFunctionHandler.IsPlayerOnline())
         {
             playerOffline.SetActive(true);
             playerManager.Players.Add(playerOffline.GetComponent<PlayerStats>());
@@ -34,7 +34,7 @@ public class SpawnPlayerOnNetwork : MonoBehaviour
         playerManager.Players.Add(playerStats);
         int photonId = player.GetComponent<PhotonView>().ViewID;
 
-        GetComponent<PhotonView>().RPC("AddPlayerToManager", RpcTarget.OthersBuffered, photonId);
+        photonView.RPC("AddPlayerToManager", RpcTarget.OthersBuffered, photonId);
     }
 
     [PunRPC]

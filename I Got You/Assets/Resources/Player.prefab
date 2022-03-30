@@ -5398,7 +5398,7 @@ GameObject:
   - component: {fileID: 6712501813913824982}
   - component: {fileID: 6712501813913824981}
   - component: {fileID: 1005561271725145266}
-  - component: {fileID: 3968525320801602}
+  - component: {fileID: 9086200670566736726}
   - component: {fileID: 508557286151977996}
   m_Layer: 3
   m_Name: Player
@@ -5435,6 +5435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aec3169a9c382874391b0c49d8ac0315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentClass: 0
   health: 100
   maxHealth: 100
 --- !u!143 &6712501813913824976
@@ -5520,7 +5521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f9ba8082f08c8e4dac976a9bcdd92f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3968525320801602
+--- !u!114 &9086200670566736726
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5534,8 +5535,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lerpPosSpeed: 8
   lerpRotSpeed: 8
-  minPos: {x: -999, y: -15, z: -999}
-  maxPos: {x: 999, y: 15, z: 999}
 --- !u!114 &508557286151977996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5555,7 +5554,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 3968525320801602}
+  - {fileID: 9086200670566736726}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

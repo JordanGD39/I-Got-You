@@ -232,6 +232,9 @@ GameObject:
   - component: {fileID: 5385682122100596855}
   - component: {fileID: 5385682122100596854}
   - component: {fileID: 5385682122100596853}
+  - component: {fileID: 6351086882891119347}
+  - component: {fileID: 4622205726630373181}
+  - component: {fileID: 5542502612772619860}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -304,6 +307,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   distanceToAttack: 2
+--- !u!114 &6351086882891119347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5385682122100596849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 0
+  ObservedComponents:
+  - {fileID: 4622205726630373181}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &4622205726630373181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5385682122100596849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c000500b36a366f499e662e693449812, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lerpPosSpeed: 8
+  lerpRotSpeed: 8
+--- !u!114 &5542502612772619860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5385682122100596849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9ba8082f08c8e4dac976a9bcdd92f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5385682123735843773
 GameObject:
   m_ObjectHideFlags: 0
