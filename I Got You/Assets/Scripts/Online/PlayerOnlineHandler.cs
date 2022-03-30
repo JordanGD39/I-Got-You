@@ -17,8 +17,8 @@ public class PlayerOnlineHandler : MonoBehaviour
             foreach (MonoBehaviour item in scripts)
             {
                 if (item is PhotonView) { continue; }
-                if (item is PhotonTransformViewClassic){ continue; }
                 if (item is PlayerStats){ continue; }
+                if (item is PlayerSyncMovement){ continue; }
 
                 if (item != this)
                 {
