@@ -70,7 +70,14 @@ public class ClassSelectUI : MonoBehaviour
         {
             if (NumberOfPlayersChosen == PhotonNetwork.CurrentRoom.PlayerCount)
             {
-                Invoke("LoadGameScene", 1);
+                if (!PhotonNetwork.IsMasterClient)
+                {
+                    infoUI.SendMasterClientLoadLevelRPC();
+                }
+                else
+                {
+                    Invoke("LoadGameScene", 1);
+                }                
             }
             else
             {
@@ -85,10 +92,11 @@ public class ClassSelectUI : MonoBehaviour
 
     private void LoadGameScene()
     {
-        if (!PhotonFunctionHandler.IsPlayerOnline() || PhotonNetwork.IsMasterClient)
+        if (PhotonFunctionHandler.IsPlayerOnline())
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
-            PhotonFunctionHandler.LoadSceneAsync("Protoscene");
         }
+        
+        PhotonFunctionHandler.LoadSceneAsync("Protoscene");
     }
 }

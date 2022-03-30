@@ -105,4 +105,19 @@ public class ClassInfoUI : MonoBehaviourPun
         playerName.text = PhotonNetwork.CurrentRoom.Players[actorIndex].NickName;
         FullOpacityInfo();
     }
+
+    public void SendMasterClientLoadLevelRPC()
+    {
+        photonView.RPC("MasterClientLoadLevel", RpcTarget.Others);
+    }
+
+    [PunRPC]
+    void MasterClientLoadLevel()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonFunctionHandler.LoadSceneAsync("Protoscene");
+        }
+    }
 }
