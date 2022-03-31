@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class EnemyStats : MonoBehaviour
+public class EnemyStats : MonoBehaviourPun
 {
     [SerializeField] private int health = 100;
     [SerializeField] private int damage = 20;
@@ -25,6 +26,22 @@ public class EnemyStats : MonoBehaviour
     {
         Debug.Log("Damage: " + dmg);
         health -= dmg;
+
+        if (PhotonNetwork.IsConnected)
+        {
+            photonView.RPC("SyncHealthRPC", RpcTarget.Others, health);
+        }
+
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    [PunRPC]
+    void SyncHealthRPC(int hp)
+    {
+        health = hp;
 
         if (health <= 0)
         {

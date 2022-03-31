@@ -5535,6 +5535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lerpPosSpeed: 8
   lerpRotSpeed: 8
+  checkMasterClient: 0
 --- !u!114 &508557286151977996
 MonoBehaviour:
   m_ObjectHideFlags: 0

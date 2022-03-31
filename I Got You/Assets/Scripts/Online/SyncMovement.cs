@@ -10,6 +10,7 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
 
     [SerializeField] private float lerpPosSpeed = 5;
     [SerializeField] private float lerpRotSpeed = 5;
+    [SerializeField] private bool checkMasterClient = false;
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -40,7 +41,7 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
 
     private void Update()
     {
-        if (!photonView.IsMine)
+        if ((!photonView.IsMine && !checkMasterClient) || (checkMasterClient && !PhotonNetwork.IsMasterClient))
         {
             transform.position = Vector3.Lerp(transform.position, syncPos, lerpPosSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(syncRot), lerpRotSpeed * Time.deltaTime);
