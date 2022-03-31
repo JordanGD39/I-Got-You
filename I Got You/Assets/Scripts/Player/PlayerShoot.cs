@@ -5,8 +5,11 @@ using UnityEngine;
 public class PlayerShoot : MonoBehaviour
 {
     [SerializeField] private GunObject currentGun;
+    [SerializeField] private GunObject secondaryGun;
     [SerializeField] private int currentAmmo = 0;
     [SerializeField] private int currentMaxAmmo = 0;
+    [SerializeField] private int secondaryGunAmmo = 0;
+    [SerializeField] private int secondaryGunMaxAmmo = 0;
     [SerializeField] private float distanceForExtraDamage = 20;
     [SerializeField] private float distanceForLowerDamage = 100;
     [SerializeField] private Animator gunAnim;
@@ -26,6 +29,8 @@ public class PlayerShoot : MonoBehaviour
     {
         currentAmmo = currentGun.ClipCount;
         currentMaxAmmo = currentGun.MaxAmmoCount;
+        secondaryGunAmmo = secondaryGun.ClipCount;
+        secondaryGunMaxAmmo = secondaryGun.MaxAmmoCount;
 
         playerUI = FindObjectOfType<PlayerUI>();
         playerUI.UpdateAmmo(currentAmmo, currentMaxAmmo);
@@ -36,6 +41,7 @@ public class PlayerShoot : MonoBehaviour
     {
         CheckShoot();
         CheckReload();
+        CheckChangeSelectedWeapon();
     }
 
     private void CheckShoot()
@@ -154,5 +160,27 @@ public class PlayerShoot : MonoBehaviour
         gunAnim.speed = 1 / currentGun.ReloadSpeed;
         gunAnim.SetTrigger("Reload");
         reloading = true;
+    }
+
+    private void CheckChangeSelectedWeapon()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            GunObject secondGun = secondaryGun;
+            int secondaryAmmo = secondaryGunAmmo;
+            int secondaryMaxAmmo = secondaryGunMaxAmmo;
+   
+            secondaryGun = currentGun;
+            currentGun = secondGun;
+
+
+            secondaryGunAmmo = currentAmmo;
+            currentAmmo = secondaryAmmo;
+
+            secondaryGunMaxAmmo = currentMaxAmmo;
+            currentMaxAmmo = secondaryMaxAmmo;
+
+            playerUI.UpdateAmmo(currentAmmo, currentMaxAmmo);
+        }
     }
 }

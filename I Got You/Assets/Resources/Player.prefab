@@ -5398,8 +5398,8 @@ GameObject:
   - component: {fileID: 6712501813913824982}
   - component: {fileID: 6712501813913824981}
   - component: {fileID: 1005561271725145266}
-  - component: {fileID: 3968525320801602}
   - component: {fileID: 508557286151977996}
+  - component: {fileID: 3535093034406319059}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -5498,6 +5498,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: {fileID: 11400000, guid: 2f27949e543c9874d966f280879f8d1c, type: 2}
+  secondaryGun: {fileID: 11400000, guid: a758b336a4bc89244bcb7f9809f062da, type: 2}
   currentAmmo: 0
   currentMaxAmmo: 0
   distanceForExtraDamage: 4
@@ -5520,22 +5521,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f9ba8082f08c8e4dac976a9bcdd92f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3968525320801602
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6712501813913824978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c000500b36a366f499e662e693449812, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lerpPosSpeed: 8
-  lerpRotSpeed: 8
-  minPos: {x: -999, y: -15, z: -999}
-  maxPos: {x: 999, y: 15, z: 999}
 --- !u!114 &508557286151977996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5555,10 +5540,24 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 3968525320801602}
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &3535093034406319059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6712501813913824978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c000500b36a366f499e662e693449812, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lerpPosSpeed: 8
+  lerpRotSpeed: 8
 --- !u!1 &6712501813958970234
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PlayerSyncMovement : MonoBehaviourPun, IPunObservable
+public class SyncMovement : MonoBehaviourPun, IPunObservable
 {
     private Vector3 syncPos;
     private Quaternion syncRot;
