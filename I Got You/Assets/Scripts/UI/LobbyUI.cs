@@ -57,6 +57,8 @@ public class LobbyUI : MonoBehaviourPunCallbacks
     {
         classSelectPanel.SetActive(true);
         gameObject.SetActive(false);
+
+        PhotonNetwork.CurrentRoom.MaxPlayers = 4;
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)

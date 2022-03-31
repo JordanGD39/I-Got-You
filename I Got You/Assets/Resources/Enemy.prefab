@@ -345,6 +345,7 @@ MonoBehaviour:
   lerpPosSpeed: 8
   lerpRotSpeed: 8
   checkMasterClient: 1
+  model: {fileID: 5385682123832297535}
 --- !u!114 &5542502612772619860
 MonoBehaviour:
   m_ObjectHideFlags: 0

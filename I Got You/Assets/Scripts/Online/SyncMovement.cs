@@ -11,6 +11,7 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
     [SerializeField] private float lerpPosSpeed = 5;
     [SerializeField] private float lerpRotSpeed = 5;
     [SerializeField] private bool checkMasterClient = false;
+    [SerializeField] private GameObject model;
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -33,9 +34,31 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
 
     private void Start()
     {
-        if (!PhotonFunctionHandler.IsPlayerOnline())
+        if (!PhotonNetwork.IsConnected)
         {
+            if (model != null)
+            {
+                model.SetActive(true);
+            }
+            
             Destroy(this);
+            return;
+        }
+
+        if (model == null)
+        {
+            return;
+        }
+
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            model.SetActive(false);
+            transform.position = Vector3.zero;
+            StartCoroutine(nameof(TeleportToSync));
+        }        
+        else
+        {
+            model.SetActive(true);
         }
     }
 
@@ -46,5 +69,17 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
             transform.position = Vector3.Lerp(transform.position, syncPos, lerpPosSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(syncRot), lerpRotSpeed * Time.deltaTime);
         }
+    }
+
+    private IEnumerator TeleportToSync()
+    {
+        while (transform.position == Vector3.zero)
+        {
+            yield return null;
+        }
+
+        transform.position = syncPos;
+        transform.rotation = Quaternion.Euler(syncRot);
+        model.SetActive(true);
     }
 }

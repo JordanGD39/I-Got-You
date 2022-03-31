@@ -24,7 +24,6 @@ public class EnemyStats : MonoBehaviourPun
 
     public void Damage(int dmg)
     {
-        Debug.Log("Damage: " + dmg);
         health -= dmg;
 
         if (PhotonNetwork.IsConnected)
