@@ -8,6 +8,7 @@ public class DoorOpen : MonoBehaviour
     [SerializeField] private List<GameObject> playersInRange = new List<GameObject>();
     [SerializeField] private GameObject doorToClose;
     [SerializeField] private GameObject model;
+    [SerializeField] private bool opened = false;
 
     public delegate void OpenDoor();
     public OpenDoor OnOpenDoor;
@@ -21,12 +22,18 @@ public class DoorOpen : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (opened)
+        {
+            return;
+        }
+
         if (other.CompareTag("PlayerCol"))
         {
             playersInRange.Add(other.gameObject);
 
             if (playerManager.Players.Count == playersInRange.Count)
             {
+                opened = true;
                 doorToClose.SetActive(true);
                 playersInRange.Clear();
                 model.SetActive(false);
@@ -37,6 +44,11 @@ public class DoorOpen : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (opened)
+        {
+            return;
+        }
+
         if (other.CompareTag("PlayerCol"))
         {
             playersInRange.Remove(other.gameObject);

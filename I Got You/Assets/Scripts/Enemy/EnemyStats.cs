@@ -11,6 +11,11 @@ public class EnemyStats : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
+        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
+        {
+            gameObject.SetActive(false);
+        }
+
         List<Hitbox> hitboxes = new List<Hitbox>();
 
         hitboxes.AddRange(GetComponentsInChildren<Hitbox>());
@@ -33,7 +38,7 @@ public class EnemyStats : MonoBehaviourPun
 
         if (health <= 0)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 
@@ -44,7 +49,7 @@ public class EnemyStats : MonoBehaviourPun
 
         if (health <= 0)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 

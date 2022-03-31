@@ -55,10 +55,6 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
             model.SetActive(false);
             transform.position = Vector3.zero;
             StartCoroutine(nameof(TeleportToSync));
-        }        
-        else
-        {
-            model.SetActive(true);
         }
     }
 

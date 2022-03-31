@@ -25,6 +25,11 @@ public class RoomManager : MonoBehaviourPun
 
     private void PlaceEnemies()
     {
+        if (enemiesInRoom != null && enemiesInRoom.Count > 0)
+        {
+            return;
+        }
+
         enemiesInRoom = enemyGenerator.GenerateEnemies();
 
         foreach (GameObject enemy in enemiesInRoom)

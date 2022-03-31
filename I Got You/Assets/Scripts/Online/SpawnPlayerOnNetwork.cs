@@ -7,8 +7,8 @@ public class SpawnPlayerOnNetwork : MonoBehaviourPun
 {
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject playerOffline;
-    [SerializeField] private float minX = 0;
-    [SerializeField] private float maxX = 0;
+    [SerializeField] private Vector3 minPos;
+    [SerializeField] private Vector3 maxPos;
     private PlayerManager playerManager;
 
     // Start is called before the first frame update
@@ -26,7 +26,7 @@ public class SpawnPlayerOnNetwork : MonoBehaviourPun
             return;
         }
 
-        Vector3 randomPos = new Vector3(Random.Range(minX, maxX), 1, 0);
+        Vector3 randomPos = new Vector3(Random.Range(minPos.x, maxPos.x), 1, Random.Range(minPos.z, maxPos.z));
         GameObject player = PhotonNetwork.Instantiate(playerPrefab.name, randomPos, Quaternion.identity);
 
         PlayerStats playerStats = player.GetComponent<PlayerStats>();

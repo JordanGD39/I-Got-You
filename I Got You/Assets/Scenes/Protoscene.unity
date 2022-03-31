@@ -438,7 +438,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh38866
+  m_Name: pb_Mesh101166
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1538,7 +1538,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh38798
+  m_Name: pb_Mesh101096
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1890,7 +1890,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh39004
+  m_Name: pb_Mesh101362
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2077,7 +2077,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6712501813913824977, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -14.37
+      value: -15
       objectReference: {fileID: 0}
     - target: {fileID: 6712501813913824977, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2246,8 +2246,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 6712501813913824978, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
   playerOffline: {fileID: 529045191}
-  minX: -10
-  maxX: 10
+  minPos: {x: -4.5, y: 0, z: -13}
+  maxPos: {x: 4.5, y: 0, z: -17}
 --- !u!114 &623612094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7091,7 +7091,7 @@ GameObject:
   - component: {fileID: 781572604}
   - component: {fileID: 781572603}
   - component: {fileID: 781572602}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Model (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7456,7 +7456,7 @@ GameObject:
   - component: {fileID: 942821188}
   - component: {fileID: 942821187}
   - component: {fileID: 942821191}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7683,7 +7683,7 @@ GameObject:
   - component: {fileID: 1237599744}
   - component: {fileID: 1237599746}
   - component: {fileID: 1237599745}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7721,6 +7721,7 @@ MonoBehaviour:
   playersInRange: []
   doorToClose: {fileID: 781572600}
   model: {fileID: 942821185}
+  opened: 0
 --- !u!54 &1237599746
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8555,7 +8556,6 @@ GameObject:
   - component: {fileID: 1926759584}
   - component: {fileID: 1926759583}
   - component: {fileID: 1926759582}
-  - component: {fileID: 1926759586}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -8640,20 +8640,6 @@ Transform:
   m_Father: {fileID: 640052324}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1926759586
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1926759581}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dc595d1500ba194598cca36853c75af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 100
-  damage: 20
 --- !u!1 &2077858775
 GameObject:
   m_ObjectHideFlags: 0
