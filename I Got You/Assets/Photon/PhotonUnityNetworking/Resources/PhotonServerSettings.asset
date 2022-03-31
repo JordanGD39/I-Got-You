@@ -42,6 +42,8 @@ MonoBehaviour:
   - AddPlayerToManager
   - UpdateClassNameOther
   - UpdatePlayerNameOther
+  - SyncDamageRPC
+  - SyncHealthRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

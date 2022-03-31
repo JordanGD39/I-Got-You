@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
-public class PlayerStats : MonoBehaviour
+public class PlayerStats : MonoBehaviourPun
 {
     public enum ClassNames { SCOUT, TANK, SUPPORT, BOMBER }
     [SerializeField] private ClassNames currentClass;
@@ -16,17 +17,25 @@ public class PlayerStats : MonoBehaviour
 
     private void Start()
     {
-        playerUI = FindObjectOfType<PlayerUI>();
         health = maxHealth;
         currentMaxHealth = maxHealth;
-        playerUI.UpdateHealth(health);
-        playerUI.UpdateMaxHealth(maxHealth);
+
+        if (photonView.IsMine)
+        {
+            playerUI = FindObjectOfType<PlayerUI>();
+            playerUI.UpdateHealth(health);
+            playerUI.UpdateMaxHealth(maxHealth);
+        }      
     }
 
     public void Damage(int dmg)
     {
-        health -= dmg;
+        if (!photonView.IsMine)
+        {
+            return;
+        }
 
+        health -= dmg;
         playerUI.UpdateHealth(health);
 
         if (health <= 0)
