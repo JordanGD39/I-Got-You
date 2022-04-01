@@ -64,7 +64,7 @@ public class PlayerRevive : MonoBehaviourPun
 
             if (PhotonNetwork.IsConnected && photonView.IsMine)
             {
-                photonView.RPC("PlayerDiedForOthersRPC", RpcTarget.Others);
+                photonView.RPC(nameof(PlayerDiedForOthersRPC), RpcTarget.Others);
             }
         }
 
@@ -90,8 +90,11 @@ public class PlayerRevive : MonoBehaviourPun
         playerManager.DeadPlayers.Add(playerStats);
         playerManager.Players.Remove(playerStats);
 
-        playerRotation.OnGiveInputBack = DisableComponents;
-        playerRotation.StartLerpToResetPos();
+        if (!PhotonNetwork.IsConnected || photonView.IsMine)
+        {
+            playerRotation.OnGiveInputBack = DisableComponents;
+            playerRotation.StartLerpToResetPos();
+        }        
     }
 
     private void DisableComponents()

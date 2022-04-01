@@ -9,6 +9,8 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] private List<PlayerStats> deadPlayers = new List<PlayerStats>();
     public List<PlayerStats> DeadPlayers { get { return deadPlayers; } }
+    
+    public Dictionary<Collider, PlayerStats> StatsOfAllPlayers { get; private set; } = new Dictionary<Collider, PlayerStats>();
 
     // Start is called before the first frame update
     void Start()

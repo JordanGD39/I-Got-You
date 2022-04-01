@@ -8,7 +8,9 @@ public class RoomManager : MonoBehaviourPun
     private EnemySpawnBoxHolder boxHolder;
     private EnemyGenerator enemyGenerator;
     private List<GameObject> enemiesInRoom;
+    private List<GameObject> enemiesNotYetSpawned = new List<GameObject>();
     [SerializeField] private float enemyPlaceAtY = 0;
+    [SerializeField] private float limitEnemyCount = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -32,21 +34,61 @@ public class RoomManager : MonoBehaviourPun
 
         enemiesInRoom = enemyGenerator.GenerateEnemies();
 
-        foreach (GameObject enemy in enemiesInRoom)
+        int enemyCount = 0;
+        bool moreEnemiesThenLimit = false;
+
+        for (int i = 0; i < enemiesInRoom.Count; i++)
         {
-            BoxCollider chosenBox = boxHolder.SpawnBoxes[Random.Range(0, boxHolder.SpawnBoxes.Count)];
-            Vector3 center = chosenBox.transform.position;
-            Vector3 randomPosInBox = center + new Vector3(Random.Range(-chosenBox.size.x, chosenBox.size.x), 0, Random.Range(-chosenBox.size.z, chosenBox.size.z));
-            randomPosInBox.y = enemyPlaceAtY;
+            PlaceEnemy(enemiesInRoom[i]);
 
-            if (PhotonNetwork.IsConnected)
+            if (i >= limitEnemyCount)
             {
-                photonView.RPC("PlaceEnemyForOthersRPC", RpcTarget.Others, enemy.GetComponent<PhotonView>().ViewID);
-            }            
-
-            enemy.transform.position = randomPosInBox;
-            enemy.SetActive(true);
+                enemyCount = i;
+                moreEnemiesThenLimit = true;
+                break;
+            }
         }
+
+        if (moreEnemiesThenLimit)
+        {
+            enemiesNotYetSpawned.Clear();
+
+            for (int i = enemyCount; i < enemiesInRoom.Count; i++)
+            {
+                GameObject enemy = enemiesInRoom[i];
+                enemy.GetComponent<EnemyStats>().OnEnemyDied = PlaceNotYetSpawnedEnemy;
+                enemiesNotYetSpawned.Add(enemy);
+            }
+        }
+    }
+
+    private void PlaceNotYetSpawnedEnemy()
+    {
+        if (enemiesNotYetSpawned.Count == 0)
+        {
+            return;
+        }
+
+        GameObject enemy = enemiesNotYetSpawned[0];
+        PlaceEnemy(enemy);
+        enemiesNotYetSpawned.RemoveAt(0);
+    }
+
+    private void PlaceEnemy(GameObject enemy)
+    {
+        BoxCollider chosenBox = boxHolder.SpawnBoxes[Random.Range(0, boxHolder.SpawnBoxes.Count)];
+        Vector3 center = chosenBox.transform.position;
+        Vector3 randomPosInBox = center + new Vector3(Random.Range(-chosenBox.size.x, chosenBox.size.x), 0, Random.Range(-chosenBox.size.z, chosenBox.size.z));
+        randomPosInBox.y = enemyPlaceAtY;
+
+        if (PhotonNetwork.IsConnected)
+        {
+            photonView.RPC("PlaceEnemyForOthersRPC", RpcTarget.Others, enemy.GetComponent<PhotonView>().ViewID);
+        }
+
+        enemy.GetComponent<EnemyStats>().OnEnemyDied = PlaceNotYetSpawnedEnemy;
+        enemy.transform.position = randomPosInBox;
+        enemy.SetActive(true);
     }
 
     [PunRPC]

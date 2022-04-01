@@ -31,6 +31,7 @@ public class OnlineCharacterHandler : MonoBehaviourPun
             if (item is SyncMovement){ continue; }
             if (item is ChasePlayerAI){ continue; }
             if (item is EnemyStats){ continue; }
+            if (item is PlayerRevive){ continue; }
 
             if (item != this)
             {

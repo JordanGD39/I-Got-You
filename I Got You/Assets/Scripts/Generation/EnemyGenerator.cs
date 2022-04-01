@@ -6,6 +6,8 @@ using Photon.Pun;
 public class EnemyGenerator : MonoBehaviour
 {
     private PlayerManager playerManager;
+    private EnemyManager enemyManager;
+
     private List<GameObject> wrummels = new List<GameObject>();
     [SerializeField] private GameObject wrummelPrefab;
     [SerializeField] private int wrummelCount = 30;
@@ -20,11 +22,13 @@ public class EnemyGenerator : MonoBehaviour
         }
 
         playerManager = FindObjectOfType<PlayerManager>();
+        enemyManager = FindObjectOfType<EnemyManager>();
 
         for (int i = 0; i < wrummelCount; i++)
         {
             GameObject wrummel = PhotonFunctionHandler.InstantiateGameObject(wrummelPrefab, Vector3.zero, Quaternion.identity);
             wrummel.SetActive(false);
+            enemyManager.StatsOfAllEnemies.Add(wrummel.transform.GetChild(0), wrummel.GetComponent<EnemyStats>());
             wrummels.Add(wrummel);
         }
     }
@@ -35,7 +39,8 @@ public class EnemyGenerator : MonoBehaviour
 
         for (int i = 0; i < playerManager.Players.Count; i++)
         {
-            countOfWrummelsToGenerate += Random.Range(5, 7);
+            //countOfWrummelsToGenerate += Random.Range(6, 8);
+            countOfWrummelsToGenerate += 12;
         }
 
         List<GameObject> wrummelsToGive = new List<GameObject>();

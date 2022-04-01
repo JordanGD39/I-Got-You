@@ -3,18 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class EnemyStats : MonoBehaviourPun
+public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
     [SerializeField] private int health = 100;
     [SerializeField] private int damage = 20;
 
+    private EnemyManager enemyManager;
+    private PlayerManager playerManager;
+
+    public delegate void EnemyDied();
+    public EnemyDied OnEnemyDied;
+
+    void IPunInstantiateMagicCallback.OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        if (enemyManager == null)
+        {
+            enemyManager = FindObjectOfType<EnemyManager>();
+        }
+
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            enemyManager.StatsOfAllEnemies.Add(transform.GetChild(0), this);
+        }        
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
-        {
-            gameObject.SetActive(false);
-        }
+        playerManager = FindObjectOfType<PlayerManager>();
 
         List<Hitbox> hitboxes = new List<Hitbox>();
 
@@ -24,6 +40,11 @@ public class EnemyStats : MonoBehaviourPun
         {
             hitbox.OnHitBoxCollided += DamagePlayer;
             hitbox.gameObject.SetActive(false);
+        }
+
+        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
+        {
+            gameObject.SetActive(false);
         }
     }
 
@@ -38,6 +59,7 @@ public class EnemyStats : MonoBehaviourPun
 
         if (health <= 0)
         {
+            OnEnemyDied?.Invoke();
             gameObject.SetActive(false);
         }
     }
@@ -57,7 +79,7 @@ public class EnemyStats : MonoBehaviourPun
     {
         if (other.gameObject.CompareTag("PlayerCol"))
         {
-            other.GetComponentInParent<PlayerStats>().Damage(damage);
+            playerManager.StatsOfAllPlayers[other].Damage(damage);
         }
     }
 }

@@ -20,10 +20,13 @@ public class PlayerShoot : MonoBehaviour
     private bool reloading = false;
 
     private PlayerUI playerUI;
+    private EnemyManager enemyManager;
 
     // Start is called before the first frame update
     void Start()
     {
+        enemyManager = FindObjectOfType<EnemyManager>();
+
         currentAmmo = currentGun.ClipCount;
         currentMaxAmmo = currentGun.MaxAmmoCount;
 
@@ -101,15 +104,13 @@ public class PlayerShoot : MonoBehaviour
 
         if (Physics.Raycast(shootPoint.position, shootPoint.forward, out hit, currentGun.MaxRange, hitLayer))
         {
-            Debug.Log(hit.collider.gameObject);
-
             if (hit.collider.gameObject.CompareTag("EnemyCol"))
             {
-                hit.collider.GetComponentInParent<EnemyStats>().Damage(Mathf.RoundToInt((float)currentGun.Damage * CheckHitDistance(hit.point)));
+                enemyManager.StatsOfAllEnemies[hit.collider.transform.parent].Damage(Mathf.RoundToInt((float)currentGun.Damage * CheckHitDistance(hit.point)));
             }
             else if (hit.collider.gameObject.CompareTag("HeadEnemyCol"))
             {
-                hit.collider.GetComponentInParent<EnemyStats>().Damage(Mathf.RoundToInt((float)currentGun.Damage * currentGun.HeadShotMultiplier * CheckHitDistance(hit.point)));
+                enemyManager.StatsOfAllEnemies[hit.collider.transform.parent].Damage(Mathf.RoundToInt((float)currentGun.Damage * currentGun.HeadShotMultiplier * CheckHitDistance(hit.point)));
             }
         }
     }
