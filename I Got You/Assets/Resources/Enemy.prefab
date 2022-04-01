@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 6135183180861974009}
   - component: {fileID: 4436136522721184941}
   - component: {fileID: 3460074040193879276}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: AttackCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ Transform:
   m_GameObject: {fileID: 4068139885568568001}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.732}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 0.49787998, y: 0.58548003, z: 0.6657539}
   m_Children: []
   m_Father: {fileID: 5385682123832297534}
   m_RootOrder: 2
@@ -280,12 +280,12 @@ NavMeshAgent:
   m_GameObject: {fileID: 5385682122100596849}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.6
   m_Speed: 6
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 180
-  m_StoppingDistance: 1
+  m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -535,7 +535,7 @@ GameObject:
   - component: {fileID: 723722953507324670}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: EnemyCol
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -611,7 +611,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8624116901447065712}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}

@@ -13,18 +13,24 @@ public class PlayerStats : MonoBehaviourPun
     private int currentMaxHealth = 100;
 
     private PlayerUI playerUI;
+    private PlayerRevive playerRevive;
+    private Animator anim;
     private int healthIncreaseCounter = 0;
+    private bool isDown = false;
+    public bool IsDown { get { return isDown; } }
 
     private void Start()
     {
         health = maxHealth;
         currentMaxHealth = maxHealth;
+        anim = GetComponentInChildren<Animator>();
 
-        if (photonView.IsMine)
+        if (photonView.IsMine || !PhotonNetwork.IsConnected)
         {
             playerUI = FindObjectOfType<PlayerUI>();
             playerUI.UpdateHealth(health);
             playerUI.UpdateMaxHealth(maxHealth);
+            playerRevive = GetComponent<PlayerRevive>();
         }      
     }
 
@@ -35,12 +41,20 @@ public class PlayerStats : MonoBehaviourPun
             return;
         }
 
+        if (isDown)
+        {
+            playerRevive.ResetDamageTimer();
+            return;
+        }
+
         health -= dmg;
         playerUI.UpdateHealth(health);
 
         if (health <= 0)
         {
-            Destroy(GetComponent<PlayerMovement>());
+            isDown = true;
+            anim.SetBool("Down", true);
+            playerRevive.StartTimer();
         }
     }
 

@@ -101,6 +101,8 @@ public class PlayerShoot : MonoBehaviour
 
         if (Physics.Raycast(shootPoint.position, shootPoint.forward, out hit, currentGun.MaxRange, hitLayer))
         {
+            Debug.Log(hit.collider.gameObject);
+
             if (hit.collider.gameObject.CompareTag("EnemyCol"))
             {
                 hit.collider.GetComponentInParent<EnemyStats>().Damage(Mathf.RoundToInt((float)currentGun.Damage * CheckHitDistance(hit.point)));

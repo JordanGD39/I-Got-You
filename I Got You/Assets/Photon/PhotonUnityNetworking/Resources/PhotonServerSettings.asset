@@ -46,6 +46,8 @@ MonoBehaviour:
   - SyncHealthRPC
   - MasterClientLoadLevel
   - PlaceEnemyForOthersRPC
+  - StartOthersTimer
+  - PlayerDiedForOthersRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

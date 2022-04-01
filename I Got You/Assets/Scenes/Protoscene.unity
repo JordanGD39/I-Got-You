@@ -438,7 +438,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh101166
+  m_Name: pb_Mesh21708
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1538,7 +1538,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh101096
+  m_Name: pb_Mesh21638
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1890,7 +1890,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh101362
+  m_Name: pb_Mesh21902
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2061,6 +2061,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 508557286151977996, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: observableSearch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5072103542370614709, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6712501813913824977, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
@@ -2261,6 +2265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   players: []
+  deadPlayers: []
 --- !u!114 &623612095
 MonoBehaviour:
   m_ObjectHideFlags: 0

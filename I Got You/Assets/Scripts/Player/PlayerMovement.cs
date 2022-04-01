@@ -5,9 +5,11 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private CharacterController characterController;
+    private PlayerStats playerStats;
 
     [SerializeField] private float walkingSpeed = 5;
     [SerializeField] private float runSpeed = 12;
+    [SerializeField] private float downSpeed = 2;
     [SerializeField] private float gravity = -9.8f;
     [SerializeField] private float jumpHeight = 10;
     private float stepOffset = 0.5f;
@@ -18,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        playerStats = GetComponent<PlayerStats>();
         stepOffset = characterController.stepOffset;
     }
 
@@ -26,7 +29,11 @@ public class PlayerMovement : MonoBehaviour
     {
         UpdateMovement();
         MoveByGravity();
-        JumpCheck();
+
+        if (!playerStats.IsDown)
+        {
+            JumpCheck();
+        }
     }
 
     private void UpdateMovement()
@@ -36,7 +43,16 @@ public class PlayerMovement : MonoBehaviour
         movement = transform.TransformDirection(movement);
         movement.y = 0;
 
-        float speed = Input.GetButton("Sprint") ? runSpeed : walkingSpeed;
+        float speed = 0;
+
+        if (!playerStats.IsDown)
+        {
+            speed = Input.GetButton("Sprint") ? runSpeed : walkingSpeed;
+        }
+        else
+        {
+            speed = downSpeed;
+        }
 
         characterController.Move(movement * speed * Time.deltaTime);
     }

@@ -5,13 +5,22 @@ using UnityEngine;
 public class PlayerRotation : MonoBehaviour
 {
     [SerializeField] private float rotationSpeed = 2;
+    [SerializeField] private float downedAdder = -50;
+    [SerializeField] private float lerpSpeed = 2;
+    [SerializeField] private float minLerpDiff = 1;
     private float xRotation = 0;
+    private bool lerp = false;
+    private PlayerStats playerStats;
 
     [SerializeField] private Transform cam;
+
+    public delegate void GiveInputBack();
+    public GiveInputBack OnGiveInputBack;
 
     // Start is called before the first frame update
     void Start()
     {
+        playerStats = GetComponent<PlayerStats>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -19,7 +28,26 @@ public class PlayerRotation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateRotation();
+        if (!lerp)
+        {
+            UpdateRotation();
+        }
+        else
+        {
+            LerpToResetPos();
+        }
+    }
+
+    private void LerpToResetPos()
+    {
+        cam.localRotation = Quaternion.Lerp(cam.localRotation, Quaternion.Euler(downedAdder, 0, 0), lerpSpeed * Time.deltaTime);
+
+        if (Mathf.Abs(cam.localEulerAngles.x - downedAdder) < minLerpDiff)
+        {
+            xRotation = 0;
+            lerp = false;
+            OnGiveInputBack?.Invoke();
+        }
     }
 
     private void UpdateRotation()
@@ -32,8 +60,13 @@ public class PlayerRotation : MonoBehaviour
 
         xRotation = Mathf.Clamp(xRotation, -90, 90);
 
-        cam.localRotation = Quaternion.Euler(xRotation, 0, 0);
+        cam.localRotation = Quaternion.Euler(xRotation + (playerStats.IsDown ? downedAdder : 0), 0, 0);
 
         transform.Rotate(Vector3.up * input.x);
+    }
+
+    public void StartLerpToResetPos()
+    {
+        lerp = true;
     }
 }
