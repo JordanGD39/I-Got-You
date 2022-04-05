@@ -8,6 +8,9 @@ public class EnemyStats : MonoBehaviourPun
     [SerializeField] private int health = 100;
     [SerializeField] private int damage = 20;
 
+    [SerializeField] private List<MeleeWeapon.DamageTypes> resitances = new List<MeleeWeapon.DamageTypes>();
+    [SerializeField] private List<MeleeWeapon.DamageTypes> weaknesses = new List<MeleeWeapon.DamageTypes>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,5 +58,21 @@ public class EnemyStats : MonoBehaviourPun
         {
             other.GetComponentInParent<PlayerStats>().Damage(damage);
         }
+    }
+
+    public void MeleeDamage(MeleeWeapon meleeWeapon)
+    {
+        int damage = meleeWeapon.Damage;
+
+        if (resitances.Count > 0 && resitances.Contains(meleeWeapon.DamageType))
+        {
+            damage /= 2;
+        }
+        else if (weaknesses.Count > 0 && weaknesses.Contains(meleeWeapon.DamageType))
+        {
+            damage *= 2;
+        }
+
+        health -= damage;
     }
 }
