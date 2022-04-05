@@ -1,15 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class EnemyStats : MonoBehaviour
+public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
     [SerializeField] private int health = 100;
     [SerializeField] private int damage = 20;
 
+    private EnemyManager enemyManager;
+    private PlayerManager playerManager;
+
+    public delegate void EnemyDied();
+    public EnemyDied OnEnemyDied;
+
+    void IPunInstantiateMagicCallback.OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        if (enemyManager == null)
+        {
+            enemyManager = FindObjectOfType<EnemyManager>();
+        }
+
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            enemyManager.StatsOfAllEnemies.Add(transform.GetChild(0), this);
+        }        
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        playerManager = FindObjectOfType<PlayerManager>();
+
         List<Hitbox> hitboxes = new List<Hitbox>();
 
         hitboxes.AddRange(GetComponentsInChildren<Hitbox>());
@@ -19,16 +41,37 @@ public class EnemyStats : MonoBehaviour
             hitbox.OnHitBoxCollided += DamagePlayer;
             hitbox.gameObject.SetActive(false);
         }
+
+        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     public void Damage(int dmg)
     {
-        Debug.Log("Damage: " + dmg);
         health -= dmg;
+
+        if (PhotonNetwork.IsConnected)
+        {
+            photonView.RPC("SyncHealthRPC", RpcTarget.Others, health);
+        }
 
         if (health <= 0)
         {
-            Destroy(gameObject);
+            OnEnemyDied?.Invoke();
+            gameObject.SetActive(false);
+        }
+    }
+
+    [PunRPC]
+    void SyncHealthRPC(int hp)
+    {
+        health = hp;
+
+        if (health <= 0)
+        {
+            gameObject.SetActive(false);
         }
     }
 
@@ -36,7 +79,7 @@ public class EnemyStats : MonoBehaviour
     {
         if (other.gameObject.CompareTag("PlayerCol"))
         {
-            other.GetComponentInParent<PlayerStats>().Damage(damage);
+            playerManager.StatsOfAllPlayers[other].Damage(damage);
         }
     }
 }

@@ -15,8 +15,9 @@ public class ConnectToNetwork : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby();
-        PhotonNetwork.SendRate = 10;
-        PhotonNetwork.SerializationRate = 10;
+        PhotonNetwork.SendRate = 20;
+        PhotonNetwork.SerializationRate = 20;
+        PhotonNetwork.AutomaticallySyncScene = true;
         Debug.Log(PhotonNetwork.CountOfPlayers);
     }
 

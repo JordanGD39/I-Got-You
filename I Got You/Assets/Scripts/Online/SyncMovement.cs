@@ -6,22 +6,24 @@ using Photon.Pun;
 public class SyncMovement : MonoBehaviourPun, IPunObservable
 {
     private Vector3 syncPos;
-    private Quaternion syncRot;
+    private Vector3 syncRot;
 
     [SerializeField] private float lerpPosSpeed = 5;
     [SerializeField] private float lerpRotSpeed = 5;
+    [SerializeField] private bool checkMasterClient = false;
+    [SerializeField] private GameObject model;
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
             stream.SendNext(new Vector3(ReturnSingleDecimalFloat(transform.position.x), ReturnSingleDecimalFloat(transform.position.y), ReturnSingleDecimalFloat(transform.position.z)));
-            stream.SendNext(ReturnSingleDecimalFloat(transform.localRotation.y));
+            stream.SendNext(ReturnSingleDecimalFloat(transform.localEulerAngles.y));
         }
         else if(stream.IsReading)
         {
             syncPos = (Vector3)stream.ReceiveNext();
-            syncRot = new Quaternion(transform.localRotation.x, (float)stream.ReceiveNext(), transform.localRotation.z, transform.localRotation.w);
+            syncRot = new Vector3(transform.localEulerAngles.x, (float)stream.ReceiveNext(), transform.localEulerAngles.z);
         }
     }
 
@@ -30,12 +32,50 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
         return Mathf.Round(value * 10) * 0.1f;
     }
 
+    private void Start()
+    {
+        if (!PhotonNetwork.IsConnected)
+        {
+            if (model != null)
+            {
+                model.SetActive(true);
+            }
+            
+            Destroy(this);
+            return;
+        }
+
+        if (model == null)
+        {
+            return;
+        }
+
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            model.SetActive(false);
+            transform.position = Vector3.zero;
+            StartCoroutine(nameof(TeleportToSync));
+        }
+    }
+
     private void Update()
     {
-        if (!photonView.IsMine)
+        if ((!photonView.IsMine && !checkMasterClient) || (checkMasterClient && !PhotonNetwork.IsMasterClient))
         {
             transform.position = Vector3.Lerp(transform.position, syncPos, lerpPosSpeed * Time.deltaTime);
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, syncRot, lerpRotSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(syncRot), lerpRotSpeed * Time.deltaTime);
         }
+    }
+
+    private IEnumerator TeleportToSync()
+    {
+        while (transform.position == Vector3.zero)
+        {
+            yield return null;
+        }
+
+        transform.position = syncPos;
+        transform.rotation = Quaternion.Euler(syncRot);
+        model.SetActive(true);
     }
 }

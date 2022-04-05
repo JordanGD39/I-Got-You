@@ -2,34 +2,59 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
-public class PlayerStats : MonoBehaviour
+public class PlayerStats : MonoBehaviourPun
 {
+    public enum ClassNames { SCOUT, TANK, SUPPORT, BOMBER }
+    [SerializeField] private ClassNames currentClass;
     [SerializeField] private int health = 100;
     [SerializeField] private int maxHealth = 100;
     private int currentMaxHealth = 100;
 
     private PlayerUI playerUI;
+    private PlayerRevive playerRevive;
+    private Animator anim;
     private int healthIncreaseCounter = 0;
+    private bool isDown = false;
+    public bool IsDown { get { return isDown; } }
 
     private void Start()
     {
-        playerUI = FindObjectOfType<PlayerUI>();
         health = maxHealth;
         currentMaxHealth = maxHealth;
-        playerUI.UpdateHealth(health);
-        playerUI.UpdateMaxHealth(maxHealth);
+        anim = GetComponentInChildren<Animator>();
+
+        if (photonView.IsMine || !PhotonNetwork.IsConnected)
+        {
+            playerUI = FindObjectOfType<PlayerUI>();
+            playerUI.UpdateHealth(health);
+            playerUI.UpdateMaxHealth(maxHealth);
+            playerRevive = GetComponent<PlayerRevive>();
+        }      
     }
 
     public void Damage(int dmg)
     {
-        health -= dmg;
+        if (!photonView.IsMine)
+        {
+            return;
+        }
 
+        if (isDown)
+        {
+            playerRevive.ResetDamageTimer();
+            return;
+        }
+
+        health -= dmg;
         playerUI.UpdateHealth(health);
 
         if (health <= 0)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            isDown = true;
+            anim.SetBool("Down", true);
+            playerRevive.StartTimer();
         }
     }
 

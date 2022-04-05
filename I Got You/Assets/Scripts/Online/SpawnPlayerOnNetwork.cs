@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class SpawnPlayerOnNetwork : MonoBehaviour
+public class SpawnPlayerOnNetwork : MonoBehaviourPun
 {
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject playerOffline;
-    [SerializeField] private float minX = 0;
-    [SerializeField] private float maxX = 0;
+    [SerializeField] private Vector3 minPos;
+    [SerializeField] private Vector3 maxPos;
     private PlayerManager playerManager;
 
     // Start is called before the first frame update
@@ -18,23 +18,32 @@ public class SpawnPlayerOnNetwork : MonoBehaviour
         {
             playerManager = GetComponent<PlayerManager>();
         }
+        PlayerStats playerStats;
 
-        if (PhotonNetwork.OfflineMode || !PhotonNetwork.InRoom)
+        if (!PhotonFunctionHandler.IsPlayerOnline())
         {
             playerOffline.SetActive(true);
-            playerManager.Players.Add(playerOffline.GetComponent<PlayerStats>());
+
+            playerStats = playerOffline.GetComponent<PlayerStats>();
+
+            playerManager.Players.Add(playerStats);
+            playerManager.StatsOfAllPlayers.Add(playerOffline.GetComponentInChildren<CapsuleCollider>(), playerStats);
             return;
         }
 
-        Vector3 randomPos = new Vector3(Random.Range(minX, maxX), 1, 0);
+        Vector3 randomPos = new Vector3(Random.Range(minPos.x, maxPos.x), 1, Random.Range(minPos.z, maxPos.z));
         GameObject player = PhotonNetwork.Instantiate(playerPrefab.name, randomPos, Quaternion.identity);
 
-        PlayerStats playerStats = player.GetComponent<PlayerStats>();
+        playerStats = player.GetComponent<PlayerStats>();
 
         playerManager.Players.Add(playerStats);
+
+        Debug.Log(player.GetComponentInChildren<CapsuleCollider>());
+
+        playerManager.StatsOfAllPlayers.Add(player.GetComponentInChildren<CapsuleCollider>(), playerStats);
         int photonId = player.GetComponent<PhotonView>().ViewID;
 
-        GetComponent<PhotonView>().RPC("AddPlayerToManager", RpcTarget.OthersBuffered, photonId);
+        photonView.RPC("AddPlayerToManager", RpcTarget.OthersBuffered, photonId);
     }
 
     [PunRPC]
@@ -45,6 +54,9 @@ public class SpawnPlayerOnNetwork : MonoBehaviour
             playerManager = GetComponent<PlayerManager>();
         }
 
-        playerManager.Players.Add(PhotonView.Find(photonId).gameObject.GetComponent<PlayerStats>());
+        PlayerStats playerStats = PhotonView.Find(photonId).gameObject.GetComponent<PlayerStats>();
+
+        playerManager.Players.Add(playerStats);
+        playerManager.StatsOfAllPlayers.Add(playerStats.GetComponentInChildren<CapsuleCollider>(), playerStats);
     }
 }
