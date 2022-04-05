@@ -44,6 +44,7 @@ MonoBehaviour:
   - UpdatePlayerNameOther
   - SyncDamageRPC
   - SyncHealthRPC
+  - MasterClientLoadLevel
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
