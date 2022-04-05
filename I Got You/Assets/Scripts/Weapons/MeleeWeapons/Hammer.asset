@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 83277f447541fd742829baf32a011c2d, type: 3}
-  m_Name: Melee
+  m_Name: Hammer
   m_EditorClassIdentifier: 
-  weaponModel: {fileID: 0}
-  attackAnim: {fileID: 0}
+  weaponModel: {fileID: 919132149155446097, guid: fda93998fab6b3048bd102cbbbc1a019, type: 3}
+  attackAnim: {fileID: 9100000, guid: 5949bdd0bcdc71c49ac3c15328ac71e8, type: 2}
   maxCombo: 2
-  damage: 10
+  damage: 20
   attackSpeed: 1
   weaponRarity: 0
-  damageType: 0
+  damageType: 2
   effect: 0

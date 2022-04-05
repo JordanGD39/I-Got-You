@@ -25,27 +25,32 @@ public class PlayerCombat : MonoBehaviour
         if (!attacking && Input.GetMouseButtonDown(0))
         {
             weaponAnim.SetInteger("comboCounter", animIndex);
-            weaponAnim.SetTrigger("attack");
+            weaponAnim.SetBool("attack", true);
             attacking = true;
         }
     }
 
     public void AttackHit()
     {
-        weaponAnim.ResetTrigger("attack");
+        if (!attacking)
+        {
+            return;
+        }
+        weaponAnim.SetBool("attack", false);
+
+        attacking = false;
+
         animIndex++;
 
-        if (animIndex >= currentWeapon.MaxCombo)
+        if (animIndex >= currentWeapon.MaxCombo + 1)
         {
             animIndex = 0;
         }
-
-        attacking = false;
     }
 
     public void AttackMissed()
     {
-        weaponAnim.ResetTrigger("attack");
+        weaponAnim.SetBool("attack", false);
         attacking = false;
         animIndex = 0;
     }

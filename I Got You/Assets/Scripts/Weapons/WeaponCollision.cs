@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeWeaponCollision : MonoBehaviour
+public class WeaponCollision : MonoBehaviour
 {
     private PlayerCombat playerCombat;
 
@@ -13,11 +13,13 @@ public class MeleeWeaponCollision : MonoBehaviour
     void Start()
     {
         playerCombat = GetComponentInParent<PlayerCombat>();
+
+        GetComponentInChildren<AttackAnimationHandler>().OnAttackMiss += Missed;
     }
 
-    private void OnTriggerEnter(Collider collision)
+    private void OnTriggerStay(Collider collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("EnemyCol"))
         {
             collision.gameObject.GetComponent<EnemyStats>().MeleeDamage(playerCombat.CurrentWeapon);
             playerCombat.AttackHit();
