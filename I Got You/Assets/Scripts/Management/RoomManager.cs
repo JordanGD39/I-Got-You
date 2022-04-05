@@ -11,6 +11,9 @@ public class RoomManager : MonoBehaviourPun
     private List<GameObject> enemiesNotYetSpawned = new List<GameObject>();
     [SerializeField] private float enemyPlaceAtY = 0;
     [SerializeField] private float limitEnemyCount = 10;
+    [SerializeField] private int enemyDeathsInRoom = 0;
+    [SerializeField] private DoorOpen doorToThisRoom;
+    [SerializeField] private DoorOpen doorToOtherRoom;
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +25,8 @@ public class RoomManager : MonoBehaviourPun
 
         boxHolder = GetComponentInChildren<EnemySpawnBoxHolder>();
         enemyGenerator = FindObjectOfType<EnemyGenerator>();
-        GetComponentInChildren<DoorOpen>().OnOpenDoor += PlaceEnemies;
+        doorToThisRoom.OnOpenDoor += PlaceEnemies;
+        doorToOtherRoom.OnOpenDoor += PlaceDoorToThisRoom;
     }
 
     private void PlaceEnemies()
@@ -32,6 +36,7 @@ public class RoomManager : MonoBehaviourPun
             return;
         }
 
+        enemyDeathsInRoom = 0;
         enemiesInRoom = enemyGenerator.GenerateEnemies();
 
         int enemyCount = 0;
@@ -56,10 +61,33 @@ public class RoomManager : MonoBehaviourPun
             for (int i = enemyCount; i < enemiesInRoom.Count; i++)
             {
                 GameObject enemy = enemiesInRoom[i];
-                enemy.GetComponent<EnemyStats>().OnEnemyDied = PlaceNotYetSpawnedEnemy;
+                EnemyStats stats = enemy.GetComponent<EnemyStats>();
+
+                stats.OnEnemyDied = PlaceNotYetSpawnedEnemy;
+                stats.OnEnemyDied += CountEnemyDeath;
                 enemiesNotYetSpawned.Add(enemy);
             }
         }
+    }
+
+    private void CountEnemyDeath()
+    {
+        enemyDeathsInRoom++;
+
+        if (enemyDeathsInRoom >= enemiesInRoom.Count)
+        {
+            doorToOtherRoom.gameObject.SetActive(true);
+            doorToThisRoom.gameObject.SetActive(false);
+            enemiesInRoom.Clear();
+        }
+    }
+
+    private void PlaceDoorToThisRoom()
+    {
+        doorToOtherRoom.ResetDoor();
+        doorToOtherRoom.gameObject.SetActive(false);
+        doorToThisRoom.gameObject.SetActive(true);
+        doorToThisRoom.ResetDoor();
     }
 
     private void PlaceNotYetSpawnedEnemy()
@@ -86,7 +114,11 @@ public class RoomManager : MonoBehaviourPun
             photonView.RPC("PlaceEnemyForOthersRPC", RpcTarget.Others, enemy.GetComponent<PhotonView>().ViewID);
         }
 
-        enemy.GetComponent<EnemyStats>().OnEnemyDied = PlaceNotYetSpawnedEnemy;
+        EnemyStats stats = enemy.GetComponent<EnemyStats>();
+
+        stats.OnEnemyDied = PlaceNotYetSpawnedEnemy;
+        stats.OnEnemyDied += CountEnemyDeath;
+
         enemy.transform.position = randomPosInBox;
         enemy.SetActive(true);
     }

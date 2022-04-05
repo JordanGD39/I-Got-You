@@ -49,9 +49,22 @@ public class DoorOpen : MonoBehaviour
             return;
         }
 
-        if (other.CompareTag("PlayerCol"))
+        if (other.CompareTag("PlayerCol") && playersInRange.Contains(other.gameObject))
         {
             playersInRange.Remove(other.gameObject);
         }
+    }
+
+    public void ResetDoor()
+    {
+        doorToClose.SetActive(false);
+        model.SetActive(true);
+
+        Invoke(nameof(OpenResetDelay), 0.5f);
+    }
+
+    private void OpenResetDelay()
+    {
+        opened = false;
     }
 }
