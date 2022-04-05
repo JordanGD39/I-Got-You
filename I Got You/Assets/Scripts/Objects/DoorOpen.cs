@@ -8,7 +8,9 @@ public class DoorOpen : MonoBehaviour
     [SerializeField] private List<GameObject> playersInRange = new List<GameObject>();
     [SerializeField] private GameObject doorToClose;
     [SerializeField] private GameObject model;
-    [SerializeField] private bool opened = false;
+    [SerializeField] private bool opened = true;
+    [SerializeField] private Animator openingDoorAnim;
+    [SerializeField] private Animator closingDoorAnim;
 
     public delegate void OpenDoor();
     public OpenDoor OnOpenDoor;
@@ -18,6 +20,7 @@ public class DoorOpen : MonoBehaviour
     {
         playerManager = FindObjectOfType<PlayerManager>();
         doorToClose.SetActive(false);
+        Invoke(nameof(OpenResetDelay), 0.5f);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -35,8 +38,11 @@ public class DoorOpen : MonoBehaviour
             {
                 opened = true;
                 doorToClose.SetActive(true);
+                openingDoorAnim.ResetTrigger("Open");
+                openingDoorAnim.SetTrigger("Open");
                 playersInRange.Clear();
-                model.SetActive(false);
+                closingDoorAnim.ResetTrigger("Close");
+                closingDoorAnim.SetTrigger("Close");
                 OnOpenDoor?.Invoke();
             }
         }
@@ -55,9 +61,16 @@ public class DoorOpen : MonoBehaviour
         }
     }
 
+    public void CloseOpeningDoor()
+    {
+        model.SetActive(false);
+        model.SetActive(true);
+    }
+
     public void ResetDoor()
     {
         doorToClose.SetActive(false);
+        model.SetActive(false);
         model.SetActive(true);
 
         Invoke(nameof(OpenResetDelay), 0.5f);

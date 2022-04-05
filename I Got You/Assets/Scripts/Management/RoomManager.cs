@@ -76,13 +76,39 @@ public class RoomManager : MonoBehaviourPun
 
         if (enemyDeathsInRoom >= enemiesInRoom.Count)
         {
-            doorToOtherRoom.gameObject.SetActive(true);
-            doorToThisRoom.gameObject.SetActive(false);
-            enemiesInRoom.Clear();
+            ClearRoom();
+
+            if (PhotonNetwork.IsConnected)
+            {
+                photonView.RPC("ClearRoomForOthers", RpcTarget.Others);
+            }
         }
     }
 
+    [PunRPC]
+    void ClearRoomForOthers()
+    {
+        ClearRoom();
+    }
+
+    private void ClearRoom()
+    {
+        doorToOtherRoom.gameObject.SetActive(true);
+        doorToOtherRoom.CloseOpeningDoor();
+        doorToThisRoom.gameObject.SetActive(false);
+
+        if (enemiesInRoom != null)
+        {
+            enemiesInRoom.Clear();
+        }        
+    }
+
     private void PlaceDoorToThisRoom()
+    {
+        Invoke(nameof(DelaySwitchDoor), 1);
+    }
+
+    private void DelaySwitchDoor()
     {
         doorToOtherRoom.ResetDoor();
         doorToOtherRoom.gameObject.SetActive(false);
