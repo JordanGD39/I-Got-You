@@ -22,4 +22,5 @@ MonoBehaviour:
   maxRange: 750
   bulletCount: 3
   spreadAngle: 5
+  primary: 0
   shootType: 2

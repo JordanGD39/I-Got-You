@@ -25,6 +25,8 @@ public class GunObject : ScriptableObject
     public int BulletCount { get { return bulletCount; } }
     [SerializeField] private float spreadAngle = 0.1f;
     public float SpreadAngle { get { return spreadAngle; } }
+    [SerializeField] private bool primary = true;
+    public bool Primary { get { return primary; } }
 
     public enum ShootTypes { MANUAL, AUTO, BURST}
     [SerializeField] private ShootTypes shootType;

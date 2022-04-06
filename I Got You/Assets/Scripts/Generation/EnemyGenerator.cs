@@ -42,6 +42,7 @@ public class EnemyGenerator : MonoBehaviour
         for (int i = 0; i < playerManager.Players.Count; i++)
         {
             countOfWrummelsToGenerate += Random.Range(6, 8) + (difficultyManager.DifficultyLevel * 2);
+            //countOfWrummelsToGenerate += 1;
         }
 
         List<GameObject> wrummelsToGive = new List<GameObject>();

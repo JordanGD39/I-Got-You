@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 20
   shootDelay: 0.1
+  burstDelay: 0.1
   reloadSpeed: 1
   clipCount: 8
   maxAmmoCount: 80
@@ -21,4 +22,5 @@ MonoBehaviour:
   maxRange: 750
   bulletCount: 1
   spreadAngle: 5
+  primary: 0
   shootType: 0

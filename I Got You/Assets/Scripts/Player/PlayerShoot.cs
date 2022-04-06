@@ -5,7 +5,9 @@ using UnityEngine;
 public class PlayerShoot : MonoBehaviour
 {
     [SerializeField] private GunObject currentGun;
+    public GunObject CurrentGun { get { return currentGun; } }
     [SerializeField] private GunObject secondaryGun;
+    public GunObject SecondaryGun { get { return secondaryGun; } }
     [SerializeField] private GunHolder currentGunHolder;
     [SerializeField] private int currentAmmo = 0;
     [SerializeField] private int currentMaxAmmo = 0;
@@ -22,19 +24,20 @@ public class PlayerShoot : MonoBehaviour
     private bool holdingTrigger = false;
     private bool prevHoldTrigger = false;
     private bool reloading = false;
+    private bool interacting = false;
 
     private PlayerUI playerUI;
-    private EnemyManager enemyManager;
+    private PlayerStats playerStats;
+    private EnemyManager enemyManager;    
 
     // Start is called before the first frame update
     void Start()
     {
         enemyManager = FindObjectOfType<EnemyManager>();
-
-        SetAmmo();
-
+        playerStats = GetComponent<PlayerStats>();
         playerUI = FindObjectOfType<PlayerUI>();
-        playerUI.UpdateAmmo(currentAmmo, currentMaxAmmo);
+
+        GiveFullAmmo(true);
 
         foreach (GunHolder item in GetComponentsInChildren<GunHolder>())
         {
@@ -45,24 +48,67 @@ public class PlayerShoot : MonoBehaviour
         UpdateCurrentVisibleGun();
     }
 
-    private void SetAmmo()
+    public void GiveFullAmmo(bool secondary)
     {
         currentAmmo = currentGun.ClipCount;
         currentMaxAmmo = currentGun.MaxAmmoCount;
 
-        if (secondaryGun != null)
+        if (secondaryGun != null && secondary)
         {
             secondaryGunAmmo = secondaryGun.ClipCount;
             secondaryGunMaxAmmo = secondaryGun.MaxAmmoCount;
-        }        
+        }
+
+        playerUI.UpdateAmmo(currentAmmo, currentMaxAmmo);
+    }
+
+    public void GiveAmmo(int ammoToGive)
+    {
+        currentAmmo = currentGun.ClipCount;
+        currentMaxAmmo += ammoToGive;
+
+        if (currentMaxAmmo > currentGun.MaxAmmoCount)
+        {
+            currentMaxAmmo = currentGun.MaxAmmoCount;
+        }
+
+        playerUI.UpdateAmmo(currentAmmo, currentMaxAmmo);
+    }
+
+    public void GiveWeapon(GunObject gun)
+    {
+        if (secondaryGun == null)
+        {
+            secondaryGun = gun;
+
+            secondaryGunAmmo = secondaryGun.ClipCount;
+            secondaryGunMaxAmmo = secondaryGun.MaxAmmoCount;
+        }
+        else
+        {
+            currentGun = gun;
+            currentGunHolder.gameObject.SetActive(false);
+            GiveFullAmmo(false);
+        }
+
+        UpdateCurrentVisibleGun();
     }
 
     // Update is called once per frame
     void Update()
     {
         CheckShoot();
-        CheckReload();
-        CheckChangeSelectedWeapon();
+        CheckInteract();
+
+        if (!interacting)
+        {
+            CheckReload();
+            CheckChangeSelectedWeapon();
+        }
+        else
+        {
+            interacting = false;
+        }
     }
 
     private void CheckShoot()
@@ -245,6 +291,15 @@ public class PlayerShoot : MonoBehaviour
         if (currentGunHolder.GunAnim != null)
         {
             currentGunHolder.GunAnim.ResetTrigger("Reload");
+        }
+    }
+
+    private void CheckInteract()
+    {
+        if (Input.GetButtonDown("Interact") && playerStats.OnInteract != null)
+        {
+            playerStats.OnInteract(playerStats);
+            interacting = true;
         }
     }
 }

@@ -14,16 +14,21 @@ public class PlayerStats : MonoBehaviourPun
 
     private PlayerUI playerUI;
     private PlayerRevive playerRevive;
+    public PlayerShoot PlayerShootScript { get; private set; }
     private Animator anim;
     private int healthIncreaseCounter = 0;
     private bool isDown = false;
     public bool IsDown { get { return isDown; } }
+
+    public delegate void Interact(PlayerStats playerStats);
+    public Interact OnInteract;
 
     private void Start()
     {
         health = maxHealth;
         currentMaxHealth = maxHealth;
         anim = GetComponentInChildren<Animator>();
+        PlayerShootScript = GetComponent<PlayerShoot>();
 
         if (photonView.IsMine || !PhotonNetwork.IsConnected)
         {
