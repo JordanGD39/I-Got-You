@@ -10,6 +10,7 @@ public class ChasePlayerAI : MonoBehaviour
     private NavMeshAgent agent;
     [SerializeField] private Transform target;
     [SerializeField] private float distanceToAttack = 50;
+    [SerializeField] private float turnSpeed = 5;
     private Animator anim;
 
     private bool attacking = false;
@@ -41,11 +42,24 @@ public class ChasePlayerAI : MonoBehaviour
 
         agent.SetDestination(target.position);
 
+        if (agent.remainingDistance <= agent.stoppingDistance)
+        {
+            FaceTarget();
+        }
+
         if (!attacking && Vector3.Distance(transform.position, target.position) < distanceToAttack)
         {
             anim.SetTrigger("Attack");
             attacking = true;
         }
+    }
+
+    private void FaceTarget()
+    {
+        Vector3 lookPos = target.position - transform.position;
+        lookPos.y = 0;
+        Quaternion rotation = Quaternion.LookRotation(lookPos);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, turnSpeed * Time.deltaTime);
     }
 
     public void AttackStopped()

@@ -18,7 +18,7 @@ MonoBehaviour:
   clipCount: 8
   maxAmmoCount: 80
   headShotMultiplier: 1.4
-  closeDamageMultiplier: 1
-  farDamageMultiplier: 1
   maxRange: 750
+  bulletCount: 1
+  spreadAngle: 5
   shootType: 0
