@@ -6,12 +6,15 @@ using Photon.Pun;
 public class RoomManager : MonoBehaviourPun
 {
     private EnemySpawnBoxHolder boxHolder;
+    private DifficultyManager difficultyManager;
     private EnemyGenerator enemyGenerator;
+
     private List<GameObject> enemiesInRoom;
     private List<GameObject> enemiesNotYetSpawned = new List<GameObject>();
     [SerializeField] private float enemyPlaceAtY = 0;
     [SerializeField] private float limitEnemyCount = 10;
     [SerializeField] private int enemyDeathsInRoom = 0;
+    [SerializeField] private int healthIncreasePerLevel = 20;
     [SerializeField] private DoorOpen doorToThisRoom;
     [SerializeField] private DoorOpen doorToOtherRoom;
 
@@ -23,6 +26,7 @@ public class RoomManager : MonoBehaviourPun
             return;
         }
 
+        difficultyManager = FindObjectOfType<DifficultyManager>();
         boxHolder = GetComponentInChildren<EnemySpawnBoxHolder>();
         enemyGenerator = FindObjectOfType<EnemyGenerator>();
         doorToThisRoom.OnOpenDoor += PlaceEnemies;
@@ -61,10 +65,6 @@ public class RoomManager : MonoBehaviourPun
             for (int i = enemyCount; i < enemiesInRoom.Count; i++)
             {
                 GameObject enemy = enemiesInRoom[i];
-                EnemyStats stats = enemy.GetComponent<EnemyStats>();
-
-                stats.OnEnemyDied = PlaceNotYetSpawnedEnemy;
-                stats.OnEnemyDied += CountEnemyDeath;
                 enemiesNotYetSpawned.Add(enemy);
             }
         }
@@ -93,6 +93,8 @@ public class RoomManager : MonoBehaviourPun
 
     private void ClearRoom()
     {
+        difficultyManager.IncreaseDifficulty();
+
         doorToOtherRoom.gameObject.SetActive(true);
         doorToOtherRoom.CloseOpeningDoor();
         doorToThisRoom.gameObject.SetActive(false);
@@ -142,6 +144,8 @@ public class RoomManager : MonoBehaviourPun
 
         EnemyStats stats = enemy.GetComponent<EnemyStats>();
 
+        stats.Health = stats.StartingHealth + (healthIncreasePerLevel * difficultyManager.DifficultyLevel);
+        stats.CallSyncHealth();
         stats.OnEnemyDied = PlaceNotYetSpawnedEnemy;
         stats.OnEnemyDied += CountEnemyDeath;
 

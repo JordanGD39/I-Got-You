@@ -5,7 +5,10 @@ using Photon.Pun;
 
 public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
+    [SerializeField] private int startingHealth = 50;
+    public int StartingHealth { get { return startingHealth; } }
     [SerializeField] private int health = 100;
+    public int Health { get { return health; } set { health = value; } }
     [SerializeField] private int damage = 20;
 
     private EnemyManager enemyManager;
@@ -30,6 +33,8 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     // Start is called before the first frame update
     void Start()
     {
+        health = startingHealth;
+
         playerManager = FindObjectOfType<PlayerManager>();
 
         List<Hitbox> hitboxes = new List<Hitbox>();
@@ -69,7 +74,15 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         yield return new WaitForSeconds(0.1f);
 
-        photonView.RPC("SyncHealthRPC", RpcTarget.Others, health);
+        CallSyncHealth();
+    }
+
+    public void CallSyncHealth()
+    {
+        if (PhotonNetwork.IsConnected)
+        {
+            photonView.RPC("SyncHealthRPC", RpcTarget.Others, health);
+        }        
     }
 
     [PunRPC]

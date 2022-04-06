@@ -7,6 +7,7 @@ public class EnemyGenerator : MonoBehaviour
 {
     private PlayerManager playerManager;
     private EnemyManager enemyManager;
+    private DifficultyManager difficultyManager;
 
     private List<GameObject> wrummels = new List<GameObject>();
     [SerializeField] private GameObject wrummelPrefab;
@@ -23,6 +24,7 @@ public class EnemyGenerator : MonoBehaviour
 
         playerManager = FindObjectOfType<PlayerManager>();
         enemyManager = FindObjectOfType<EnemyManager>();
+        difficultyManager = FindObjectOfType<DifficultyManager>();
 
         for (int i = 0; i < wrummelCount; i++)
         {
@@ -39,8 +41,7 @@ public class EnemyGenerator : MonoBehaviour
 
         for (int i = 0; i < playerManager.Players.Count; i++)
         {
-            countOfWrummelsToGenerate += Random.Range(6, 8);
-            //countOfWrummelsToGenerate += 1;
+            countOfWrummelsToGenerate += Random.Range(6, 8) + (difficultyManager.DifficultyLevel * 2);
         }
 
         List<GameObject> wrummelsToGive = new List<GameObject>();

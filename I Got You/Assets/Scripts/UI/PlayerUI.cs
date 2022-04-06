@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerUI : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Text maxHealthText;
     [SerializeField] private Text ammoText;
     [SerializeField] private Text maxAmmoText;
+    [SerializeField] private TextMeshProUGUI roundText;
     [SerializeField] private RectTransform hitMarker;
     [SerializeField] private RectTransform canvas;
     private Vector2 uiOffset;
@@ -44,5 +46,10 @@ public class PlayerUI : MonoBehaviour
         //hitMarker.localPosition = proportionalPosition - uiOffset;
         hitMarker.gameObject.SetActive(false);
         hitMarker.gameObject.SetActive(true);
+    }
+
+    public void UpdateRoundText(int round)
+    {
+        roundText.text = (round + 1).ToString();
     }
 }
