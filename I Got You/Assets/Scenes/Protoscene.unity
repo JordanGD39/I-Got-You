@@ -10012,7 +10012,7 @@ MonoBehaviour:
   mediumAmmoDropChanceModifier: 2
   largeAmmoDropChance: 10
   largeAmmoDropChanceModifier: 2
-  dropChance: 45
+  dropChance: 50
   allLoot:
   - {fileID: 923069269}
   - {fileID: 1461784781}
@@ -10396,7 +10396,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh42722
+  m_Name: pb_Mesh71690
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

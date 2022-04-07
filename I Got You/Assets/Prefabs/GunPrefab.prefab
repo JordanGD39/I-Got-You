@@ -5064,7 +5064,7 @@ GameObject:
   m_Component:
   - component: {fileID: 32381008404015947}
   - component: {fileID: 3013164547445134680}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5201,6 +5201,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: cec387b77b9d1af4594fb288711ab3c7, type: 3}
       propertyPath: m_Name
       value: MDL_handgun_2_blockout
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cec387b77b9d1af4594fb288711ab3c7, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cec387b77b9d1af4594fb288711ab3c7, type: 3}
