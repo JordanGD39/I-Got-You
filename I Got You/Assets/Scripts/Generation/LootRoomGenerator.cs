@@ -30,22 +30,18 @@ public class LootRoomGenerator : MonoBehaviourPun
     void Start()
     {
         difficultyManager = FindObjectOfType<DifficultyManager>();
-       
 
         doorOpen.OnOpenDoor += PlaceLoot;
         doorOpen.gameObject.SetActive(false);
     }
 
-    public void PlaceLoot()
+    private void UpdateLootBasedOnPlayers()
     {
-        if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
-        {
-            return;
-        }
-
         if (playerCount == 0)
         {
             playerCount = FindObjectOfType<PlayerManager>().Players.Count;
+
+            dropChance += (4 - playerCount) * 10;
 
             switch (playerCount)
             {
@@ -59,6 +55,22 @@ public class LootRoomGenerator : MonoBehaviourPun
                     allLoot = threePlayerLootDrops;
                     break;
             }
+        }
+    }
+
+    public void PlaceLoot()
+    {
+        UpdateLootBasedOnPlayers();
+        Debug.Log("CALLED");
+
+        if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
+        {
+            foreach (LootObject loot in allLoot)
+            {
+                loot.gameObject.SetActive(false);
+            }
+
+            return;
         }
 
         foreach (LootObject loot in allLoot)
@@ -75,16 +87,23 @@ public class LootRoomGenerator : MonoBehaviourPun
 
             rand = Random.Range(0, 100);
 
+            if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
+            {
+                photonView.RPC("ShowLootBoxForOthers", RpcTarget.Others, (byte)allLoot.IndexOf(loot));
+            }
+
             Debug.Log("YES");
             loot.gameObject.SetActive(true);
 
+            float chance = weaponDropChance + (weaponDropChanceModifier * difficultyManager.DifficultyLevel);
+
             //Check to place ammo or weapon
-            if (rand < weaponDropChance)
+            if (rand < chance)
             {
                 //Place weapon
                 rand = Random.Range(0, 100);
 
-                float chance = smallWeaponDropChance - (smallWeaponDropChanceModifier * difficultyManager.DifficultyLevel);
+                chance = smallWeaponDropChance - (smallWeaponDropChanceModifier * difficultyManager.DifficultyLevel);
 
                 if (rand < chance)
                 {
@@ -102,7 +121,7 @@ public class LootRoomGenerator : MonoBehaviourPun
                 //Place ammo
                 rand = Random.Range(0, 100);
 
-                float chance = mediumAmmoDropChance + (mediumAmmoDropChanceModifier * difficultyManager.DifficultyLevel);
+                chance = mediumAmmoDropChance + (mediumAmmoDropChanceModifier * difficultyManager.DifficultyLevel);
 
                 if (rand > chance)
                 {
@@ -129,5 +148,13 @@ public class LootRoomGenerator : MonoBehaviourPun
                 }
             }
         }
+    }
+
+    [PunRPC]
+    void ShowLootBoxForOthers(byte index)
+    {
+        UpdateLootBasedOnPlayers();
+        Debug.Log("YES");
+        allLoot[index].gameObject.SetActive(true);
     }
 }

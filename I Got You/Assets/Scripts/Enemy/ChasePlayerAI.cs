@@ -27,6 +27,11 @@ public class ChasePlayerAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (playerManager.Players.Count == 0)
+        {
+            return;
+        }
+
         float closestDist = Mathf.Infinity;        
 
         foreach (PlayerStats player in playerManager.Players)
@@ -40,7 +45,10 @@ public class ChasePlayerAI : MonoBehaviour
             }
         }
 
-        agent.SetDestination(target.position);
+        if (target != null)
+        {
+            agent.SetDestination(target.position);
+        }        
 
         if (agent.remainingDistance <= agent.stoppingDistance)
         {

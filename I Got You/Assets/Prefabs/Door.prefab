@@ -340,6 +340,6 @@ MonoBehaviour:
   playersInRange: []
   doorToClose: {fileID: 8802004519448721983}
   model: {fileID: 8802004519156722822}
-  opened: 0
+  opened: 1
   openingDoorAnim: {fileID: 8802004519156722817}
   closingDoorAnim: {fileID: 8802004519448721978}

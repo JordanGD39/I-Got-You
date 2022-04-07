@@ -27,6 +27,10 @@ public class GunObject : ScriptableObject
     public float SpreadAngle { get { return spreadAngle; } }
     [SerializeField] private bool primary = true;
     public bool Primary { get { return primary; } }
+    [SerializeField] private AudioClip fireSFX;
+    public AudioClip FireSFX { get { return fireSFX; } }
+    [SerializeField] private AudioClip switchSFX;
+    public AudioClip SwitchSFX { get { return switchSFX; } }
 
     public enum ShootTypes { MANUAL, AUTO, BURST}
     [SerializeField] private ShootTypes shootType;

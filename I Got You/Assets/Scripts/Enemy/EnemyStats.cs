@@ -57,16 +57,19 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         health -= dmg;
 
-        if (PhotonNetwork.IsConnected)
-        {
-            StopCoroutine(nameof(WaitForHealthUpdate));
-            StartCoroutine(nameof(WaitForHealthUpdate));
-        }
-
         if (health <= 0)
         {
             OnEnemyDied?.Invoke();
+            CallSyncHealth();
             gameObject.SetActive(false);
+        }
+        else
+        {
+            if (PhotonNetwork.IsConnected)
+            {
+                StopCoroutine(nameof(WaitForHealthUpdate));
+                StartCoroutine(nameof(WaitForHealthUpdate));
+            }
         }
     }
 
@@ -82,7 +85,7 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
         if (PhotonNetwork.IsConnected)
         {
             photonView.RPC("SyncHealthRPC", RpcTarget.Others, health);
-        }        
+        }
     }
 
     [PunRPC]
@@ -92,6 +95,7 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
 
         if (health <= 0)
         {
+            OnEnemyDied?.Invoke();
             gameObject.SetActive(false);
         }
     }

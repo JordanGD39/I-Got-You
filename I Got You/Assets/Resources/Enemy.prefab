@@ -269,6 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc595d1500ba194598cca36853c75af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startingHealth: 50
   health: 100
   damage: 20
 --- !u!195 &5385682122100596854
@@ -345,6 +346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lerpPosSpeed: 8
   lerpRotSpeed: 8
+  distanceToTeleport: 3
   checkMasterClient: 1
   model: {fileID: 5385682123832297535}
 --- !u!114 &5542502612772619860

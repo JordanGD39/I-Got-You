@@ -10,6 +10,7 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
 
     [SerializeField] private float lerpPosSpeed = 5;
     [SerializeField] private float lerpRotSpeed = 5;
+    [SerializeField] private float distanceToTeleport = 3;
     [SerializeField] private bool checkMasterClient = false;
     [SerializeField] private GameObject model;
 
@@ -62,6 +63,10 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
     {
         if ((!photonView.IsMine && !checkMasterClient) || (checkMasterClient && !PhotonNetwork.IsMasterClient))
         {
+            if (Vector3.Distance(transform.position, syncPos) > distanceToTeleport)
+            {
+                transform.position = syncPos;
+            }
             transform.position = Vector3.Lerp(transform.position, syncPos, lerpPosSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(syncRot), lerpRotSpeed * Time.deltaTime);
         }

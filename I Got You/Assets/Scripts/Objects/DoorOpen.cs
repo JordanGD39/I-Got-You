@@ -20,6 +20,8 @@ public class DoorOpen : MonoBehaviour
     {
         playerManager = FindObjectOfType<PlayerManager>();
         doorToClose.SetActive(false);
+        opened = true;
+        playersInRange.Clear();
         Invoke(nameof(OpenResetDelay), 0.5f);
     }
 
@@ -32,10 +34,16 @@ public class DoorOpen : MonoBehaviour
 
         if (other.CompareTag("PlayerCol"))
         {
+            if (playerManager.StatsOfAllPlayers[other].IsDead)
+            {
+                return;
+            }
+
             playersInRange.Add(other.gameObject);
 
-            if (playerManager.Players.Count == playersInRange.Count)
+            if (playersInRange.Count >= playerManager.Players.Count)
             {
+                Debug.Log(playersInRange.Count);
                 opened = true;
                 doorToClose.SetActive(true);
                 openingDoorAnim.ResetTrigger("Open");

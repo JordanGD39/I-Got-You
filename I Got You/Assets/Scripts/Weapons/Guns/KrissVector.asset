@@ -22,4 +22,7 @@ MonoBehaviour:
   maxRange: 700
   bulletCount: 1
   spreadAngle: 5
+  primary: 1
+  fireSFX: {fileID: 8300000, guid: 49c2616bc1a15c3479343da44975b819, type: 3}
+  switchSFX: {fileID: 8300000, guid: 41326933604704c4c8f58437fb1b1a1d, type: 3}
   shootType: 1

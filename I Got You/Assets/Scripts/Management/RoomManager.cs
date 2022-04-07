@@ -21,16 +21,17 @@ public class RoomManager : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
+        difficultyManager = FindObjectOfType<DifficultyManager>();
+        doorToOtherRoom.OnOpenDoor += PlaceDoorToThisRoom;
+
         if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
         {
             return;
         }
 
-        difficultyManager = FindObjectOfType<DifficultyManager>();
         boxHolder = GetComponentInChildren<EnemySpawnBoxHolder>();
         enemyGenerator = FindObjectOfType<EnemyGenerator>();
         doorToThisRoom.OnOpenDoor += PlaceEnemies;
-        doorToOtherRoom.OnOpenDoor += PlaceDoorToThisRoom;
     }
 
     private void PlaceEnemies()
@@ -74,9 +75,10 @@ public class RoomManager : MonoBehaviourPun
     {
         enemyDeathsInRoom++;
 
-        if (enemyDeathsInRoom >= enemiesInRoom.Count)
+        if (enemyDeathsInRoom >= enemiesInRoom.Count && enemyDeathsInRoom > 0)
         {
             ClearRoom();
+            enemyDeathsInRoom = 0;
 
             if (PhotonNetwork.IsConnected)
             {

@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class PlayerShoot : MonoBehaviour
+public class PlayerShoot : MonoBehaviourPun
 {
     [SerializeField] private GunObject currentGun;
     public GunObject CurrentGun { get { return currentGun; } }
@@ -17,6 +18,7 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] private float distanceForLowerDamage = 100;
     [SerializeField] private Transform shootPoint;
     [SerializeField] private LayerMask hitLayer;
+    [SerializeField] private AudioClip emptyAmmo;
 
     private Dictionary<string, GunHolder> weaponReference = new Dictionary<string, GunHolder>();
 
@@ -29,21 +31,29 @@ public class PlayerShoot : MonoBehaviour
     private PlayerUI playerUI;
     private PlayerStats playerStats;
     private EnemyManager enemyManager;    
+    private WeaponsHolder weaponsHolder;    
+    private AudioSource audioSource;    
 
     // Start is called before the first frame update
     void Start()
     {
+        weaponsHolder = FindObjectOfType<WeaponsHolder>();
+
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+
+        if (PhotonNetwork.IsConnected && !photonView.IsMine)
+        {
+            return;
+        }
+
         enemyManager = FindObjectOfType<EnemyManager>();
         playerStats = GetComponent<PlayerStats>();
         playerUI = FindObjectOfType<PlayerUI>();
 
         GiveFullAmmo(true);
-
-        foreach (GunHolder item in GetComponentsInChildren<GunHolder>())
-        {
-            weaponReference.Add(item.OwningGun.name, item);
-            item.gameObject.SetActive(false);
-        }
 
         UpdateCurrentVisibleGun();
     }
@@ -97,6 +107,11 @@ public class PlayerShoot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (PhotonNetwork.IsConnected && !photonView.IsMine)
+        {
+            return;
+        }
+
         CheckShoot();
         CheckInteract();
 
@@ -113,8 +128,15 @@ public class PlayerShoot : MonoBehaviour
 
     private void CheckShoot()
     {
+        bool attackPressed = Input.GetButtonDown("Attack") || (holdingTrigger && !prevHoldTrigger);
+
         if (currentAmmo < 0 || (currentMaxAmmo <= 0 && currentAmmo <= 0))
         {
+            if (currentMaxAmmo <= 0 && attackPressed)
+            {
+                audioSource.PlayOneShot(emptyAmmo);
+            }
+
             return;
         }
 
@@ -142,8 +164,6 @@ public class PlayerShoot : MonoBehaviour
         }
 
         holdingTrigger = Input.GetAxisRaw("Attack") > 0.5f;
-
-        bool attackPressed = Input.GetButtonDown("Attack") || (holdingTrigger && !prevHoldTrigger);
         bool attackHold = Input.GetButton("Attack") || holdingTrigger;
 
         prevHoldTrigger = holdingTrigger;
@@ -159,6 +179,7 @@ public class PlayerShoot : MonoBehaviour
 
                 currentAmmo -= 1;
                 playerUI.UpdateAmmo(currentAmmo, currentMaxAmmo);
+                audioSource.PlayOneShot(currentGun.FireSFX);
             }
             else
             {
@@ -188,6 +209,7 @@ public class PlayerShoot : MonoBehaviour
             }
 
             ShootCurrentGun(0);
+            audioSource.PlayOneShot(currentGun.FireSFX);
 
             currentAmmo -= 1;
             playerUI.UpdateAmmo(currentAmmo, currentMaxAmmo);
@@ -198,6 +220,11 @@ public class PlayerShoot : MonoBehaviour
 
     private void ShootCurrentGun(int bulletCount)
     {
+        if (PhotonNetwork.IsConnected && photonView.IsMine && bulletCount == 0)
+        {
+            photonView.RPC("ShootCurrentGunOthers", RpcTarget.Others);
+        }
+
         currentGunHolder.MuzzleFlash.Play();
 
         RaycastHit hit;
@@ -225,6 +252,33 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
+    [PunRPC]
+    void ShootCurrentGunOthers()
+    {
+        if (currentGun.ShootType != GunObject.ShootTypes.BURST)
+        {
+            currentGunHolder.GunAnim.SetTrigger("Shoot");
+            currentGunHolder.MuzzleFlash.Play();
+            audioSource.PlayOneShot(currentGun.FireSFX);
+        }
+        else
+        {
+            StartCoroutine(nameof(DelayBurstShootAnimOnly));
+        }
+    }
+
+    private IEnumerator DelayBurstShootAnimOnly()
+    {
+        for (int i = 0; i < currentGun.BulletCount; i++)
+        {
+            currentGunHolder.GunAnim.SetTrigger("Shoot");
+            currentGunHolder.MuzzleFlash.Play();
+            audioSource.PlayOneShot(currentGun.FireSFX);
+
+            yield return new WaitForSeconds(currentGun.BurstDelay);
+        }
+    }
+
     private void CheckReload()
     {
         if (currentAmmo < currentGun.ClipCount && Input.GetButtonDown("Reload"))
@@ -249,10 +303,22 @@ public class PlayerShoot : MonoBehaviour
             return;
         }
 
+        if (PhotonNetwork.IsConnected && photonView.IsMine)
+        {
+            photonView.RPC("ReloadGunOthers", RpcTarget.Others);
+        }
+
         timer = currentGun.ReloadSpeed;
         currentGunHolder.GunAnim.speed = 1 / currentGun.ReloadSpeed;
         currentGunHolder.GunAnim.SetTrigger("Reload");
         reloading = true;
+    }
+
+    [PunRPC]
+    void ReloadGunOthers()
+    {
+        currentGunHolder.GunAnim.speed = 1 / currentGun.ReloadSpeed;
+        currentGunHolder.GunAnim.SetTrigger("Reload");
     }
 
     private void CheckChangeSelectedWeapon()
@@ -284,7 +350,31 @@ public class PlayerShoot : MonoBehaviour
 
     private void UpdateCurrentVisibleGun()
     {
+        if (PhotonNetwork.IsConnected && photonView.IsMine)
+        {
+            photonView.RPC("UpdateCurrentVisibleGunOthers", RpcTarget.Others, (byte)weaponsHolder.SearchWeaponIndex(currentGun.name, currentGun.Primary), currentGun.Primary);
+        }
+
+        if (weaponReference.Count == 0)
+        {
+            foreach (GunHolder item in GetComponentsInChildren<GunHolder>())
+            {
+                weaponReference.Add(item.OwningGun.name, item);
+                if (weaponReference.Count > 1)
+                {
+                    item.gameObject.SetActive(false);
+                }                
+            }
+        }
+
         currentGunHolder = weaponReference[currentGun.name];
+
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+
+        audioSource.PlayOneShot(currentGun.SwitchSFX);
 
         currentGunHolder.gameObject.SetActive(true);
 
@@ -292,6 +382,24 @@ public class PlayerShoot : MonoBehaviour
         {
             currentGunHolder.GunAnim.ResetTrigger("Reload");
         }
+    }
+
+    [PunRPC]
+    void UpdateCurrentVisibleGunOthers(byte weaponIndex, bool primary)
+    {
+        if (weaponsHolder == null)
+        {
+            weaponsHolder = FindObjectOfType<WeaponsHolder>();
+        }
+
+        currentGun = primary ? weaponsHolder.PrimaryGuns[weaponIndex] : weaponsHolder.SecondaryGuns[weaponIndex];
+
+        if (currentGunHolder != null)
+        {
+            currentGunHolder.gameObject.SetActive(false);
+        }
+
+        UpdateCurrentVisibleGun();
     }
 
     private void CheckInteract()

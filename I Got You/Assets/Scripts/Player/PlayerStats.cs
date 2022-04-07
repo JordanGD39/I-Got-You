@@ -19,6 +19,7 @@ public class PlayerStats : MonoBehaviourPun
     private int healthIncreaseCounter = 0;
     private bool isDown = false;
     public bool IsDown { get { return isDown; } }
+    public bool IsDead { get; set; } = false;
 
     public delegate void Interact(PlayerStats playerStats);
     public Interact OnInteract;
@@ -37,6 +38,12 @@ public class PlayerStats : MonoBehaviourPun
             playerUI.UpdateMaxHealth(maxHealth);
             playerRevive = GetComponent<PlayerRevive>();
         }      
+    }
+
+    public void Heal()
+    {
+        health = currentMaxHealth;
+        playerUI.UpdateHealth(health);
     }
 
     public void Damage(int dmg)

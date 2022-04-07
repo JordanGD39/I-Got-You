@@ -82,7 +82,7 @@ public class LootObject : MonoBehaviourPun
 
         if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC("UpdateLootForOthers", RpcTarget.Others, (byte)type, weaponIndex);
+            photonView.RPC("UpdateLootForOthers", RpcTarget.Others, (byte)type, (byte)weaponIndex);
         }
     }
 
@@ -200,7 +200,7 @@ public class LootObject : MonoBehaviourPun
 
         if (PhotonNetwork.IsConnected)
         {
-            photonView.RPC("UpdateCurrentGunForOthers", RpcTarget.Others, weaponsHolder.SearchWeaponIndex(gun.name, gun.Primary), gun.Primary);
+            photonView.RPC("UpdateCurrentGunForOthers", RpcTarget.Others, (byte)weaponsHolder.SearchWeaponIndex(gun.name, gun.Primary), gun.Primary);
         }
     }
 

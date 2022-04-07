@@ -89,12 +89,13 @@ public class PlayerRevive : MonoBehaviourPun
         timerStarted = false;
         playerManager.DeadPlayers.Add(playerStats);
         playerManager.Players.Remove(playerStats);
+        playerStats.IsDead = true;
 
         if (!PhotonNetwork.IsConnected || photonView.IsMine)
         {
             playerRotation.OnGiveInputBack = DisableComponents;
             playerRotation.StartLerpToResetPos();
-        }        
+        }
     }
 
     private void DisableComponents()

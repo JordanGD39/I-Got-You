@@ -52,6 +52,10 @@ MonoBehaviour:
   - UpdateLootForOthers
   - DeactivateLootForOthers
   - UpdateCurrentGunForOthers
+  - ShowLootBoxForOthers
+  - UpdateCurrentVisibleGunOthers
+  - ReloadGunOthers
+  - ShootCurrentGunOthers
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
