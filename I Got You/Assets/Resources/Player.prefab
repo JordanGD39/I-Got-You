@@ -631,7 +631,7 @@ MonoBehaviour:
   runSpeed: 8
   downSpeed: 1.5
   gravity: -19.6
-  jumpHeight: 1
+  jumpHeight: 0.8
 --- !u!114 &6712501813913824982
 MonoBehaviour:
   m_ObjectHideFlags: 0
