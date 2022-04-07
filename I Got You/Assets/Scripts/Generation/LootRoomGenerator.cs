@@ -7,6 +7,7 @@ public class LootRoomGenerator : MonoBehaviourPun
 {
     [SerializeField] private float weaponDropChance = 10;
     [SerializeField] private float weaponDropChanceModifier = 3;
+    [SerializeField] private float weaponDropChanceLimit = 40;
     [SerializeField] private float smallWeaponDropChance = 70;
     [SerializeField] private float smallWeaponDropChanceModifier = 2;
 
@@ -96,6 +97,11 @@ public class LootRoomGenerator : MonoBehaviourPun
             loot.gameObject.SetActive(true);
 
             float chance = weaponDropChance + (weaponDropChanceModifier * difficultyManager.DifficultyLevel);
+
+            if (chance > weaponDropChanceLimit)
+            {
+                chance = weaponDropChanceLimit;
+            }
 
             //Check to place ammo or weapon
             if (rand < chance)

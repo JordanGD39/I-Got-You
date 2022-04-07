@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acf75c892a478d145a5c742e469f5532, type: 3}
   m_Name: Shotgun
   m_EditorClassIdentifier: 
-  damage: 5
+  damage: 8
   shootDelay: 0.5
   burstDelay: 0.1
   reloadSpeed: 2.4

@@ -3539,7 +3539,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh43570
+  m_Name: pb_Mesh22656
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -8819,7 +8819,7 @@ MonoBehaviour:
   enemyPlaceAtY: 0
   limitEnemyCount: 10
   enemyDeathsInRoom: 0
-  healthIncreasePerLevel: 20
+  healthIncreasePerLevel: 5
   doorToThisRoom: {fileID: 1237599745}
   doorToOtherRoom: {fileID: 337651543}
 --- !u!114 &1376900620
@@ -10004,15 +10004,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a62e1eaa3d75ba4798fed4455981a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponDropChance: 25
-  weaponDropChanceModifier: 3
-  smallWeaponDropChance: 70
+  weaponDropChance: 30
+  weaponDropChanceModifier: 1
+  weaponDropChanceLimit: 40
+  smallWeaponDropChance: 60
   smallWeaponDropChanceModifier: 2
   mediumAmmoDropChance: 25
   mediumAmmoDropChanceModifier: 2
   largeAmmoDropChance: 10
   largeAmmoDropChanceModifier: 2
-  dropChance: 50
+  dropChance: 55
   allLoot:
   - {fileID: 923069269}
   - {fileID: 1461784781}
@@ -10396,7 +10397,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh71690
+  m_Name: pb_Mesh21796
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
