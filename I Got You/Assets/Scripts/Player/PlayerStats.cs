@@ -53,6 +53,8 @@ public class PlayerStats : MonoBehaviourPun
             return;
         }
 
+        playerUI.ShowBloodScreen();
+
         if (isDown)
         {
             playerRevive.ResetDamageTimer();

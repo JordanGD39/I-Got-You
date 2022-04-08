@@ -13,11 +13,13 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI roundText;
     [SerializeField] private RectTransform hitMarker;
     [SerializeField] private RectTransform canvas;
+    [SerializeField] private GameObject bloodScreen;
     private Vector2 uiOffset;
 
     private void Start()
     {
         uiOffset = new Vector2(canvas.sizeDelta.x / 2f, canvas.sizeDelta.y / 2f);
+        bloodScreen.SetActive(false);
     }
 
     public void UpdateHealth(int health)
@@ -51,5 +53,11 @@ public class PlayerUI : MonoBehaviour
     public void UpdateRoundText(int round)
     {
         roundText.text = (round + 1).ToString();
+    }
+
+    public void ShowBloodScreen()
+    {
+        bloodScreen.SetActive(false);
+        bloodScreen.SetActive(true);
     }
 }

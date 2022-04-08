@@ -69,6 +69,7 @@ public class PlayerShoot : MonoBehaviourPun
             secondaryGunMaxAmmo = secondaryGun.MaxAmmoCount;
         }
 
+        audioSource.PlayOneShot(currentGun.SwitchSFX);
         playerUI.UpdateAmmo(currentAmmo, currentMaxAmmo);
     }
 
@@ -82,6 +83,7 @@ public class PlayerShoot : MonoBehaviourPun
             currentMaxAmmo = currentGun.MaxAmmoCount;
         }
 
+        audioSource.PlayOneShot(currentGun.SwitchSFX);
         playerUI.UpdateAmmo(currentAmmo, currentMaxAmmo);
     }
 
@@ -161,6 +163,7 @@ public class PlayerShoot : MonoBehaviourPun
             playerUI.UpdateAmmo(currentAmmo, currentMaxAmmo);
             reloading = false;
             currentGunHolder.GunAnim.speed = 1;
+            audioSource.PlayOneShot(currentGun.SwitchSFX);
         }
 
         holdingTrigger = Input.GetAxisRaw("Attack") > 0.5f;
