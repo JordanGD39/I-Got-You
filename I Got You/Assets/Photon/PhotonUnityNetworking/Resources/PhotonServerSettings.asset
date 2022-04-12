@@ -56,6 +56,9 @@ MonoBehaviour:
   - UpdateCurrentVisibleGunOthers
   - ReloadGunOthers
   - ShootCurrentGunOthers
+  - CloseOpeningDoorOthers
+  - OpenDoorOthers
+  - ResetDoorOthers
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

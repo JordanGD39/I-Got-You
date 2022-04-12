@@ -27,6 +27,7 @@ public class PlayerShoot : MonoBehaviourPun
     private bool prevHoldTrigger = false;
     private bool reloading = false;
     private bool interacting = false;
+    private bool canShoot = true;
 
     private PlayerUI playerUI;
     private PlayerStats playerStats;
@@ -48,6 +49,10 @@ public class PlayerShoot : MonoBehaviourPun
         {
             return;
         }
+
+        InputUI inputUI = FindObjectOfType<InputUI>();
+
+        inputUI.OnTogglePausedGame += () => { canShoot = !canShoot; };
 
         enemyManager = FindObjectOfType<EnemyManager>();
         playerStats = GetComponent<PlayerStats>();
@@ -114,7 +119,11 @@ public class PlayerShoot : MonoBehaviourPun
             return;
         }
 
-        CheckShoot();
+        if (canShoot)
+        {
+            CheckShoot();
+        }
+        
         CheckInteract();
 
         if (!interacting)

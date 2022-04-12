@@ -16,14 +16,17 @@ public class LootRoomGenerator : MonoBehaviourPun
     [SerializeField] private float largeAmmoDropChance = 10;
     [SerializeField] private float largeAmmoDropChanceModifier = 2;
 
+    [SerializeField] private float startingDropChance = 40;
     [SerializeField] private float dropChance = 40;
 
     [SerializeField] private List<LootObject> allLoot = new List<LootObject>();
     [SerializeField] private DoorOpen doorOpen;
+    [SerializeField] private DoorOpen doorOutHere;
     [SerializeField] private List<LootObject> onePlayerLootDrops = new List<LootObject>();
     [SerializeField] private List<LootObject> twoPlayerLootDrops = new List<LootObject>();
     [SerializeField] private List<LootObject> threePlayerLootDrops = new List<LootObject>();
     private DifficultyManager difficultyManager;
+    private PlayerManager playerManager;
 
     private int playerCount = 0;
 
@@ -31,31 +34,31 @@ public class LootRoomGenerator : MonoBehaviourPun
     void Start()
     {
         difficultyManager = FindObjectOfType<DifficultyManager>();
+        playerManager = FindObjectOfType<PlayerManager>();
 
-        doorOpen.OnOpenDoor += PlaceLoot;
-        doorOpen.gameObject.SetActive(false);
+        doorOpen.OnOpenedDoor += PlaceLoot;
+        doorOutHere.OnOpenedDoor += TurnOffLootOthers;
+        doorOpen.gameObject.SetActive(false);        
     }
 
     private void UpdateLootBasedOnPlayers()
     {
-        if (playerCount == 0)
+        playerCount = playerManager.Players.Count;
+
+        dropChance = startingDropChance;
+        dropChance += (4 - playerCount) * 10;
+
+        switch (playerCount)
         {
-            playerCount = FindObjectOfType<PlayerManager>().Players.Count;
-
-            dropChance += (4 - playerCount) * 10;
-
-            switch (playerCount)
-            {
-                case 1:
-                    allLoot = onePlayerLootDrops;
-                    break;
-                case 2:
-                    allLoot = twoPlayerLootDrops;
-                    break;
-                case 3:
-                    allLoot = threePlayerLootDrops;
-                    break;
-            }
+            case 1:
+                allLoot = onePlayerLootDrops;
+                break;
+            case 2:
+                allLoot = twoPlayerLootDrops;
+                break;
+            case 3:
+                allLoot = threePlayerLootDrops;
+                break;
         }
     }
 
@@ -63,16 +66,6 @@ public class LootRoomGenerator : MonoBehaviourPun
     {
         UpdateLootBasedOnPlayers();
         Debug.Log("CALLED");
-
-        if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
-        {
-            foreach (LootObject loot in allLoot)
-            {
-                loot.gameObject.SetActive(false);
-            }
-
-            return;
-        }
 
         foreach (LootObject loot in allLoot)
         {
@@ -156,11 +149,23 @@ public class LootRoomGenerator : MonoBehaviourPun
         }
     }
 
+    public void TurnOffLootOthers()
+    {
+        if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
+        {
+            foreach (LootObject loot in allLoot)
+            {
+                loot.gameObject.SetActive(false);
+            }
+        }
+    }
+
     [PunRPC]
     void ShowLootBoxForOthers(byte index)
     {
         UpdateLootBasedOnPlayers();
         Debug.Log("YES");
+
         allLoot[index].gameObject.SetActive(true);
     }
 }

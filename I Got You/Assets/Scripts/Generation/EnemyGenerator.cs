@@ -11,7 +11,7 @@ public class EnemyGenerator : MonoBehaviour
 
     private List<GameObject> wrummels = new List<GameObject>();
     [SerializeField] private GameObject wrummelPrefab;
-    [SerializeField] private int wrummelCount = 30;
+    [SerializeField] private int wrummelCount = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -35,23 +35,28 @@ public class EnemyGenerator : MonoBehaviour
         }
     }
 
-    public List<GameObject> GenerateEnemies()
+    public List<GeneratedEnemyInfo> GenerateEnemies()
     {
-        int countOfWrummelsToGenerate = 0;
+        List<GeneratedEnemyInfo> generatedEnemyInfos = new List<GeneratedEnemyInfo>();
 
-        for (int i = 0; i < playerManager.Players.Count; i++)
+        GeneratedEnemyInfo wrummelEnemy = new GeneratedEnemyInfo();
+        wrummelEnemy.enemiesList = wrummels;
+        generatedEnemyInfos.Add(wrummelEnemy);
+
+        for (int i = 0; i < playerManager.PlayersInGame.Count; i++)
         {
-            countOfWrummelsToGenerate += Random.Range(6, 8) + difficultyManager.DifficultyLevel;
-            //countOfWrummelsToGenerate += 1;
+            //wrummelEnemy.enemyCount += Random.Range(6, 8) + difficultyManager.DifficultyLevel;
+            wrummelEnemy.enemyCount += 40;
         }
 
-        List<GameObject> wrummelsToGive = new List<GameObject>();
+        return generatedEnemyInfos;
+    }
 
-        for (int i = 0; i < countOfWrummelsToGenerate; i++)
-        {
-            wrummelsToGive.Add(wrummels[i]);
-        }
-
-        return wrummelsToGive;
+    public class GeneratedEnemyInfo
+    {
+        public List<GameObject> enemiesList;
+        public List<GameObject> deadEnemiesList = new List<GameObject>();
+        public int enemyCount = 0;
+        public int priority = 0;
     }
 }

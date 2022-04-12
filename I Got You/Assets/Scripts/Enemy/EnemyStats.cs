@@ -10,11 +10,12 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     [SerializeField] private int health = 100;
     public int Health { get { return health; } set { health = value; } }
     [SerializeField] private int damage = 20;
+    public int ListIndex { get; set; } = 0;
 
     private EnemyManager enemyManager;
     private PlayerManager playerManager;
 
-    public delegate void EnemyDied();
+    public delegate void EnemyDied(GameObject enemy, int index);
     public EnemyDied OnEnemyDied;
 
     void IPunInstantiateMagicCallback.OnPhotonInstantiate(PhotonMessageInfo info)
@@ -59,9 +60,8 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
 
         if (health <= 0)
         {
-            OnEnemyDied?.Invoke();
+            OnEnemyDied?.Invoke(gameObject, ListIndex);
             CallSyncHealth();
-            gameObject.SetActive(false);
         }
         else
         {
@@ -95,7 +95,7 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
 
         if (health <= 0)
         {
-            OnEnemyDied?.Invoke();
+            OnEnemyDied?.Invoke(gameObject, ListIndex);
             gameObject.SetActive(false);
         }
     }

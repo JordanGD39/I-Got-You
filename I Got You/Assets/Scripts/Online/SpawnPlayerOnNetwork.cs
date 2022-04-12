@@ -27,6 +27,7 @@ public class SpawnPlayerOnNetwork : MonoBehaviourPun
             playerStats = playerOffline.GetComponent<PlayerStats>();
 
             playerManager.Players.Add(playerStats);
+            playerManager.PlayersInGame.Add(playerStats);
             playerManager.StatsOfAllPlayers.Add(playerOffline.GetComponentInChildren<CapsuleCollider>(), playerStats);
             return;
         }
@@ -37,6 +38,7 @@ public class SpawnPlayerOnNetwork : MonoBehaviourPun
         playerStats = player.GetComponent<PlayerStats>();
 
         playerManager.Players.Add(playerStats);
+        playerManager.PlayersInGame.Add(playerStats);
 
         Debug.Log(player.GetComponentInChildren<CapsuleCollider>());
 
@@ -57,6 +59,7 @@ public class SpawnPlayerOnNetwork : MonoBehaviourPun
         PlayerStats playerStats = PhotonView.Find(photonId).gameObject.GetComponent<PlayerStats>();
 
         playerManager.Players.Add(playerStats);
+        playerManager.PlayersInGame.Add(playerStats);
         playerManager.StatsOfAllPlayers.Add(playerStats.GetComponentInChildren<CapsuleCollider>(), playerStats);
     }
 }

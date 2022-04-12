@@ -9,20 +9,22 @@ public class RoomManager : MonoBehaviourPun
     private DifficultyManager difficultyManager;
     private EnemyGenerator enemyGenerator;
 
-    private List<GameObject> enemiesInRoom;
-    private List<GameObject> enemiesNotYetSpawned = new List<GameObject>();
+    [SerializeField] private List<EnemyGenerator.GeneratedEnemyInfo> enemiesInRoom;
+    [SerializeField] private List<int> enemiesNotPlacedCount = new List<int>();
     [SerializeField] private float enemyPlaceAtY = 0;
-    [SerializeField] private float limitEnemyCount = 10;
+    [SerializeField] private int limitEnemyCount = 10;
     [SerializeField] private int enemyDeathsInRoom = 0;
+    [SerializeField] private int enemyDeathsToClearRoom = 0;
     [SerializeField] private int healthIncreasePerLevel = 20;
     [SerializeField] private DoorOpen doorToThisRoom;
     [SerializeField] private DoorOpen doorToOtherRoom;
+    private int currentNotPlacedIndex = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         difficultyManager = FindObjectOfType<DifficultyManager>();
-        doorToOtherRoom.OnOpenDoor += PlaceDoorToThisRoom;
+        doorToOtherRoom.OnOpenedDoor += PlaceDoorToThisRoom;
 
         if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
         {
@@ -31,7 +33,7 @@ public class RoomManager : MonoBehaviourPun
 
         boxHolder = GetComponentInChildren<EnemySpawnBoxHolder>();
         enemyGenerator = FindObjectOfType<EnemyGenerator>();
-        doorToThisRoom.OnOpenDoor += PlaceEnemies;
+        doorToThisRoom.OnOpenedDoor += PlaceEnemies;
     }
 
     private void PlaceEnemies()
@@ -41,41 +43,57 @@ public class RoomManager : MonoBehaviourPun
             return;
         }
 
+        int enemiesPlaced = 0;
+        int enemyTypesPlaced = 0;
+
         enemyDeathsInRoom = 0;
+        currentNotPlacedIndex = 0;
+        enemyDeathsToClearRoom = 0;
+        enemiesNotPlacedCount.Clear();
         enemiesInRoom = enemyGenerator.GenerateEnemies();
 
-        int enemyCount = 0;
-        bool moreEnemiesThenLimit = false;
-
-        for (int i = 0; i < enemiesInRoom.Count; i++)
+        foreach (EnemyGenerator.GeneratedEnemyInfo enemyInfo in enemiesInRoom)
         {
-            PlaceEnemy(enemiesInRoom[i]);
+            enemyDeathsToClearRoom += enemyInfo.enemyCount;
 
-            if (i >= limitEnemyCount)
+            int countNotPlaceable = enemyDeathsToClearRoom - limitEnemyCount;
+
+            if (countNotPlaceable < 0)
             {
-                enemyCount = i;
-                moreEnemiesThenLimit = true;
-                break;
+                countNotPlaceable = 0;
             }
-        }
 
-        if (moreEnemiesThenLimit)
-        {
-            enemiesNotYetSpawned.Clear();
+            enemiesNotPlacedCount.Add(countNotPlaceable);
 
-            for (int i = enemyCount; i < enemiesInRoom.Count; i++)
+            for (int i = 0; i < enemyInfo.enemiesList.Count; i++)
             {
-                GameObject enemy = enemiesInRoom[i];
-                enemiesNotYetSpawned.Add(enemy);
+                if (enemiesPlaced > 10)
+                {
+                    break;
+                }
+
+                PlaceEnemy(enemyInfo.enemiesList[i]);
+
+                enemiesPlaced++;
             }
+
+            foreach (GameObject enemy in enemyInfo.enemiesList)
+            {
+                EnemyStats enemyStats = enemy.GetComponent<EnemyStats>();
+                enemyStats.ListIndex = enemyTypesPlaced;
+                enemyStats.OnEnemyDied = CountEnemyDeath;
+                enemyStats.OnEnemyDied += PlaceNotYetSpawnedEnemy;
+            }
+
+            enemyTypesPlaced++;
         }
     }
 
-    private void CountEnemyDeath()
+    private void CountEnemyDeath(GameObject enemy, int index)
     {
         enemyDeathsInRoom++;
 
-        if (enemyDeathsInRoom >= enemiesInRoom.Count && enemyDeathsInRoom > 0)
+        if (enemyDeathsInRoom >= enemyDeathsToClearRoom && enemyDeathsInRoom > 0)
         {
             ClearRoom();
             enemyDeathsInRoom = 0;
@@ -120,16 +138,31 @@ public class RoomManager : MonoBehaviourPun
         doorToThisRoom.ResetDoor();
     }
 
-    private void PlaceNotYetSpawnedEnemy()
+    private void PlaceNotYetSpawnedEnemy(GameObject enemyDied, int listIndex)
     {
-        if (enemiesNotYetSpawned.Count == 0)
+        enemiesInRoom[listIndex].enemiesList.Remove(enemyDied);
+        enemiesInRoom[listIndex].deadEnemiesList.Add(enemyDied);
+        enemyDied.SetActive(false);
+
+        if (currentNotPlacedIndex > enemiesNotPlacedCount.Count - 1)
         {
             return;
         }
 
-        GameObject enemy = enemiesNotYetSpawned[0];
+        while (enemiesNotPlacedCount[currentNotPlacedIndex] <= 0)
+        {
+            currentNotPlacedIndex++;
+
+            if (currentNotPlacedIndex > enemiesNotPlacedCount.Count - 1)
+            {
+                return;
+            }
+        }
+
+        GameObject enemy = enemiesInRoom[currentNotPlacedIndex].deadEnemiesList[0];
         PlaceEnemy(enemy);
-        enemiesNotYetSpawned.RemoveAt(0);
+        enemiesInRoom[currentNotPlacedIndex].deadEnemiesList.RemoveAt(0);
+        enemiesNotPlacedCount[currentNotPlacedIndex]--;
     }
 
     private void PlaceEnemy(GameObject enemy)

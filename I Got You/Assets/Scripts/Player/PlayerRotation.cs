@@ -10,6 +10,7 @@ public class PlayerRotation : MonoBehaviour
     [SerializeField] private float minLerpDiff = 1;
     private float xRotation = 0;
     private bool lerp = false;
+    private bool stopRotation = false;
     private PlayerStats playerStats;
 
     [SerializeField] private Transform cam;
@@ -23,11 +24,34 @@ public class PlayerRotation : MonoBehaviour
         playerStats = GetComponent<PlayerStats>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        InputUI inputUI = FindObjectOfType<InputUI>();
+
+        inputUI.OnTogglePausedGame += () => 
+        {
+            stopRotation = !stopRotation;
+            Cursor.lockState = Cursor.lockState == CursorLockMode.Locked ? CursorLockMode.None : CursorLockMode.Locked;
+            Cursor.visible = !Cursor.visible;
+        };
+
+        inputUI.SettingsUI.OnChangedSensitivity += ChangeSensitivity;
+
+        ChangeSensitivity(PlayerPrefs.GetInt("Sensitivity", 6));
+    }
+
+    private void ChangeSensitivity(int val)
+    {
+        rotationSpeed = (float)val * 100 / 2;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (stopRotation)
+        {
+            return;
+        }
+
         if (!lerp)
         {
             UpdateRotation();
