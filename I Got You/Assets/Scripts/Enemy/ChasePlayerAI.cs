@@ -8,8 +8,12 @@ public class ChasePlayerAI : MonoBehaviour
     private AttackAnimationHandler attackAnimationHandler;
     private PlayerManager playerManager;
     private NavMeshAgent agent;
+    private NavMeshObstacle navMeshObstacle;
+    private GameObject navMeshObstacleObject;
     [SerializeField] private Transform target;
-    [SerializeField] private float distanceToAttack = 50;
+    public Transform TargetPlayer { get { return target; } }
+    [SerializeField] private float distanceToAttack = 2;
+    [SerializeField] private float distanceToStop = 1.25f;
     [SerializeField] private float turnSpeed = 5;
     private Animator anim;
 
@@ -20,6 +24,7 @@ public class ChasePlayerAI : MonoBehaviour
     {
         playerManager = FindObjectOfType<PlayerManager>();
         agent = GetComponent<NavMeshAgent>();
+        
         anim = GetComponentInChildren<Animator>();
         GetComponentInChildren<AttackAnimationHandler>().OnAttackMiss += AttackStopped;
     }
@@ -45,24 +50,37 @@ public class ChasePlayerAI : MonoBehaviour
             }
         }
 
-        if (target != null)
+        if (target != null && agent.enabled)
         {
             agent.SetDestination(target.position);
         }        
 
-        if (agent.remainingDistance <= agent.stoppingDistance)
+        float distance = Vector3.Distance(transform.position, target.position);
+
+        if (distance <= agent.stoppingDistance)
         {
             FaceTarget();
         }
 
-        if (!attacking && Vector3.Distance(transform.position, target.position) < distanceToAttack)
+
+        if (!attacking && distance < distanceToAttack)
         {
             anim.SetTrigger("Attack");
             attacking = true;
         }
+
+        if (distance < distanceToStop)
+        {
+            agent.velocity = Vector3.zero;
+            agent.enabled = false;
+        }
+        else
+        {
+            agent.enabled = true;
+        }
     }
 
-    private void FaceTarget()
+    public void FaceTarget()
     {
         Vector3 lookPos = target.position - transform.position;
         lookPos.y = 0;

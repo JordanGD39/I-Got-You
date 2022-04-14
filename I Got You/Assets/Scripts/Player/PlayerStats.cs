@@ -62,14 +62,16 @@ public class PlayerStats : MonoBehaviourPun
         }
 
         health -= dmg;
-        playerUI.UpdateHealth(health);
 
         if (health <= 0)
         {
+            health = 0;
             isDown = true;
             anim.SetBool("Down", true);
             playerRevive.StartTimer();
         }
+
+        playerUI.UpdateHealth(health);
     }
 
     public void IncreaseMaxHealth()

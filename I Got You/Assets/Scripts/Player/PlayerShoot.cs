@@ -245,7 +245,7 @@ public class PlayerShoot : MonoBehaviourPun
         {
             if (hit.collider.gameObject.CompareTag("EnemyCol"))
             {
-                enemyManager.StatsOfAllEnemies[hit.collider.transform.parent].Damage(Mathf.RoundToInt(currentGun.Damage));
+                enemyManager.StatsOfAllEnemies[hit.collider.transform.root].Damage(Mathf.RoundToInt(currentGun.Damage));
 
                 if (bulletCount == 0)
                 {
@@ -254,7 +254,7 @@ public class PlayerShoot : MonoBehaviourPun
             }
             else if (hit.collider.gameObject.CompareTag("HeadEnemyCol"))
             {
-                enemyManager.StatsOfAllEnemies[hit.collider.transform.parent].Damage(Mathf.RoundToInt((float)currentGun.Damage * currentGun.HeadShotMultiplier));
+                enemyManager.StatsOfAllEnemies[hit.collider.transform.root].Damage(Mathf.RoundToInt((float)currentGun.Damage * currentGun.HeadShotMultiplier));
 
                 if (bulletCount == 0)
                 {
@@ -372,10 +372,23 @@ public class PlayerShoot : MonoBehaviourPun
             foreach (GunHolder item in GetComponentsInChildren<GunHolder>())
             {
                 weaponReference.Add(item.OwningGun.name, item);
+                if (weaponReference.Count > 0)
+                {
+                    if (!photonView.IsMine)
+                    {
+                        item.gameObject.layer = 3;
+
+                        foreach (Transform child in item.GetComponentsInChildren<Transform>())
+                        {
+                            child.gameObject.layer = 3;
+                        }
+                    }
+                }
+
                 if (weaponReference.Count > 1)
                 {
                     item.gameObject.SetActive(false);
-                }                
+                }
             }
         }
 

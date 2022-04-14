@@ -52,8 +52,12 @@ public class RoomManager : MonoBehaviourPun
         enemiesNotPlacedCount.Clear();
         enemiesInRoom = enemyGenerator.GenerateEnemies();
 
-        foreach (EnemyGenerator.GeneratedEnemyInfo enemyInfo in enemiesInRoom)
+        for (int i = enemiesInRoom.Count - 1; i >= 0; i--)
         {
+            Debug.Log(i);
+
+            EnemyGenerator.GeneratedEnemyInfo enemyInfo = enemiesInRoom[i];
+
             enemyDeathsToClearRoom += enemyInfo.enemyCount;
 
             int countNotPlaceable = enemyDeathsToClearRoom - limitEnemyCount;
@@ -65,14 +69,14 @@ public class RoomManager : MonoBehaviourPun
 
             enemiesNotPlacedCount.Add(countNotPlaceable);
 
-            for (int i = 0; i < enemyInfo.enemiesList.Count; i++)
+            for (int j = 0; j < enemyInfo.enemyCount; j++)
             {
-                if (enemiesPlaced > 10)
+                if (enemiesPlaced >= 10)
                 {
                     break;
                 }
 
-                PlaceEnemy(enemyInfo.enemiesList[i]);
+                PlaceEnemy(enemyInfo.enemiesList[j]);
 
                 enemiesPlaced++;
             }
@@ -80,12 +84,16 @@ public class RoomManager : MonoBehaviourPun
             foreach (GameObject enemy in enemyInfo.enemiesList)
             {
                 EnemyStats enemyStats = enemy.GetComponent<EnemyStats>();
-                enemyStats.ListIndex = enemyTypesPlaced;
+                enemyStats.ListIndex = i;
                 enemyStats.OnEnemyDied = CountEnemyDeath;
                 enemyStats.OnEnemyDied += PlaceNotYetSpawnedEnemy;
             }
 
-            enemyTypesPlaced++;
+            foreach (GameObject enemy in enemyInfo.availableEnemiesList)
+            {
+                EnemyStats enemyStats = enemy.GetComponent<EnemyStats>();
+                enemyStats.ListIndex = -1;
+            }
         }
     }
 
@@ -140,11 +148,24 @@ public class RoomManager : MonoBehaviourPun
 
     private void PlaceNotYetSpawnedEnemy(GameObject enemyDied, int listIndex)
     {
-        enemiesInRoom[listIndex].enemiesList.Remove(enemyDied);
-        enemiesInRoom[listIndex].deadEnemiesList.Add(enemyDied);
+        Debug.Log(listIndex);
+
+        if (listIndex >= 0 && listIndex < enemiesInRoom.Count)
+        {
+            EnemyGenerator.GeneratedEnemyInfo generatedEnemyInfo = enemiesInRoom[listIndex];
+
+            generatedEnemyInfo.availableEnemiesList.Add(enemyDied);
+            generatedEnemyInfo.enemiesList.Remove(enemyDied);
+        }
+       
         enemyDied.SetActive(false);
 
-        if (currentNotPlacedIndex > enemiesNotPlacedCount.Count - 1)
+        if ((currentNotPlacedIndex < 0 || currentNotPlacedIndex > enemiesNotPlacedCount.Count - 1) || enemiesInRoom.Count == 0)
+        {
+            return;
+        }
+
+        if (enemiesNotPlacedCount[currentNotPlacedIndex] <= 0 && currentNotPlacedIndex >= enemiesNotPlacedCount.Count - 1)
         {
             return;
         }
@@ -153,15 +174,17 @@ public class RoomManager : MonoBehaviourPun
         {
             currentNotPlacedIndex++;
 
-            if (currentNotPlacedIndex > enemiesNotPlacedCount.Count - 1)
+            if (currentNotPlacedIndex < 0 || currentNotPlacedIndex > enemiesNotPlacedCount.Count - 1)
             {
+                Debug.Log("Too far");
                 return;
             }
         }
 
-        GameObject enemy = enemiesInRoom[currentNotPlacedIndex].deadEnemiesList[0];
+        GameObject enemy = enemiesInRoom[currentNotPlacedIndex].availableEnemiesList[0];
         PlaceEnemy(enemy);
-        enemiesInRoom[currentNotPlacedIndex].deadEnemiesList.RemoveAt(0);
+        enemiesInRoom[currentNotPlacedIndex].enemiesList.Add(enemy);
+        enemiesInRoom[currentNotPlacedIndex].availableEnemiesList.RemoveAt(0);
         enemiesNotPlacedCount[currentNotPlacedIndex]--;
     }
 
@@ -180,6 +203,12 @@ public class RoomManager : MonoBehaviourPun
         EnemyStats stats = enemy.GetComponent<EnemyStats>();
 
         stats.Health = stats.StartingHealth + (healthIncreasePerLevel * difficultyManager.DifficultyLevel);
+
+        if (stats.ListIndex < 0)
+        {
+            stats.ListIndex = currentNotPlacedIndex;
+        }
+        
         stats.CallSyncHealth();
         stats.OnEnemyDied = PlaceNotYetSpawnedEnemy;
         stats.OnEnemyDied += CountEnemyDeath;

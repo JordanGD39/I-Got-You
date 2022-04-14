@@ -47,12 +47,11 @@ public class OnlineCharacterHandler : MonoBehaviourPun
 
         GetComponentInChildren<AudioListener>().enabled = false;
 
-        Camera cam = GetComponentInChildren<Camera>();
-        cam.enabled = false;
+        Camera[] cam = GetComponentsInChildren<Camera>();
+        cam[0].enabled = false;
+        cam[1].enabled = false;
 
-        foreach (Transform child in cam.GetComponentsInChildren<Transform>())
-        {
-            child.gameObject.layer = 3;
-        }
+        cam[0].gameObject.layer = 3;
+        cam[0].transform.GetChild(0).gameObject.layer = 3;
     }
 }

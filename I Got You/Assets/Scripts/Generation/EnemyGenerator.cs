@@ -10,8 +10,18 @@ public class EnemyGenerator : MonoBehaviour
     private DifficultyManager difficultyManager;
 
     private List<GameObject> wrummels = new List<GameObject>();
+    private List<GameObject> wraptors = new List<GameObject>();
     [SerializeField] private GameObject wrummelPrefab;
-    [SerializeField] private int wrummelCount = 10;
+    [SerializeField] private GameObject wraptorPrefab;
+    [SerializeField] private int enemySpawnCount = 20;
+    [SerializeField] private int enemyInRoomLimit = 10;
+    [SerializeField] private int enemiesToSpawnInRoomMin = 6;
+    [SerializeField] private int enemiesToSpawnInRoomMax = 6;
+    [SerializeField] private float wraptorSpawnChance = 20;
+    [SerializeField] private float wraptorSpawnChanceLimit = 65;
+    [SerializeField] private float wraptorSpawnChanceModifier = 2;
+    [SerializeField] private float eatSpawnChance = 0;
+    [SerializeField] private float eatSpawnChanceModifier = 2;
 
     // Start is called before the first frame update
     void Start()
@@ -26,12 +36,22 @@ public class EnemyGenerator : MonoBehaviour
         enemyManager = FindObjectOfType<EnemyManager>();
         difficultyManager = FindObjectOfType<DifficultyManager>();
 
-        for (int i = 0; i < wrummelCount; i++)
+        InstantiateEnemiesInPool(wrummelPrefab, wrummels);
+
+        if (wraptorPrefab != null)
         {
-            GameObject wrummel = PhotonFunctionHandler.InstantiateGameObject(wrummelPrefab, Vector3.zero, Quaternion.identity);
-            wrummel.SetActive(false);
-            enemyManager.StatsOfAllEnemies.Add(wrummel.transform.GetChild(0), wrummel.GetComponent<EnemyStats>());
-            wrummels.Add(wrummel);
+            InstantiateEnemiesInPool(wraptorPrefab, wraptors);
+        }        
+    }
+
+    private void InstantiateEnemiesInPool(GameObject prefab, List<GameObject> enemiesList)
+    {
+        for (int i = 0; i < enemySpawnCount; i++)
+        {
+            GameObject enemy = PhotonFunctionHandler.InstantiateGameObject(prefab, Vector3.zero, Quaternion.identity);
+            enemy.SetActive(false);
+            enemyManager.StatsOfAllEnemies.Add(enemy.transform, enemy.GetComponent<EnemyStats>());
+            enemiesList.Add(enemy);
         }
     }
 
@@ -39,23 +59,73 @@ public class EnemyGenerator : MonoBehaviour
     {
         List<GeneratedEnemyInfo> generatedEnemyInfos = new List<GeneratedEnemyInfo>();
 
-        GeneratedEnemyInfo wrummelEnemy = new GeneratedEnemyInfo();
-        wrummelEnemy.enemiesList = wrummels;
-        generatedEnemyInfos.Add(wrummelEnemy);
+        int randomEnemyCount = Random.Range(enemiesToSpawnInRoomMin, enemiesToSpawnInRoomMax) + difficultyManager.DifficultyLevel;
 
-        for (int i = 0; i < playerManager.PlayersInGame.Count; i++)
+        int wrummelCount = 0;
+        int wraptorCount = 0;
+
+        float wraptorChance = wraptorSpawnChance + (wraptorSpawnChanceModifier * difficultyManager.DifficultyLevel);
+
+        if (wraptorChance > wraptorSpawnChanceLimit)
         {
-            //wrummelEnemy.enemyCount += Random.Range(6, 8) + difficultyManager.DifficultyLevel;
-            wrummelEnemy.enemyCount += 40;
+            wraptorChance = wraptorSpawnChanceLimit;
         }
+
+        for (int i = 0; i < randomEnemyCount; i++)
+        {
+            float rand = Random.Range(0, 100);
+
+            if (rand > wraptorChance)
+            {
+                //Spawn wrummel
+                wrummelCount++;
+            }
+            else
+            {
+                //Spawn wraptor
+                wraptorCount++;
+            }
+        }
+        
+        GenerateEnemy(generatedEnemyInfos, wrummels, wrummelCount);
+        GenerateEnemy(generatedEnemyInfos, wraptors, wraptorCount);
 
         return generatedEnemyInfos;
     }
 
+    private void GenerateEnemy(List<GeneratedEnemyInfo> generatedEnemyInfos, List<GameObject> enemyReferenceList, int count)
+    {
+        if (count <= 0)
+        {
+            return;
+        }
+
+        GeneratedEnemyInfo enemy = new GeneratedEnemyInfo();
+        enemy.enemiesList = new List<GameObject>(enemyReferenceList);
+
+        for (int i = enemyInRoomLimit; i < enemy.enemiesList.Count; i++)
+        {
+            enemy.availableEnemiesList.Add(enemy.enemiesList[i]);
+        }
+
+        foreach (GameObject item in enemy.availableEnemiesList)
+        {
+            enemy.enemiesList.Remove(item);
+        }
+
+        generatedEnemyInfos.Add(enemy);
+
+        for (int i = 0; i < playerManager.PlayersInGame.Count; i++)
+        {
+            enemy.enemyCount += count;
+        }
+    }
+
+    [System.Serializable]
     public class GeneratedEnemyInfo
     {
         public List<GameObject> enemiesList;
-        public List<GameObject> deadEnemiesList = new List<GameObject>();
+        public List<GameObject> availableEnemiesList = new List<GameObject>();
         public int enemyCount = 0;
         public int priority = 0;
     }

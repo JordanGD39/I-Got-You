@@ -10,7 +10,7 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     [SerializeField] private int health = 100;
     public int Health { get { return health; } set { health = value; } }
     [SerializeField] private int damage = 20;
-    public int ListIndex { get; set; } = 0;
+    public int ListIndex { get; set; } = -1;
 
     private EnemyManager enemyManager;
     private PlayerManager playerManager;
