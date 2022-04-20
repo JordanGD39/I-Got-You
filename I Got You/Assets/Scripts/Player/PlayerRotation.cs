@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class PlayerRotation : MonoBehaviour
+public class PlayerRotation : MonoBehaviourPun
 {
     [SerializeField] private float rotationSpeed = 2;
     [SerializeField] private float downedAdder = -50;
@@ -21,6 +22,11 @@ public class PlayerRotation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (PhotonNetwork.IsConnected && !photonView.IsMine)
+        {
+            return;
+        }
+
         playerStats = GetComponent<PlayerStats>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

@@ -27,7 +27,7 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
 
         if (!PhotonNetwork.IsMasterClient)
         {
-            enemyManager.StatsOfAllEnemies.Add(transform.GetChild(0), this);
+            enemyManager.StatsOfAllEnemies.Add(transform, this);
         }        
     }
 
@@ -60,8 +60,16 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
 
         if (health <= 0)
         {
-            OnEnemyDied?.Invoke(gameObject, ListIndex);
             CallSyncHealth();
+
+            if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
+            {
+                gameObject.SetActive(false);
+            }
+            else
+            {
+                OnEnemyDied?.Invoke(gameObject, ListIndex);
+            }
         }
         else
         {
@@ -84,6 +92,12 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         if (PhotonNetwork.IsConnected)
         {
+            if (health <= 0)
+            {
+                photonView.RPC("SyncDeathOthersRPC", RpcTarget.Others);
+                return;
+            }
+
             photonView.RPC("SyncHealthRPC", RpcTarget.Others, health);
         }
     }
@@ -92,12 +106,13 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     void SyncHealthRPC(int hp)
     {
         health = hp;
+    }
 
-        if (health <= 0)
-        {
-            OnEnemyDied?.Invoke(gameObject, ListIndex);
-            gameObject.SetActive(false);
-        }
+    [PunRPC]
+    void SyncDeathOthersRPC()
+    {
+        OnEnemyDied?.Invoke(gameObject, ListIndex);
+        gameObject.SetActive(false);
     }
 
     private void DamagePlayer(Collider other)

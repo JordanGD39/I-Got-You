@@ -12,7 +12,11 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
     [SerializeField] private float lerpRotSpeed = 5;
     [SerializeField] private float distanceToTeleport = 3;
     [SerializeField] private bool checkMasterClient = false;
+    [SerializeField] private bool animate = false;
     [SerializeField] private GameObject model;
+    private Vector3 prevPos;
+
+    private Animator animator;
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -53,6 +57,11 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
 
         if (!PhotonNetwork.IsMasterClient)
         {
+            if (animate)
+            {
+                animator = GetComponentInChildren<Animator>();
+            }
+
             model.SetActive(false);
             transform.position = Vector3.zero;
             StartCoroutine(nameof(TeleportToSync));
@@ -63,12 +72,22 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
     {
         if ((!photonView.IsMine && !checkMasterClient) || (checkMasterClient && !PhotonNetwork.IsMasterClient))
         {
+            bool teleport = false;
+
             if (Vector3.Distance(transform.position, syncPos) > distanceToTeleport)
             {
+                teleport = true;
                 transform.position = syncPos;
             }
             transform.position = Vector3.Lerp(transform.position, syncPos, lerpPosSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(syncRot), lerpRotSpeed * Time.deltaTime);
+
+            if (animator != null && !teleport)
+            {
+                animator.SetFloat("Speed", (transform.position - prevPos).magnitude / Time.deltaTime);
+            }
+
+            prevPos = transform.position;
         }
     }
 

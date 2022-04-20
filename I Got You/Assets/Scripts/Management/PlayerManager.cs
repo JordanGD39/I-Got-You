@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -14,4 +15,10 @@ public class PlayerManager : MonoBehaviour
     public List<PlayerStats> DeadPlayers { get { return deadPlayers; } }
     
     public Dictionary<Collider, PlayerStats> StatsOfAllPlayers { get; private set; } = new Dictionary<Collider, PlayerStats>();
+
+    public void RemoveMissingPlayers()
+    {
+        players = players.Where(item => item != null).ToList();
+        playersInGame = playersInGame.Where(item => item != null).ToList();
+    }
 }

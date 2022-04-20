@@ -46,6 +46,8 @@ public class DoorOpen : MonoBehaviourPun
                 return;
             }
 
+            playerManager.RemoveMissingPlayers();
+
             playersInRange.Add(other.gameObject);
 
             if (playersInRange.Count >= playerManager.Players.Count)

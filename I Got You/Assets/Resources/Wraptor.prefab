@@ -532,6 +532,7 @@ MonoBehaviour:
   lerpRotSpeed: 8
   distanceToTeleport: 3
   checkMasterClient: 1
+  animate: 0
   model: {fileID: 5385682123832297535}
 --- !u!114 &5542502612772619860
 MonoBehaviour:

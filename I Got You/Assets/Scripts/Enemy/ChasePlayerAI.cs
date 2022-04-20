@@ -41,6 +41,11 @@ public class ChasePlayerAI : MonoBehaviour
 
         foreach (PlayerStats player in playerManager.Players)
         {
+            if (player == null)
+            {
+                continue;
+            }
+
             float dist = Vector3.Distance(player.transform.position, transform.position);
 
             if (dist < closestDist)

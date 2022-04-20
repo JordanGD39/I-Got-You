@@ -59,6 +59,8 @@ MonoBehaviour:
   - CloseOpeningDoorOthers
   - OpenDoorOthers
   - ResetDoorOthers
+  - SyncDeathOthersRPC
+  - RemovePlayerFromPlayerManagerOthersRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

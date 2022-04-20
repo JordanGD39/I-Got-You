@@ -59,7 +59,14 @@ public class EnemyGenerator : MonoBehaviour
     {
         List<GeneratedEnemyInfo> generatedEnemyInfos = new List<GeneratedEnemyInfo>();
 
-        int randomEnemyCount = Random.Range(enemiesToSpawnInRoomMin, enemiesToSpawnInRoomMax) + difficultyManager.DifficultyLevel;
+        int randomEnemyCount = 0;
+
+        for (int i = 0; i < playerManager.PlayersInGame.Count; i++)
+        {
+            randomEnemyCount += Random.Range(enemiesToSpawnInRoomMin, enemiesToSpawnInRoomMax);
+        }
+
+        randomEnemyCount += difficultyManager.DifficultyLevel;
 
         int wrummelCount = 0;
         int wraptorCount = 0;
@@ -115,10 +122,7 @@ public class EnemyGenerator : MonoBehaviour
 
         generatedEnemyInfos.Add(enemy);
 
-        for (int i = 0; i < playerManager.PlayersInGame.Count; i++)
-        {
-            enemy.enemyCount += count;
-        }
+        enemy.enemyCount += count;
     }
 
     [System.Serializable]
