@@ -690,7 +690,7 @@ MonoBehaviour:
   shootPoint: {fileID: 6712501812710025718}
   hitLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 65
   emptyAmmo: {fileID: 8300000, guid: 81a316ea4b7dfa548b683855ed119229, type: 3}
 --- !u!114 &294652972215582023
 MonoBehaviour:

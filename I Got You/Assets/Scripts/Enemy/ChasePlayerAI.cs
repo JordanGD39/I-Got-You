@@ -55,7 +55,7 @@ public class ChasePlayerAI : MonoBehaviour
             agent.SetDestination(target.position);
         }        
 
-        float distance = Vector3.Distance(transform.position, target.position);
+        float distance = Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(target.position.x, 0, target.position.z));
 
         if (distance <= agent.stoppingDistance)
         {
