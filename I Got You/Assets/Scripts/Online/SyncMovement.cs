@@ -12,11 +12,10 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
     [SerializeField] private float lerpRotSpeed = 5;
     [SerializeField] private float distanceToTeleport = 3;
     [SerializeField] private bool checkMasterClient = false;
-    [SerializeField] private bool animate = false;
     [SerializeField] private GameObject model;
     private Vector3 prevPos;
 
-    private Animator animator;
+    [SerializeField] private Animator animator;
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -57,11 +56,6 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
 
         if (!PhotonNetwork.IsMasterClient)
         {
-            if (animate)
-            {
-                animator = GetComponentInChildren<Animator>();
-            }
-
             model.SetActive(false);
             transform.position = Vector3.zero;
             StartCoroutine(nameof(TeleportToSync));
