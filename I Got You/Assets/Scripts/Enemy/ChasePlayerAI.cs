@@ -5,91 +5,89 @@ using UnityEngine.AI;
 
 public class ChasePlayerAI : MonoBehaviour
 {
-    private AttackAnimationHandler attackAnimationHandler;
-    private PlayerManager playerManager;
-    private NavMeshAgent agent;
-    private NavMeshObstacle navMeshObstacle;
-    private GameObject navMeshObstacleObject;
-    [SerializeField] private Transform target;
-    public Transform TargetPlayer { get { return target; } }
-    [SerializeField] private float distanceToAttack = 2;
-    [SerializeField] private float distanceToStop = 1.25f;
-    [SerializeField] private float turnSpeed = 5;
-    private Animator anim;
+    private AttackAnimationHandler attackAnimationHandler_AttackAnimationHandler;
+    private PlayerManager playerManager_PlayerManager;
+    private NavMeshAgent agent_NavMeshAgent;
+    [SerializeField] private Transform target_Transform;
+    public Transform TargetPlayer_Transform { get { return target_Transform; } }
+    [SerializeField] private float distanceToAttack_float = 2;
+    [SerializeField] private float distanceToStop_float = 1.25f;
+    [SerializeField] private float turnSpeed_float = 5;
+    private Animator anim_Animator;
 
-    private bool attacking = false;
+    private bool attacking_bool = false;
 
     // Start is called before the first frame update
-    void Start()
+    void Start_void()
     {
-        playerManager = FindObjectOfType<PlayerManager>();
-        agent = GetComponent<NavMeshAgent>();
+        playerManager_PlayerManager = FindObjectOfType<PlayerManager>();
+        agent_NavMeshAgent = GetComponent<NavMeshAgent>();
         
-        anim = GetComponentInChildren<Animator>();
-        GetComponentInChildren<AttackAnimationHandler>().OnAttackMiss += AttackStopped;
+        anim_Animator = GetComponentInChildren<Animator>();
+        GetComponentInChildren<AttackAnimationHandler>().OnAttackMiss_AttackMiss += AttackStopped_void;
     }
 
     // Update is called once per frame
-    void Update()
+    void Update_void()
     {
-        if (playerManager.Players.Count == 0)
+        if (playerManager_PlayerManager.Players.Count == 0)
         {
             return;
         }
 
         float closestDist = Mathf.Infinity;        
 
-        foreach (PlayerStats player in playerManager.Players)
+        foreach (PlayerStats player in playerManager_PlayerManager.Players)
         {
             float dist = Vector3.Distance(player.transform.position, transform.position);
 
             if (dist < closestDist)
             {
                 closestDist = dist;
-                target = player.transform;
+                target_Transform = player.transform;
             }
         }
 
-        if (target != null && agent.enabled)
+        if (target_Transform != null && agent_NavMeshAgent.enabled)
         {
-            agent.SetDestination(target.position);
+            agent_NavMeshAgent.SetDestination(target_Transform.position);
         }        
 
-        float distance = Vector3.Distance(transform.position, target.position);
+        float distance = Vector3.Distance(transform.position, target_Transform.position);
 
-        if (distance <= agent.stoppingDistance)
+        if (distance <= agent_NavMeshAgent.stoppingDistance)
         {
-            FaceTarget();
+            FaceTarget_void();
         }
 
 
-        if (!attacking && distance < distanceToAttack)
+        if (!attacking_bool && distance < distanceToAttack_float)
         {
-            anim.SetTrigger("Attack");
-            attacking = true;
+            anim_Animator.SetTrigger("Attack");
+            attacking_bool = true;
         }
 
-        if (distance < distanceToStop)
+        if (distance < distanceToStop_float)
         {
-            agent.velocity = Vector3.zero;
-            agent.enabled = false;
+            agent_NavMeshAgent.velocity = Vector3.zero;
+            agent_NavMeshAgent.enabled = false;
         }
         else
         {
-            agent.enabled = true;
+            agent_NavMeshAgent.enabled = true;
         }
     }
 
-    public void FaceTarget()
+    public void FaceTarget_void()
     {
-        Vector3 lookPos = target.position - transform.position;
+        Vector3 lookPos = target_Transform.position - transform.position;
         lookPos.y = 0;
         Quaternion rotation = Quaternion.LookRotation(lookPos);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, turnSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, turnSpeed_float * Time.deltaTime);
     }
 
-    public void AttackStopped()
+    public void AttackStopped_void()
     {
-        attacking = false;
+        attacking_bool = false;
     }
 }

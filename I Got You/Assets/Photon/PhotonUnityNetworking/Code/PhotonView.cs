@@ -541,7 +541,7 @@ namespace Photon.Pun
             IPunObservable observable = component as IPunObservable;
             if (observable != null)
             {
-                observable.OnPhotonSerializeView(stream, info);
+                observable.OnPhotonSerializeView_void(stream, info);
             }
             else
             {
@@ -554,7 +554,7 @@ namespace Photon.Pun
             IPunObservable observable = component as IPunObservable;
             if (observable != null)
             {
-                observable.OnPhotonSerializeView(stream, info);
+                observable.OnPhotonSerializeView_void(stream, info);
             }
             else
             {

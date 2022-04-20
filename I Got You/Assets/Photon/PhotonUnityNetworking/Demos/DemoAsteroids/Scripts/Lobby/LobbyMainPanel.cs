@@ -57,7 +57,7 @@ namespace Photon.Pun.Demo.Asteroids
 
         #region PUN CALLBACKS
 
-        public override void OnConnectedToMaster()
+        public override void OnConnectedToMaster_void()
         {
             this.SetActivePanel(SelectionPanel.name);
         }
@@ -70,7 +70,7 @@ namespace Photon.Pun.Demo.Asteroids
             UpdateRoomListView();
         }
 
-        public override void OnJoinedLobby()
+        public override void OnJoinedLobby_void()
         {
             // whenever this joins a new lobby, clear any previous room lists
             cachedRoomList.Clear();

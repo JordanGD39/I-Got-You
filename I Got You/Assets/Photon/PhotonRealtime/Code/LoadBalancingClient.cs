@@ -2725,7 +2725,7 @@ namespace Photon.Realtime
                             this.State = ClientState.ConnectedToMasterServer;
                             if (this.failedRoomEntryOperation == null)
                             {
-                                this.ConnectionCallbackTargets.OnConnectedToMaster();
+                                this.ConnectionCallbackTargets.OnConnectedToMaster_void();
                             }
                             else
                             {
@@ -2881,7 +2881,7 @@ namespace Photon.Realtime
 
                 case OperationCode.JoinLobby:
                     this.State = ClientState.JoinedLobby;
-                    this.LobbyCallbackTargets.OnJoinedLobby();
+                    this.LobbyCallbackTargets.OnJoinedLobby_void();
                     break;
 
                 case OperationCode.LeaveLobby:
@@ -3625,7 +3625,7 @@ namespace Photon.Realtime
         /// The list of available rooms won't become available unless you join a lobby via LoadBalancingClient.OpJoinLobby.
         /// You can join rooms and create them even without being in a lobby. The default lobby is used in that case.
         /// </remarks>
-        void OnConnectedToMaster();
+        void OnConnectedToMaster_void();
 
         /// <summary>
         /// Called after disconnecting from the Photon server. It could be a failure or an explicit disconnect call
@@ -3697,7 +3697,7 @@ namespace Photon.Realtime
         /// While in the lobby, the roomlist is automatically updated in fixed intervals (which you can't modify in the public cloud).
         /// The room list gets available via OnRoomListUpdate.
         /// </remarks>
-        void OnJoinedLobby();
+        void OnJoinedLobby_void();
 
         /// <summary>
         /// Called after leaving a lobby.
@@ -4078,13 +4078,13 @@ namespace Photon.Realtime
             }
         }
 
-        public void OnConnectedToMaster()
+        public void OnConnectedToMaster_void()
         {
             this.client.UpdateCallbackTargets();
 
             foreach (IConnectionCallbacks target in this)
             {
-                target.OnConnectedToMaster();
+                target.OnConnectedToMaster_void();
             }
         }
 
@@ -4300,13 +4300,13 @@ namespace Photon.Realtime
             this.client = client;
         }
 
-        public void OnJoinedLobby()
+        public void OnJoinedLobby_void()
         {
             this.client.UpdateCallbackTargets();
 
             foreach (ILobbyCallbacks target in this)
             {
-                target.OnJoinedLobby();
+                target.OnJoinedLobby_void();
             }
         }
 

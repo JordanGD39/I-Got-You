@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class EnemySpawnBoxHolder : MonoBehaviour
 {
-    public List<BoxCollider> SpawnBoxes { get; private set; } = new List<BoxCollider>();
+    public List<BoxCollider> SpawnBoxes_List_BoxCollider { get; private set; } = new List<BoxCollider>();
 
     // Start is called before the first frame update
-    void Start()
+    void Start_void()
     {
-        SpawnBoxes.AddRange(transform.GetComponentsInChildren<BoxCollider>());
+        SpawnBoxes_List_BoxCollider.AddRange(transform.GetComponentsInChildren<BoxCollider>());
     }
 }

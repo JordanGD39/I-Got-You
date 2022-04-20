@@ -5,10 +5,10 @@ using UnityEngine;
 public class AttackAnimationHandler : MonoBehaviour
 {
     public delegate void AttackMiss();
-    public AttackMiss OnAttackMiss;
+    public AttackMiss OnAttackMiss_AttackMiss;
 
-    public void AttackMissed()
+    public void AttackMissed_void()
     {
-        OnAttackMiss?.Invoke();
+        OnAttackMiss_AttackMiss?.Invoke();
     }
 }

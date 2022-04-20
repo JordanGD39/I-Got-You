@@ -60,7 +60,7 @@ namespace Photon.Realtime.Demo
         {
         }
 
-        public void OnConnectedToMaster()
+        public void OnConnectedToMaster_void()
         {
             Debug.Log("OnConnectedToMaster");
             this.lbc.OpJoinRandomRoom();    // joins any open room (no filter)
@@ -93,7 +93,7 @@ namespace Photon.Realtime.Demo
         {
         }
 
-        public void OnJoinedLobby()
+        public void OnJoinedLobby_void()
         {
         }
 

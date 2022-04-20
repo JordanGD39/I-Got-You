@@ -297,7 +297,7 @@ namespace Photon.Realtime
             this.StartTrackValues();
         }
 
-        public void OnConnectedToMaster()
+        public void OnConnectedToMaster_void()
         {
 			Debug.Log(this.GetFormattedTimestamp() + " SupportLogger OnConnectedToMaster().");
         }
@@ -307,7 +307,7 @@ namespace Photon.Realtime
 			Debug.Log(this.GetFormattedTimestamp() + " SupportLogger OnFriendListUpdate(friendList).");
         }
 
-        public void OnJoinedLobby()
+        public void OnJoinedLobby_void()
         {
             Debug.Log(this.GetFormattedTimestamp() + " SupportLogger OnJoinedLobby(" + this.client.CurrentLobby + ").");
         }

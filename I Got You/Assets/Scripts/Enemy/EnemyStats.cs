@@ -104,7 +104,7 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         if (other.gameObject.CompareTag("PlayerCol"))
         {
-            playerManager.StatsOfAllPlayers[other].Damage(damage);
+            playerManager.StatsOfAllPlayers_Dictionary[other].Damage(damage);
         }
     }
 }

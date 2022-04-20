@@ -15,7 +15,7 @@ public class LobbyUI : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        if (!PhotonFunctionHandler.IsPlayerOnline())
+        if (!PhotonFunctionHandler.IsPlayerOnline_bool())
         {
             classSelectPanel.SetActive(true);
             gameObject.SetActive(false);

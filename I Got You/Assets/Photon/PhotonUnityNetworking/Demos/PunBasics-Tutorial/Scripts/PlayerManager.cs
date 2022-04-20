@@ -268,7 +268,7 @@ namespace Photon.Pun.Demo.PunBasics
 
         #region IPunObservable implementation
 
-        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        public void OnPhotonSerializeView_void(PhotonStream stream, PhotonMessageInfo info)
         {
             if (stream.IsWriting)
             {

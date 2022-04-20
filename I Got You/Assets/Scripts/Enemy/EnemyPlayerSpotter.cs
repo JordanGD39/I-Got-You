@@ -43,9 +43,9 @@ public class EnemyPlayerSpotter : MonoBehaviour
     {
         bool playerSpottedNow = false;
 
-        if (Vector3.Distance(chaseAI.TargetPlayer.position, transform.position) < viewDistance)
+        if (Vector3.Distance(chaseAI.TargetPlayer_Transform.position, transform.position) < viewDistance)
         {
-            Vector3 dirToPlayer = (chaseAI.TargetPlayer.position - eyes.position).normalized;
+            Vector3 dirToPlayer = (chaseAI.TargetPlayer_Transform.position - eyes.position).normalized;
 
             if (Vector3.Angle(eyes.forward, dirToPlayer) < fov / 2)
             {
@@ -76,7 +76,7 @@ public class EnemyPlayerSpotter : MonoBehaviour
             }
             else if(agent.speed == 0)
             {
-                chaseAI.FaceTarget();
+                chaseAI.FaceTarget_void();
             }
 
             return;

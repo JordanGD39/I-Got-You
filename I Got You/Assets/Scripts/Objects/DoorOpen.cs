@@ -5,96 +5,96 @@ using Photon.Pun;
 
 public class DoorOpen : MonoBehaviourPun
 {
-    private PlayerManager playerManager;
-    [SerializeField] private List<GameObject> playersInRange = new List<GameObject>();
-    [SerializeField] private GameObject doorToClose;
-    [SerializeField] private GameObject model;
-    [SerializeField] private bool opened = true;
-    [SerializeField] private Animator openingDoorAnim;
-    [SerializeField] private Animator closingDoorAnim;
+    private PlayerManager playerManager_PlayerManager;
+    [SerializeField] private List<GameObject> playersInRange_List_GameObject = new List<GameObject>();
+    [SerializeField] private GameObject doorToClose_GameObject;
+    [SerializeField] private GameObject model_GameObject;
+    [SerializeField] private bool opened_bool = true;
+    [SerializeField] private Animator openingDoorAnim_Animator;
+    [SerializeField] private Animator closingDoorAnim_Animator;
 
     public delegate void OpenedDoor();
-    public OpenedDoor OnOpenedDoor;
+    public OpenedDoor OnOpenedDoor_OpenedDoor;
 
     // Start is called before the first frame update
-    void Start()
+    void Start_void()
     {
-        playerManager = FindObjectOfType<PlayerManager>();
-        doorToClose.SetActive(false);
-        opened = true;
+        playerManager_PlayerManager = FindObjectOfType<PlayerManager>();
+        doorToClose_GameObject.SetActive(false);
+        opened_bool = true;
 
         if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
         {
             return;
         }
 
-        playersInRange.Clear();
-        Invoke(nameof(OpenResetDelay), 0.5f);
+        playersInRange_List_GameObject.Clear();
+        Invoke(nameof(OpenResetDelay_void), 0.5f);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter_void(Collider other)
     {
-        if (opened || (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient))
+        if (opened_bool || (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient))
         {
             return;
         }
 
         if (other.CompareTag("PlayerCol"))
         {
-            if (playerManager.StatsOfAllPlayers[other].IsDead)
+            if (playerManager_PlayerManager.StatsOfAllPlayers_Dictionary[other].IsDead)
             {
                 return;
             }
 
-            playersInRange.Add(other.gameObject);
+            playersInRange_List_GameObject.Add(other.gameObject);
 
-            if (playersInRange.Count >= playerManager.Players.Count)
+            if (playersInRange_List_GameObject.Count >= playerManager_PlayerManager.Players.Count)
             {
-                OpenDoor();
+                OpenDoor_void();
             }
         }
     }
 
-    private void OpenDoor()
+    private void OpenDoor_void()
     {
         if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
         {
             photonView.RPC("OpenDoorOthers", RpcTarget.Others);
         }
 
-        opened = true;
-        doorToClose.SetActive(true);
-        openingDoorAnim.ResetTrigger("Open");
-        openingDoorAnim.SetTrigger("Open");
-        playersInRange.Clear();
-        closingDoorAnim.ResetTrigger("Close");
-        closingDoorAnim.SetTrigger("Close");
-        OnOpenedDoor?.Invoke();
+        opened_bool = true;
+        doorToClose_GameObject.SetActive(true);
+        openingDoorAnim_Animator.ResetTrigger("Open");
+        openingDoorAnim_Animator.SetTrigger("Open");
+        playersInRange_List_GameObject.Clear();
+        closingDoorAnim_Animator.ResetTrigger("Close");
+        closingDoorAnim_Animator.SetTrigger("Close");
+        OnOpenedDoor_OpenedDoor?.Invoke();
     }
 
     [PunRPC]
-    void OpenDoorOthers()
+    void OpenDoorOthers_void()
     {
-        OpenDoor();
+        OpenDoor_void();
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit_void(Collider other)
     {
-        if (opened || (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient))
+        if (opened_bool || (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient))
         {
             return;
         }
 
-        if (other.CompareTag("PlayerCol") && playersInRange.Contains(other.gameObject))
+        if (other.CompareTag("PlayerCol") && playersInRange_List_GameObject.Contains(other.gameObject))
         {
-            playersInRange.Remove(other.gameObject);
+            playersInRange_List_GameObject.Remove(other.gameObject);
         }
     }
 
-    public void CloseOpeningDoor()
+    public void CloseOpeningDoor_void()
     {
-        model.SetActive(false);
-        model.SetActive(true);
+        model_GameObject.SetActive(false);
+        model_GameObject.SetActive(true);
 
         if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
         {
@@ -103,33 +103,33 @@ public class DoorOpen : MonoBehaviourPun
     }
 
     [PunRPC]
-    void CloseOpeningDoorOthers()
+    void CloseOpeningDoorOthers_void()
     {
-        CloseOpeningDoor();
+        CloseOpeningDoor_void();
     }
 
-    public void ResetDoor()
+    public void ResetDoor_void()
     {
-        doorToClose.SetActive(false);
-        model.SetActive(false);
-        model.SetActive(true);
+        doorToClose_GameObject.SetActive(false);
+        model_GameObject.SetActive(false);
+        model_GameObject.SetActive(true);
 
         if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
         {
             photonView.RPC("ResetDoorOthers", RpcTarget.Others);
         }
 
-        Invoke(nameof(OpenResetDelay), 0.5f);
+        Invoke(nameof(OpenResetDelay_void), 0.5f);
     }
 
     [PunRPC]
-    void ResetDoorOthers()
+    void ResetDoorOthers_void()
     {
-        ResetDoor();
+        ResetDoor_void();
     }
 
-    private void OpenResetDelay()
+    private void OpenResetDelay_void()
     {
-        opened = false;
+        opened_bool = false;
     }
 }

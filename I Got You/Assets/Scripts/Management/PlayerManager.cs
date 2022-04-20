@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    [SerializeField] private List<PlayerStats> players = new List<PlayerStats>();
-    public List<PlayerStats> Players { get { return players; } }
-
-    [SerializeField] private List<PlayerStats> playersInGame = new List<PlayerStats>();
-    public List<PlayerStats> PlayersInGame { get { return playersInGame; } }
-
-    [SerializeField] private List<PlayerStats> deadPlayers = new List<PlayerStats>();
-    public List<PlayerStats> DeadPlayers { get { return deadPlayers; } }
+    private List<PlayerStats> players_List_PlayerStats;
+    private List<PlayerStats> playersInGame_List_PlayerStats;
+    private List<PlayerStats> deadPlayers_List_PlayerStats;
+    public List<PlayerStats> Players { get { return players_List_PlayerStats; } }
+    public List<PlayerStats> PlayersInGame { get { return playersInGame_List_PlayerStats; } }
+    public List<PlayerStats> DeadPlayers { get { return deadPlayers_List_PlayerStats; } }
     
-    public Dictionary<Collider, PlayerStats> StatsOfAllPlayers { get; private set; } = new Dictionary<Collider, PlayerStats>();
+    public Dictionary<Collider, PlayerStats> StatsOfAllPlayers_Dictionary { get; private set; } = new Dictionary<Collider, PlayerStats>();
 }

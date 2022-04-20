@@ -123,7 +123,7 @@ namespace Photon.Pun
         }
 
 
-        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        public void OnPhotonSerializeView_void(PhotonStream stream, PhotonMessageInfo info)
         {
             this.m_PositionControl.OnPhotonSerializeView(transform.localPosition, stream, info);
             this.m_RotationControl.OnPhotonSerializeView(transform.localRotation, stream, info);

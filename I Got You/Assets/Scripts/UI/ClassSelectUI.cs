@@ -21,7 +21,7 @@ public class ClassSelectUI : MonoBehaviour
         int thisPlayerIndex = 0;
         string playerName = "YOU";
 
-        if (PhotonFunctionHandler.IsPlayerOnline())
+        if (PhotonFunctionHandler.IsPlayerOnline_bool())
         {
             thisPlayerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1;
 
@@ -66,7 +66,7 @@ public class ClassSelectUI : MonoBehaviour
 
         infoUI.UpdateClassName(currentClass);
 
-        if (PhotonFunctionHandler.IsPlayerOnline())
+        if (PhotonFunctionHandler.IsPlayerOnline_bool())
         {
             if (NumberOfPlayersChosen == PhotonNetwork.CurrentRoom.PlayerCount)
             {
@@ -92,11 +92,11 @@ public class ClassSelectUI : MonoBehaviour
 
     private void LoadGameScene()
     {
-        if (PhotonFunctionHandler.IsPlayerOnline())
+        if (PhotonFunctionHandler.IsPlayerOnline_bool())
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
         }
         
-        PhotonFunctionHandler.LoadSceneAsync("Protoscene");
+        PhotonFunctionHandler.LoadSceneAsync_void("Protoscene");
     }
 }

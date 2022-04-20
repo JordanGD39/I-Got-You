@@ -59,7 +59,7 @@ public class ClassInfoUI : MonoBehaviourPun
 
         hasChosen = true;
 
-        if (PhotonFunctionHandler.IsPlayerOnline())
+        if (PhotonFunctionHandler.IsPlayerOnline_bool())
         {
             int index = (int)theClassName;
             photonView.RPC("UpdateClassNameOther", RpcTarget.OthersBuffered, (byte)index);
@@ -93,7 +93,7 @@ public class ClassInfoUI : MonoBehaviourPun
 
     public void UpdateOthersOnNetworkPlayerName()
     {
-        if (PhotonFunctionHandler.IsPlayerOnline())
+        if (PhotonFunctionHandler.IsPlayerOnline_bool())
         {
             photonView.RPC("UpdatePlayerNameOther", RpcTarget.OthersBuffered, (byte)PhotonNetwork.LocalPlayer.ActorNumber);
         }        
@@ -117,7 +117,7 @@ public class ClassInfoUI : MonoBehaviourPun
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
-            PhotonFunctionHandler.LoadSceneAsync("Protoscene");
+            PhotonFunctionHandler.LoadSceneAsync_void("Protoscene");
         }
     }
 }

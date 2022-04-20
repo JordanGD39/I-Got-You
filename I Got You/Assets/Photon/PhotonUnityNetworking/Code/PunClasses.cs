@@ -205,7 +205,7 @@ namespace Photon.Pun
         /// While in the lobby, the roomlist is automatically updated in fixed intervals (which you can't modify in the public cloud).
         /// The room list gets available via OnRoomListUpdate.
         /// </remarks>
-        public virtual void OnJoinedLobby()
+        public virtual void OnJoinedLobby_void()
         {
         }
 
@@ -313,7 +313,7 @@ namespace Photon.Pun
         /// The list of available rooms won't become available unless you join a lobby via LoadBalancingClient.OpJoinLobby.
         /// You can join rooms and create them even without being in a lobby. The default lobby is used in that case.
         /// </remarks>
-        public virtual void OnConnectedToMaster()
+        public virtual void OnConnectedToMaster_void()
         {
         }
 

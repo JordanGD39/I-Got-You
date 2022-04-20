@@ -183,11 +183,11 @@ namespace Photon.Pun.Demo.Cockpit
 			
 					if (PhotonNetwork.InLobby)
 					{
-						this.OnJoinedLobby ();
+						this.OnJoinedLobby_void ();
 					}
 					else
 					{
-						this.OnConnectedToMaster ();
+						this.OnConnectedToMaster_void ();
 					}
 
 				}
@@ -668,7 +668,7 @@ namespace Photon.Pun.Demo.Cockpit
 
         }
 
-        public override void OnConnectedToMaster()
+        public override void OnConnectedToMaster_void()
         {
 			if (debug)  Debug.Log("PunCockpit:OnConnectedToMaster()");
 
@@ -678,7 +678,7 @@ namespace Photon.Pun.Demo.Cockpit
             this.SetUpLobbyGenericUI();
         }
 
-        public override void OnJoinedLobby()
+        public override void OnJoinedLobby_void()
         {
             this.StateText.text = "Connected to Lobby";
 

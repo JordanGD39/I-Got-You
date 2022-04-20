@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ChasePlayerAI">
+    <Position X="1.25" Y="0.5" Width="2.25" />
+    <AssociationLine Name="attackAnimationHandler_AttackAnimationHandler" Type="AttackAnimationHandler">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-1.371" Y="0.887" Height="0.182" Width="3.099" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="playerManager_PlayerManager" Type="PlayerManager" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="4.367" />
+        <Point X="3" Y="8.823" />
+        <Point X="3.25" Y="8.823" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.874" Y="3.878" Height="0.182" Width="2.098" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAIEAAAABAACgIgARAAAAAAgEAEBAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Enemy\ChasePlayerAI.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="attackAnimationHandler_AttackAnimationHandler" />
+      <Field Name="playerManager_PlayerManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EnemyGenerator">
+    <Position X="4.25" Y="0.5" Width="3" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="EnemyGenerator.GeneratedEnemyInfo">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Generation\EnemyGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <AssociationLine Name="difficultyManager_DifficultyManager" Type="DifficultyManager">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.06" Y="0.11" Height="0.182" Width="2.454" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="playerManager_PlayerManager" Type="PlayerManager" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.062" Y="7.169" />
+        <Point X="7.062" Y="8.625" />
+        <Point X="5.75" Y="8.625" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.216" Y="1.164" Height="0.182" Width="2.041" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="enemyManager_EnemyManager" Type="EnemyManager">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.06" Y="0.11" Height="0.182" Width="2.139" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIIQBAAAAAAUAQAAAIAwEAQAlAAAAABIABEA=</HashCode>
+      <FileName>Assets\Scripts\Generation\EnemyGenerator.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="difficultyManager_DifficultyManager" />
+      <Field Name="playerManager_PlayerManager" />
+      <Field Name="enemyManager_EnemyManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EnemySpawnBoxHolder">
+    <Position X="11.5" Y="6.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Generation\EnemySpawnBoxHolder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DifficultyManager">
+    <Position X="9.25" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Management\DifficultyManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EnemyManager">
+    <Position X="8.5" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Management\EnemyManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerManager">
+    <Position X="3.25" Y="7.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAgAAAEAAAAAAAAAAAAAAAAAAgAAABAAAAAAAAAgA=</HashCode>
+      <FileName>Assets\Scripts\Management\PlayerManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RoomManager">
+    <Position X="11.5" Y="0.5" Width="3.25" />
+    <AssociationLine Name="boxHolder_EnemySpawnBoxHolder" Type="EnemySpawnBoxHolder" FixedToPoint="true">
+      <Path>
+        <Point X="13.625" Y="5.069" />
+        <Point X="13.625" Y="6.75" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.043" Y="1.092" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="difficultyManager_DifficultyManager" Type="DifficultyManager" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12" Y="5.069" />
+        <Point X="12" Y="5.953" />
+        <Point X="10.25" Y="5.953" />
+        <Point X="10.25" Y="5.578" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-3.07" Y="-0.385" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="doorToOtherRoom_DoorOpen" Type="DoorOpen">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.359" Y="0.073" Height="0.182" Width="1.986" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="doorToThisRoom_DoorOpen" Type="DoorOpen">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.228" Y="0.06" Height="0.182" Width="1.994" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="enemyGenerator_EnemyGenerator" Type="EnemyGenerator">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="2.12" Y="0.034" Height="0.182" Width="2.238" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="enemiesInRoom_List_GeneratedEnemyInfo" Type="EnemyGenerator" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="11.5" Y="2.875" />
+        <Point X="7.625" Y="2.875" />
+        <Point X="7.625" Y="6.187" />
+        <Point X="7.25" Y="6.187" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="1.574" Y="3.093" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AACCAAAAADBCAgAAAQJQAIIACGAECAABAAAAAAgAAAk=</HashCode>
+      <FileName>Assets\Scripts\Management\RoomManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="boxHolder_EnemySpawnBoxHolder" />
+      <Field Name="difficultyManager_DifficultyManager" />
+      <Field Name="doorToOtherRoom_DoorOpen" />
+      <Field Name="doorToThisRoom_DoorOpen" />
+      <Field Name="enemyGenerator_EnemyGenerator" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="enemiesInRoom_List_GeneratedEnemyInfo" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="DoorOpen">
+    <Position X="16.5" Y="1" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="DoorOpen.OpenedDoor" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Objects\DoorOpen.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <AssociationLine Name="playerManager_PlayerManager" Type="PlayerManager">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="10.986" Y="2.047" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AQQgAAAAAAAAAAAIAAAAQADANAABAQABAAgEAAgAAAA=</HashCode>
+      <FileName>Assets\Scripts\Objects\DoorOpen.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="playerManager_PlayerManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AttackAnimationHandler">
+    <Position X="0.5" Y="5.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="AttackAnimationHandler.AttackMiss" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Enemy\AttackAnimationHandler.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Enemy\AttackAnimationHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

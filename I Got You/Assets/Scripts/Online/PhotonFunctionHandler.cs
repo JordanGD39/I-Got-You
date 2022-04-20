@@ -6,9 +6,9 @@ using Photon.Pun;
 
 public static class PhotonFunctionHandler
 {
-    public static GameObject InstantiateGameObject(GameObject theObject, Vector3 pos, Quaternion rotation)
+    public static GameObject InstantiateGameObject_GameObject(GameObject theObject, Vector3 pos, Quaternion rotation)
     {
-        if (IsPlayerOnline())
+        if (IsPlayerOnline_bool())
         {
             return PhotonNetwork.Instantiate(theObject.name, pos, rotation);
         }
@@ -18,14 +18,14 @@ public static class PhotonFunctionHandler
         }
     }
 
-    public static bool IsPlayerOnline()
+    public static bool IsPlayerOnline_bool()
     {
         return !PhotonNetwork.OfflineMode && (PhotonNetwork.InRoom || PhotonNetwork.InLobby);
     }
 
-    public static void LoadSceneAsync(string sceneName)
+    public static void LoadSceneAsync_void(string sceneName)
     {
-        if (IsPlayerOnline())
+        if (IsPlayerOnline_bool())
         {
             PhotonNetwork.LoadLevel(sceneName);
         }

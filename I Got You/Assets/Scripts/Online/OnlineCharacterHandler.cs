@@ -6,7 +6,7 @@ using Photon.Pun;
 public class OnlineCharacterHandler : MonoBehaviourPun
 {
     // Start is called before the first frame update
-    void Start()
+    void Start_void()
     {
         bool isPlayer = gameObject.CompareTag("Player");
         bool checkMasterOrMine = photonView.IsMine;
@@ -16,7 +16,7 @@ public class OnlineCharacterHandler : MonoBehaviourPun
             checkMasterOrMine = PhotonNetwork.IsMasterClient;
         }
 
-        if (checkMasterOrMine || !PhotonFunctionHandler.IsPlayerOnline())
+        if (checkMasterOrMine || !PhotonFunctionHandler.IsPlayerOnline_bool())
         {
             Destroy(this);
             return;

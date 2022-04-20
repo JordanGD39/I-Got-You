@@ -4,20 +4,19 @@ using UnityEngine;
 
 public class DifficultyManager : MonoBehaviour
 {
-    private PlayerUI playerUI;
 
-    [SerializeField] private int difficultyLevel = 1;
-    public int DifficultyLevel { get { return difficultyLevel; } }
+    [SerializeField] private int difficultyLevel_int = 1;
+    public int DifficultyLevel { get { return difficultyLevel_int; } }
 
     private void Start()
     {
-        playerUI = FindObjectOfType<PlayerUI>();
-        playerUI.UpdateRoundText(difficultyLevel);
+        playerUI_P = FindObjectOfType<PlayerUI>();
+        playerUI_P.UpdateRoundText(difficultyLevel_int);
     }
 
     public void IncreaseDifficulty()
     {
-        difficultyLevel++;
-        playerUI.UpdateRoundText(difficultyLevel);
+        difficultyLevel_int++;
+        playerUI_P.UpdateRoundText(difficultyLevel_int);
     }
 }

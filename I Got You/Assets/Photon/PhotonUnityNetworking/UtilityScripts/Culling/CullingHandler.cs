@@ -223,7 +223,7 @@ namespace Photon.Pun.UtilityScripts
         ///     It is used to change the currently active group of the PhotonView component, making it work together with PUN more directly.
         ///     Keep in mind that this function is only executed, when there is at least one more player in the room.
         /// </summary>
-        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        public void OnPhotonSerializeView_void(PhotonStream stream, PhotonMessageInfo info)
         {
             // If the player leaves the area we insert the whole area itself as an active cell.
             // This can be removed if it is sure that the player is not able to leave the area.

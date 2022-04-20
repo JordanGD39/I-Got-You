@@ -464,7 +464,7 @@ namespace Photon.Pun
                 {
                     NetworkingClient.ChangeLocalID(-1);
                     //SendMonoMessage(PhotonNetworkingMessage.OnConnectedToMaster);
-                    NetworkingClient.ConnectionCallbackTargets.OnConnectedToMaster();
+                    NetworkingClient.ConnectionCallbackTargets.OnConnectedToMaster_void();
                 }
                 else
                 {
@@ -2029,7 +2029,7 @@ namespace Photon.Pun
             {
                 offlineModeRoom = null;
                 NetworkingClient.MatchMakingCallbackTargets.OnLeftRoom();
-                NetworkingClient.ConnectionCallbackTargets.OnConnectedToMaster();
+                NetworkingClient.ConnectionCallbackTargets.OnConnectedToMaster_void();
             }
             else
             {

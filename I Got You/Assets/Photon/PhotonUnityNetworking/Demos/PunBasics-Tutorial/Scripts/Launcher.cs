@@ -145,7 +145,7 @@ namespace Photon.Pun.Demo.PunBasics
         /// <summary>
         /// Called after the connection to the master is established and authenticated
         /// </summary>
-        public override void OnConnectedToMaster()
+        public override void OnConnectedToMaster_void()
 		{
             // we don't want to do anything if we are not attempting to join a room. 
 			// this case where isConnecting is false is typically when you lost or quit the game, when this level is loaded, OnConnectedToMaster will be called, in that case

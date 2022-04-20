@@ -36,8 +36,8 @@ public class LootRoomGenerator : MonoBehaviourPun
         difficultyManager = FindObjectOfType<DifficultyManager>();
         playerManager = FindObjectOfType<PlayerManager>();
 
-        doorOpen.OnOpenedDoor += PlaceLoot;
-        doorOutHere.OnOpenedDoor += TurnOffLootOthers;
+        doorOpen.OnOpenedDoor_OpenedDoor += PlaceLoot;
+        doorOutHere.OnOpenedDoor_OpenedDoor += TurnOffLootOthers;
         doorOpen.gameObject.SetActive(false);        
     }
 

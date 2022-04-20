@@ -7,12 +7,12 @@ using Photon.Pun;
 public class ConnectToNetwork : MonoBehaviourPunCallbacks
 {
     // Start is called before the first frame update
-    void Start()
+    void Start_void()
     {
         PhotonNetwork.ConnectUsingSettings();        
     }
 
-    public override void OnConnectedToMaster()
+    public override void OnConnectedToMaster_void()
     {
         PhotonNetwork.JoinLobby();
         PhotonNetwork.SendRate = 20;
@@ -21,7 +21,7 @@ public class ConnectToNetwork : MonoBehaviourPunCallbacks
         Debug.Log(PhotonNetwork.CountOfPlayers);
     }
 
-    public override void OnJoinedLobby()
+    public override void OnJoinedLobby_void()
     {
         SceneManager.LoadScene("Lobby");
     }

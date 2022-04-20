@@ -34,7 +34,7 @@ namespace Photon.Pun
         /// any update. This can't be used as "x-times per second Update()".
         /// </remarks>
         /// \ingroup publicApi
-        void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info);
+        void OnPhotonSerializeView_void(PhotonStream stream, PhotonMessageInfo info);
     }
 
 

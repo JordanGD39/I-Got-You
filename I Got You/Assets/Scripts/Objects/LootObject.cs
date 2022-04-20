@@ -111,7 +111,7 @@ public class LootObject : MonoBehaviourPun
         {
             if (lootType == LootTypes.SMALLAMMO)
             {
-                playerManager.StatsOfAllPlayers[other].PlayerShootScript.GiveAmmo(smallAmmoDrop);
+                playerManager.StatsOfAllPlayers_Dictionary[other].PlayerShootScript.GiveAmmo_void(smallAmmoDrop);
 
                 if (PhotonNetwork.IsConnected)
                 {
@@ -122,7 +122,7 @@ public class LootObject : MonoBehaviourPun
             }
             else if (lootType == LootTypes.MEDIUMAMMO)
             {
-                playerManager.StatsOfAllPlayers[other].PlayerShootScript.GiveAmmo(mediumAmmoDrop);
+                playerManager.StatsOfAllPlayers_Dictionary[other].PlayerShootScript.GiveAmmo_void(mediumAmmoDrop);
 
                 if (PhotonNetwork.IsConnected)
                 {
@@ -133,7 +133,7 @@ public class LootObject : MonoBehaviourPun
             }
             else
             {
-                playerManager.StatsOfAllPlayers[other].OnInteract += PlayerInteracted;
+                playerManager.StatsOfAllPlayers_Dictionary[other].OnInteract_Interact += PlayerInteracted;
             }
         }
     }
@@ -142,11 +142,11 @@ public class LootObject : MonoBehaviourPun
     {
         if (other.CompareTag("PlayerCol") && lootType != LootTypes.SMALLAMMO && lootType != LootTypes.MEDIUMAMMO)
         {
-            PlayerStats playerStats = playerManager.StatsOfAllPlayers[other];
+            PlayerStats playerStats = playerManager.StatsOfAllPlayers_Dictionary[other];
 
-            if (playerStats.OnInteract != null)
+            if (playerStats.OnInteract_Interact != null)
             {
-                playerStats.OnInteract -= PlayerInteracted;
+                playerStats.OnInteract_Interact -= PlayerInteracted;
             }
         }
     }
@@ -168,7 +168,7 @@ public class LootObject : MonoBehaviourPun
                 SwapWeapon(playerStats.PlayerShootScript);
                 break;
             case LootTypes.LARGEAMMO:
-                playerStats.PlayerShootScript.GiveFullAmmo(false);
+                playerStats.PlayerShootScript.GiveFullAmmo_void(false);
 
                 if (PhotonNetwork.IsConnected)
                 {
@@ -179,7 +179,7 @@ public class LootObject : MonoBehaviourPun
                 break;
         }
 
-        playerStats.OnInteract -= PlayerInteracted;
+        playerStats.OnInteract_Interact -= PlayerInteracted;
     }
 
     private void SwapWeapon(PlayerShoot playerShoot)
@@ -188,7 +188,7 @@ public class LootObject : MonoBehaviourPun
 
         bool secondaryWasNull = playerShoot.SecondaryGun == null;
 
-        playerShoot.GiveWeapon(currentGun);
+        playerShoot.GiveWeapon_void(currentGun);
 
         if (secondaryWasNull)
         {
@@ -200,14 +200,14 @@ public class LootObject : MonoBehaviourPun
 
         if (PhotonNetwork.IsConnected)
         {
-            photonView.RPC("UpdateCurrentGunForOthers", RpcTarget.Others, (byte)weaponsHolder.SearchWeaponIndex(gun.name, gun.Primary), gun.Primary);
+            photonView.RPC("UpdateCurrentGunForOthers", RpcTarget.Others, (byte)weaponsHolder.SearchWeaponIndex_int(gun.name, gun.Primary), gun.Primary);
         }
     }
 
     private void UpdateCurrentGun(GunObject gun)
     {
         currentGun = gun;
-        int weaponIndex = weaponsHolder.SearchWeaponIndex(currentGun.name, currentGun.Primary);
+        int weaponIndex = weaponsHolder.SearchWeaponIndex_int(currentGun.name, currentGun.Primary);
 
         DeactivateAllWeapons();
 

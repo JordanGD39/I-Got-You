@@ -74,7 +74,7 @@ namespace Photon.Pun
             }
         }
 
-        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        public void OnPhotonSerializeView_void(PhotonStream stream, PhotonMessageInfo info)
         {
             var tr = transform;
 
