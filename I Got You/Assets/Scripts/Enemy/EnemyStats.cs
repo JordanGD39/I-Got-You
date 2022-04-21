@@ -14,9 +14,13 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     private EnemyManager enemyManager;
     private PlayerManager playerManager;
+    private RagdollController ragdollController;
+    private List<MonoBehaviour> componentsToWork = new List<MonoBehaviour>();
+    private List<Hitbox> hitboxes = new List<Hitbox>();
 
     public delegate void EnemyDied(GameObject enemy, int index);
     public EnemyDied OnEnemyDied;
+    private bool dead = false;
 
     void IPunInstantiateMagicCallback.OnPhotonInstantiate(PhotonMessageInfo info)
     {
@@ -34,42 +38,71 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     // Start is called before the first frame update
     void Start()
     {
+        dead = false;
         health = startingHealth;
+        ragdollController = GetComponentInChildren<RagdollController>(true);
+
+        if (ragdollController != null)
+        {
+            ragdollController.SetRagdollActive(false);
+        }        
+
+        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
+        {
+            gameObject.SetActive(false);
+        }
+
+        if (playerManager != null)
+        {
+            return;
+        }
 
         playerManager = FindObjectOfType<PlayerManager>();
 
-        List<Hitbox> hitboxes = new List<Hitbox>();
+        hitboxes.AddRange(GetComponentsInChildren<Hitbox>(true));
 
-        hitboxes.AddRange(GetComponentsInChildren<Hitbox>());
+        foreach (MonoBehaviour comp in GetComponents<MonoBehaviour>())
+        {
+            if (comp is PhotonView)
+                continue;
+            if (comp is EnemyStats)
+                continue;
+
+            componentsToWork.Add(comp);
+        }
 
         foreach (Hitbox hitbox in hitboxes)
         {
             hitbox.OnHitBoxCollided += DamagePlayer;
             hitbox.gameObject.SetActive(false);
         }
-
-        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
-        {
-            gameObject.SetActive(false);
-        }
     }
 
-    public void Damage(int dmg)
+    public void Damage(int dmg, Vector3 shootDir)
     {
         health -= dmg;
 
+        if (dead)
+        {
+            if (ragdollController != null)
+            {
+                ragdollController.ApplyForceToMainRigidBody(shootDir, dmg);
+            }            
+            return;
+        }
+
         if (health <= 0)
         {
-            CallSyncHealth();
-
-            if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
-            {
-                gameObject.SetActive(false);
-            }
-            else
+            CallSyncHealth(dmg, shootDir);
+            
+            if (!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient)
             {
                 OnEnemyDied?.Invoke(gameObject, ListIndex);
-            }
+            }               
+
+            KillEnemy(dmg, shootDir);
+
+            dead = true;
         }
         else
         {
@@ -81,20 +114,66 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
         }
     }
 
+    private void KillEnemy(int dmg, Vector3 shootDir)
+    {
+        if (ragdollController == null)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
+        foreach (MonoBehaviour item in componentsToWork)
+        {
+            if (item != null)
+            {
+                item.enabled = false;
+            }            
+        }
+
+        foreach (Hitbox item in hitboxes)
+        {
+            if (item != null)
+            {
+                item.gameObject.SetActive(false);
+            }
+        }
+
+        ragdollController.SetRagdollActive(true);
+        ragdollController.ApplyForceToMainRigidBody(shootDir, dmg);
+    }
+
+    public void CallDisableRagdoll()
+    {
+        dead = false;
+
+        foreach (MonoBehaviour item in componentsToWork)
+        {
+            if (item != null)
+            {
+                item.enabled = true;
+            }
+        }
+
+        if (ragdollController != null)
+        {
+            ragdollController.SetRagdollActive(false);
+        }
+    }
+
     private IEnumerator WaitForHealthUpdate()
     {
         yield return new WaitForSeconds(0.1f);
 
-        CallSyncHealth();
+        CallSyncHealth(0, Vector3.zero);
     }
 
-    public void CallSyncHealth()
+    public void CallSyncHealth(int dmg, Vector3 shootDir)
     {
         if (PhotonNetwork.IsConnected)
         {
             if (health <= 0)
             {
-                photonView.RPC("SyncDeathOthersRPC", RpcTarget.Others);
+                photonView.RPC("SyncDeathOthersRPC", RpcTarget.Others, dmg, shootDir);
                 return;
             }
 
@@ -109,10 +188,10 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     }
 
     [PunRPC]
-    void SyncDeathOthersRPC()
+    void SyncDeathOthersRPC(int dmg, Vector3 shootDir)
     {
         OnEnemyDied?.Invoke(gameObject, ListIndex);
-        gameObject.SetActive(false);
+        KillEnemy(dmg, shootDir);
     }
 
     private void DamagePlayer(Collider other)

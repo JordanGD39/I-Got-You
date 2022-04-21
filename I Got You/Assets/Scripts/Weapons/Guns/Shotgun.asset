@@ -21,7 +21,7 @@ MonoBehaviour:
   headShotMultiplier: 1.4
   maxRange: 50
   bulletCount: 8
-  spreadAngle: 0.15
+  spreadAngle: 0.12
   primary: 1
   fireSFX: {fileID: 8300000, guid: adddeaa44c7061d4e940123c8c1d86fc, type: 3}
   switchSFX: {fileID: 8300000, guid: e21d20dc0f59193458c4911fb1af23d2, type: 3}

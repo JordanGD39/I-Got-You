@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        characterController.detectCollisions = false;
         playerStats = GetComponent<PlayerStats>();
         stepOffset = characterController.stepOffset;
     }

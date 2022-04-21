@@ -20,6 +20,8 @@ public class PlayerShoot : MonoBehaviourPun
     [SerializeField] private LayerMask hitLayer;
     [SerializeField] private AudioClip emptyAmmo;
 
+    private Dictionary<EnemyStats, DamageInfo> damageToEnemies = new Dictionary<EnemyStats, DamageInfo>();
+
     private Dictionary<string, GunHolder> weaponReference = new Dictionary<string, GunHolder>();
 
     private float timer = 0;
@@ -182,6 +184,8 @@ public class PlayerShoot : MonoBehaviourPun
 
         if ((currentGun.ShootType == GunObject.ShootTypes.MANUAL || currentGun.ShootType == GunObject.ShootTypes.BURST) && attackPressed || currentGun.ShootType == GunObject.ShootTypes.AUTO && attackHold)
         {
+            damageToEnemies.Clear();
+
             if (currentGun.ShootType != GunObject.ShootTypes.BURST)
             {
                 for (int i = 0; i < currentGun.BulletCount; i++)
@@ -192,6 +196,8 @@ public class PlayerShoot : MonoBehaviourPun
                 currentAmmo -= 1;
                 playerUI.UpdateAmmo(currentAmmo, currentMaxAmmo);
                 audioSource.PlayOneShot(currentGun.FireSFX);
+
+                DamageAllEnemiesInDictionary();
             }
             else
             {
@@ -208,6 +214,20 @@ public class PlayerShoot : MonoBehaviourPun
             {
                 ReloadGun();
             }
+        }
+    }
+
+    private void DamageAllEnemiesInDictionary()
+    {
+        if (damageToEnemies.Count == 0)
+        {
+            return;
+        }
+
+        foreach (EnemyStats enemy in damageToEnemies.Keys)
+        {
+            DamageInfo damageInfo = damageToEnemies[enemy];
+            enemy.Damage(damageInfo.damage, damageInfo.direction);
         }
     }
 
@@ -228,6 +248,8 @@ public class PlayerShoot : MonoBehaviourPun
 
             yield return new WaitForSeconds(currentGun.BurstDelay);
         }
+
+        DamageAllEnemiesInDictionary();
     }
 
     private void ShootCurrentGun(int bulletCount)
@@ -241,11 +263,13 @@ public class PlayerShoot : MonoBehaviourPun
 
         RaycastHit hit;
 
-        if (Physics.Raycast(shootPoint.position, bulletCount == 0 ? shootPoint.forward : GetRandomShootingDirection(), out hit, currentGun.MaxRange, hitLayer))
+        Vector3 dir = bulletCount == 0 ? shootPoint.forward : GetRandomShootingDirection();
+
+        if (Physics.Raycast(shootPoint.position, dir, out hit, currentGun.MaxRange, hitLayer))
         {
             if (hit.collider.gameObject.CompareTag("EnemyCol"))
             {
-                enemyManager.StatsOfAllEnemies[hit.collider.transform.root].Damage(Mathf.RoundToInt(currentGun.Damage));
+                AddDamage(hit.collider.transform.root, dir, false);
 
                 if (bulletCount == 0)
                 {
@@ -254,7 +278,7 @@ public class PlayerShoot : MonoBehaviourPun
             }
             else if (hit.collider.gameObject.CompareTag("HeadEnemyCol"))
             {
-                enemyManager.StatsOfAllEnemies[hit.collider.transform.root].Damage(Mathf.RoundToInt((float)currentGun.Damage * currentGun.HeadShotMultiplier));
+                AddDamage(hit.collider.transform.root, dir, true);
 
                 if (bulletCount == 0)
                 {
@@ -262,6 +286,30 @@ public class PlayerShoot : MonoBehaviourPun
                 }
             }
         }
+    }
+
+    private void AddDamage(Transform enemyRoot, Vector3 dir, bool headShot)
+    {
+        float damageMultiplier = 1;
+
+        if (headShot)
+        {
+            damageMultiplier = currentGun.HeadShotMultiplier;
+        }
+
+        EnemyStats enemy = enemyManager.StatsOfAllEnemies[enemyRoot];
+        if (damageToEnemies.ContainsKey(enemy))
+        {
+            damageToEnemies[enemy].damage += Mathf.RoundToInt(currentGun.Damage * damageMultiplier);
+            damageToEnemies[enemy].direction = dir;
+            return;
+        }
+
+        DamageInfo damageInfo = new DamageInfo();
+        damageInfo.damage = Mathf.RoundToInt(currentGun.Damage * damageMultiplier);
+        damageInfo.direction = dir;
+
+        damageToEnemies.Add(enemyManager.StatsOfAllEnemies[enemyRoot], damageInfo);
     }
 
     [PunRPC]
@@ -369,7 +417,7 @@ public class PlayerShoot : MonoBehaviourPun
 
         if (weaponReference.Count == 0)
         {
-            foreach (GunHolder item in GetComponentsInChildren<GunHolder>())
+            foreach (GunHolder item in GetComponentsInChildren<GunHolder>(true))
             {
                 weaponReference.Add(item.OwningGun.name, item);
                 if (weaponReference.Count > 0)
@@ -378,7 +426,7 @@ public class PlayerShoot : MonoBehaviourPun
                     {
                         item.gameObject.layer = 3;
 
-                        foreach (Transform child in item.GetComponentsInChildren<Transform>())
+                        foreach (Transform child in item.GetComponentsInChildren<Transform>(true))
                         {
                             child.gameObject.layer = 3;
                         }
@@ -435,4 +483,10 @@ public class PlayerShoot : MonoBehaviourPun
             interacting = true;
         }
     }
+}
+
+public class DamageInfo
+{
+    public int damage = 0;
+    public Vector3 direction = Vector3.zero;
 }

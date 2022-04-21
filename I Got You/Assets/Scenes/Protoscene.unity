@@ -3971,7 +3971,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh119924
+  m_Name: pb_Mesh23932
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4213,6 +4213,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6712501813523326975, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6712501813913824976, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6712501813913824977, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -4268,7 +4276,11 @@ PrefabInstance:
     - target: {fileID: 6712501813913824981, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: secondaryGun
       value: 
-      objectReference: {fileID: 11400000, guid: a758b336a4bc89244bcb7f9809f062da, type: 2}
+      objectReference: {fileID: 11400000, guid: 8f2aa4b22a8b78549afede7d68a68ba3, type: 2}
+    - target: {fileID: 6712501813913824981, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
+      propertyPath: hitLayer.m_Bits
+      value: 577
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 815452801372076300, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
@@ -11998,7 +12010,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh118938
+  m_Name: pb_Mesh22946
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

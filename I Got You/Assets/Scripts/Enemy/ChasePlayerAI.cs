@@ -15,6 +15,7 @@ public class ChasePlayerAI : MonoBehaviour
     [SerializeField] private float distanceToAttack = 2;
     [SerializeField] private float distanceToStop = 1.25f;
     [SerializeField] private float turnSpeed = 5;
+    [SerializeField] private bool animsDone = false;
     private Animator anim;
 
     private bool attacking = false;
@@ -26,7 +27,6 @@ public class ChasePlayerAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         
         anim = GetComponentInChildren<Animator>();
-        GetComponentInChildren<AttackAnimationHandler>().OnAttackMiss += AttackStopped;
     }
 
     // Update is called once per frame
@@ -58,6 +58,11 @@ public class ChasePlayerAI : MonoBehaviour
         if (target != null && agent.enabled)
         {
             agent.SetDestination(target.position);
+        }
+
+        if (animsDone)
+        {
+            anim.SetFloat("Speed", agent.velocity.magnitude);
         }        
 
         float distance = Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(target.position.x, 0, target.position.z));
@@ -66,13 +71,8 @@ public class ChasePlayerAI : MonoBehaviour
         {
             FaceTarget();
         }
-
-
-        if (!attacking && distance < distanceToAttack)
-        {
-            anim.SetTrigger("Attack");
-            attacking = true;
-        }
+        
+        anim.SetBool("Attacking", distance < distanceToAttack);
 
         if (distance < distanceToStop)
         {
@@ -91,10 +91,5 @@ public class ChasePlayerAI : MonoBehaviour
         lookPos.y = 0;
         Quaternion rotation = Quaternion.LookRotation(lookPos);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, turnSpeed * Time.deltaTime);
-    }
-
-    public void AttackStopped()
-    {
-        attacking = false;
     }
 }

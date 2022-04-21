@@ -268,7 +268,7 @@ GameObject:
   - component: {fileID: 6135183180861974009}
   - component: {fileID: 4436136522721184941}
   - component: {fileID: 3460074040193879276}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: AttackCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -444,7 +444,7 @@ NavMeshAgent:
   m_Radius: 0.8
   m_Speed: 5
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 30
   m_AngularSpeed: 240
   m_StoppingDistance: 1.5
   m_AutoTraverseOffMeshLink: 1
@@ -470,6 +470,7 @@ MonoBehaviour:
   distanceToAttack: 2.5
   distanceToStop: 1.75
   turnSpeed: 5
+  animsDone: 0
 --- !u!114 &1581653927533037792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -532,8 +533,8 @@ MonoBehaviour:
   lerpRotSpeed: 8
   distanceToTeleport: 3
   checkMasterClient: 1
-  animate: 0
   model: {fileID: 5385682123832297535}
+  animator: {fileID: 0}
 --- !u!114 &5542502612772619860
 MonoBehaviour:
   m_ObjectHideFlags: 0

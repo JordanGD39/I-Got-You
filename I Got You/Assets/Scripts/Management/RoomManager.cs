@@ -148,8 +148,6 @@ public class RoomManager : MonoBehaviourPun
 
     private void PlaceNotYetSpawnedEnemy(GameObject enemyDied, int listIndex)
     {
-        Debug.Log(listIndex);
-
         if (listIndex >= 0 && listIndex < enemiesInRoom.Count)
         {
             EnemyGenerator.GeneratedEnemyInfo generatedEnemyInfo = enemiesInRoom[listIndex];
@@ -158,7 +156,7 @@ public class RoomManager : MonoBehaviourPun
             generatedEnemyInfo.enemiesList.Remove(enemyDied);
         }
        
-        enemyDied.SetActive(false);
+        //enemyDied.SetActive(false);
 
         if ((currentNotPlacedIndex < 0 || currentNotPlacedIndex > enemiesNotPlacedCount.Count - 1) || enemiesInRoom.Count == 0)
         {
@@ -209,7 +207,8 @@ public class RoomManager : MonoBehaviourPun
             stats.ListIndex = currentNotPlacedIndex;
         }
         
-        stats.CallSyncHealth();
+        stats.CallSyncHealth(0, Vector3.zero);
+        stats.CallDisableRagdoll();
         stats.OnEnemyDied = PlaceNotYetSpawnedEnemy;
         stats.OnEnemyDied += CountEnemyDeath;
 
