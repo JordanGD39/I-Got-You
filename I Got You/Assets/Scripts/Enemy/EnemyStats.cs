@@ -22,6 +22,8 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     public EnemyDied OnEnemyDied;
     private bool dead = false;
 
+    private SyncMovement syncMovement;
+
     void IPunInstantiateMagicCallback.OnPhotonInstantiate(PhotonMessageInfo info)
     {
         if (enemyManager == null)
@@ -71,6 +73,8 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
             componentsToWork.Add(comp);
         }
 
+        syncMovement = GetComponent<SyncMovement>();
+
         foreach (Hitbox hitbox in hitboxes)
         {
             hitbox.OnHitBoxCollided += DamagePlayer;
@@ -101,8 +105,6 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
             }               
 
             KillEnemy(dmg, shootDir);
-
-            dead = true;
         }
         else
         {
@@ -116,11 +118,16 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     private void KillEnemy(int dmg, Vector3 shootDir)
     {
+        dead = true;
+        syncMovement.IsSyncing = false;
+
         if (ragdollController == null)
         {
             gameObject.SetActive(false);
             return;
         }
+
+        photonView.Synchronization = ViewSynchronization.Off;
 
         foreach (MonoBehaviour item in componentsToWork)
         {
@@ -146,6 +153,14 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         dead = false;
 
+        if (syncMovement == null)
+        {
+            syncMovement = GetComponent<SyncMovement>();
+        }
+
+        photonView.Synchronization = ViewSynchronization.UnreliableOnChange;
+        syncMovement.IsSyncing = true;
+
         foreach (MonoBehaviour item in componentsToWork)
         {
             if (item != null)
@@ -158,6 +173,17 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
         {
             ragdollController.SetRagdollActive(false);
         }
+
+        if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("SyncDisableRagdollOthers", RpcTarget.Others);
+        }
+    }
+
+    [PunRPC]
+    void SyncDisableRagdollOthers()
+    {
+        CallDisableRagdoll();
     }
 
     private IEnumerator WaitForHealthUpdate()

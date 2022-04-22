@@ -16,7 +16,7 @@ public class OnlineCharacterHandler : MonoBehaviourPun
             checkMasterOrMine = PhotonNetwork.IsMasterClient;
         }
 
-        if (checkMasterOrMine || !PhotonFunctionHandler.IsPlayerOnline())
+        if (checkMasterOrMine || !PhotonNetwork.IsConnected)
         {
             Destroy(this);
             return;
@@ -29,7 +29,6 @@ public class OnlineCharacterHandler : MonoBehaviourPun
             if (item is PhotonView) { continue; }
             if (item is PlayerStats){ continue; }
             if (item is SyncMovement){ continue; }
-            if (item is ChasePlayerAI){ continue; }
             if (item is EnemyStats){ continue; }
             if (item is PlayerRevive){ continue; }
             if (item is PlayerShoot){ continue; }

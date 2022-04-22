@@ -9,7 +9,6 @@ public class Hitbox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.CompareTag("PlayerCol"));
         OnHitBoxCollided?.Invoke(other);
     }
 }

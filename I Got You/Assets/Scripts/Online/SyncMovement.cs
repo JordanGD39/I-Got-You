@@ -17,6 +17,8 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
 
     [SerializeField] private Animator animator;
 
+    public bool IsSyncing { get; set; } = true;
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
@@ -38,6 +40,8 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
 
     private void Start()
     {
+        IsSyncing = gameObject.CompareTag("Player");
+
         if (!PhotonNetwork.IsConnected)
         {
             if (model != null)
@@ -64,6 +68,11 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
 
     private void Update()
     {
+        if (!IsSyncing)
+        {
+            return;
+        }
+
         if ((!photonView.IsMine && !checkMasterClient) || (checkMasterClient && !PhotonNetwork.IsMasterClient))
         {
             bool teleport = false;
@@ -73,6 +82,7 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
                 teleport = true;
                 transform.position = syncPos;
             }
+
             transform.position = Vector3.Lerp(transform.position, syncPos, lerpPosSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(syncRot), lerpRotSpeed * Time.deltaTime);
 
@@ -91,6 +101,8 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
         {
             yield return null;
         }
+
+        IsSyncing = true;
 
         transform.position = syncPos;
         transform.rotation = Quaternion.Euler(syncRot);

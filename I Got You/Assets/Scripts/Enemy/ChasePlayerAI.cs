@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
 public class ChasePlayerAI : MonoBehaviour
 {
@@ -19,19 +20,30 @@ public class ChasePlayerAI : MonoBehaviour
     private Animator anim;
 
     private bool attacking = false;
+    private bool masterClient = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerManager = FindObjectOfType<PlayerManager>();
-        agent = GetComponent<NavMeshAgent>();
-        
+        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
+        {
+            return;
+        }
+
         anim = GetComponentInChildren<Animator>();
+        playerManager = FindObjectOfType<PlayerManager>();
+        
+        agent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
+        {
+            return;
+        }
+
         if (playerManager.Players.Count == 0)
         {
             return;
@@ -63,7 +75,7 @@ public class ChasePlayerAI : MonoBehaviour
         if (animsDone)
         {
             anim.SetFloat("Speed", agent.velocity.magnitude);
-        }        
+        }
 
         float distance = Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(target.position.x, 0, target.position.z));
 

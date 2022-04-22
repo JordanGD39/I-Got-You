@@ -39,6 +39,7 @@ public class RagdollController : MonoBehaviour
         {
             RagdollJointComponents ragdollJointComponents = new RagdollJointComponents();
             ragdollJointComponents.rb = joint;
+            ragdollJointComponents.colliders = GetComponents<Collider>();
             ragdollJointComponents.jointPosition = joint.transform.localPosition;
             ragdollJointComponents.jointRotation = joint.transform.localRotation;
 
@@ -57,6 +58,8 @@ public class RagdollController : MonoBehaviour
             return;
         }
 
+        anim.enabled = !active;
+
         foreach (RagdollJointComponents joint in jointComponents)
         {
             if (!active)
@@ -64,6 +67,12 @@ public class RagdollController : MonoBehaviour
                 joint.rb.velocity = Vector3.zero;
                 joint.rb.transform.localPosition = joint.jointPosition;
                 joint.rb.transform.localRotation = joint.jointRotation;
+
+                foreach (Collider item in joint.colliders)
+                {
+                    item.enabled = false;
+                }
+
                 skinnedMeshRenderer.material = originalMat;
                 meshCollider.enabled = true;
                 playerCollider.SetActive(true);
@@ -74,13 +83,17 @@ public class RagdollController : MonoBehaviour
                 playerCollider.SetActive(false);
                 meshCollider.enabled = false;
 
+                foreach (Collider item in joint.colliders)
+                {
+                    item.enabled = true;
+                }
+
                 StartCoroutine(nameof(FadeOutEnemy));
             }
 
-            joint.rb.isKinematic = !active;            
+            //joint.rb.collisionDetectionMode = active ? CollisionDetectionMode.Continuous : CollisionDetectionMode.ContinuousSpeculative;
+            joint.rb.isKinematic = !active;
         }
-
-        anim.enabled = !active;
     }
 
     public void ApplyForceToMainRigidBody(Vector3 dir, float force)
@@ -126,6 +139,7 @@ public class RagdollController : MonoBehaviour
 public class RagdollJointComponents
 {
     public Rigidbody rb;
+    public Collider[] colliders;
     public Vector3 jointPosition;
     public Quaternion jointRotation;
 }
