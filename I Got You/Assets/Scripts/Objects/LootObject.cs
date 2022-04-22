@@ -107,6 +107,11 @@ public class LootObject : MonoBehaviourPun
 
     private void OnTriggerEnter(Collider other)
     {
+        if (playerManager == null)
+        {
+            return;
+        }
+
         if (other.CompareTag("PlayerCol"))
         {
             if (lootType == LootTypes.SMALLAMMO)
@@ -140,6 +145,11 @@ public class LootObject : MonoBehaviourPun
 
     private void OnTriggerExit(Collider other)
     {
+        if (playerManager == null)
+        {
+            return;
+        }
+
         if (other.CompareTag("PlayerCol") && lootType != LootTypes.SMALLAMMO && lootType != LootTypes.MEDIUMAMMO)
         {
             PlayerStats playerStats = playerManager.StatsOfAllPlayers[other];

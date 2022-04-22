@@ -119,7 +119,11 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     private void KillEnemy(int dmg, Vector3 shootDir)
     {
         dead = true;
-        syncMovement.IsSyncing = false;
+
+        if (syncMovement != null)
+        {
+            syncMovement.IsSyncing = false;
+        }
 
         if (ragdollController == null)
         {
@@ -159,7 +163,11 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
         }
 
         photonView.Synchronization = ViewSynchronization.UnreliableOnChange;
-        syncMovement.IsSyncing = true;
+
+        if (syncMovement != null)
+        {
+            syncMovement.IsSyncing = true;
+        }        
 
         foreach (MonoBehaviour item in componentsToWork)
         {

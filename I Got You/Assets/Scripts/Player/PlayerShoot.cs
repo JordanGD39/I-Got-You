@@ -14,8 +14,7 @@ public class PlayerShoot : MonoBehaviourPun
     [SerializeField] private int currentMaxAmmo = 0;
     [SerializeField] private int secondaryGunAmmo = 0;
     [SerializeField] private int secondaryGunMaxAmmo = 0;
-    [SerializeField] private float distanceForExtraDamage = 20;
-    [SerializeField] private float distanceForLowerDamage = 100;
+    [SerializeField] private bool canShoot = false;
     [SerializeField] private Transform shootPoint;
     [SerializeField] private LayerMask hitLayer;
     [SerializeField] private AudioClip emptyAmmo;
@@ -29,7 +28,6 @@ public class PlayerShoot : MonoBehaviourPun
     private bool prevHoldTrigger = false;
     private bool reloading = false;
     private bool interacting = false;
-    private bool canShoot = true;
 
     private PlayerUI playerUI;
     private PlayerStats playerStats;
@@ -61,8 +59,8 @@ public class PlayerShoot : MonoBehaviourPun
         playerUI = FindObjectOfType<PlayerUI>();
 
         GiveFullAmmo(true);
-
-        UpdateCurrentVisibleGun();
+        canShoot = false;
+        StartChangingCurrentGun();
     }
 
     public void GiveFullAmmo(bool secondary)
@@ -110,7 +108,7 @@ public class PlayerShoot : MonoBehaviourPun
             GiveFullAmmo(false);
         }
 
-        UpdateCurrentVisibleGun();
+        StartChangingCurrentGun();
     }
 
     // Update is called once per frame
@@ -184,6 +182,16 @@ public class PlayerShoot : MonoBehaviourPun
 
         if ((currentGun.ShootType == GunObject.ShootTypes.MANUAL || currentGun.ShootType == GunObject.ShootTypes.BURST) && attackPressed || currentGun.ShootType == GunObject.ShootTypes.AUTO && attackHold)
         {
+            if (currentAmmo > 0)
+            {
+                timer = currentGun.ShootType != GunObject.ShootTypes.BURST ? currentGun.ShootDelay : currentGun.ShootDelay * currentGun.BulletCount;
+            }
+            else
+            {
+                ReloadGun();
+                return;
+            }
+
             damageToEnemies.Clear();
 
             if (currentGun.ShootType != GunObject.ShootTypes.BURST)
@@ -205,15 +213,6 @@ public class PlayerShoot : MonoBehaviourPun
             }
 
             currentGunHolder.GunAnim.SetTrigger("Shoot");
-
-            if (currentAmmo > 0)
-            {
-                timer = currentGun.ShootType != GunObject.ShootTypes.BURST ? currentGun.ShootDelay : currentGun.ShootDelay * currentGun.BulletCount;
-            }
-            else
-            {
-                ReloadGun();
-            }
         }
     }
 
@@ -389,26 +388,32 @@ public class PlayerShoot : MonoBehaviourPun
             timer = 0;
             currentGunHolder.GunAnim.speed = 1;
             currentGunHolder.GunAnim.ResetTrigger("Reload");
-            currentGunHolder.gameObject.SetActive(false);
-            GunObject secondGun = secondaryGun;
-            int secondaryAmmo = secondaryGunAmmo;
-            int secondaryMaxAmmo = secondaryGunMaxAmmo;
-   
-            secondaryGun = currentGun;
-            currentGun = secondGun;
+            PutWeaponAway();
+            currentGunHolder.OnGunPutAway = ChangeWeaponAndAmmo;
 
-            secondaryGunAmmo = currentAmmo;
-            currentAmmo = secondaryAmmo;
-
-            secondaryGunMaxAmmo = currentMaxAmmo;
-            currentMaxAmmo = secondaryMaxAmmo;
-
-            playerUI.UpdateAmmo(currentAmmo, currentMaxAmmo);
-            UpdateCurrentVisibleGun();
+            StartChangingCurrentGun();
         }
     }
 
-    private void UpdateCurrentVisibleGun()
+    private void ChangeWeaponAndAmmo()
+    {
+        GunObject secondGun = secondaryGun;
+        int secondaryAmmo = secondaryGunAmmo;
+        int secondaryMaxAmmo = secondaryGunMaxAmmo;
+
+        secondaryGun = currentGun;
+        currentGun = secondGun;
+
+        secondaryGunAmmo = currentAmmo;
+        currentAmmo = secondaryAmmo;
+
+        secondaryGunMaxAmmo = currentMaxAmmo;
+        currentMaxAmmo = secondaryMaxAmmo;
+
+        playerUI.UpdateAmmo(currentAmmo, currentMaxAmmo);
+    }
+
+    private void StartChangingCurrentGun()
     {
         if (PhotonNetwork.IsConnected && photonView.IsMine)
         {
@@ -440,7 +445,22 @@ public class PlayerShoot : MonoBehaviourPun
             }
         }
 
+        if (currentGunHolder == null)
+        {
+            currentGunHolder = weaponReference[currentGun.name];
+            UpdateCurrentVisibleGun();
+            return;
+        }
+        currentGunHolder.OnGunCanShoot = null;
+        currentGunHolder.OnGunPutAway += UpdateCurrentVisibleGun;
+    }
+
+    private void UpdateCurrentVisibleGun()
+    {
+        currentGunHolder.gameObject.SetActive(false);
         currentGunHolder = weaponReference[currentGun.name];
+        currentGunHolder.OnGunPutAway = null;
+        currentGunHolder.OnGunCanShoot = () => { canShoot = true; };
 
         if (audioSource == null)
         {
@@ -472,7 +492,7 @@ public class PlayerShoot : MonoBehaviourPun
             currentGunHolder.gameObject.SetActive(false);
         }
 
-        UpdateCurrentVisibleGun();
+        StartChangingCurrentGun();
     }
 
     private void CheckInteract()
@@ -482,6 +502,12 @@ public class PlayerShoot : MonoBehaviourPun
             playerStats.OnInteract(playerStats);
             interacting = true;
         }
+    }
+
+    public void PutWeaponAway()
+    {
+        canShoot = false;
+        currentGunHolder.GunAnim.SetTrigger("PutAwayGun");
     }
 }
 

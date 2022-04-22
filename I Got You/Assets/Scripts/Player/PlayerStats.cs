@@ -39,10 +39,21 @@ public class PlayerStats : MonoBehaviourPun
         }      
     }
 
-    public void Heal()
+    public void Heal(int healthGain)
     {
-        health = currentMaxHealth;
+        if (health >= currentMaxHealth)
+        {
+            health = currentMaxHealth;
+            return;
+        }
+
+        health += healthGain;
         playerUI.UpdateHealth(health);
+    }
+
+    public bool PlayerAtMaxHealth()
+    {
+        return health >= currentMaxHealth;
     }
 
     public void Damage(int dmg)

@@ -10,6 +10,12 @@ public class GunHolder : MonoBehaviour
     public Animator GunAnim { get; private set; }
     public ParticleSystem MuzzleFlash { get; private set; }
 
+    public delegate void GunPutAway();
+    public GunPutAway OnGunPutAway;
+
+    public delegate void GunCanShoot();
+    public GunPutAway OnGunCanShoot;
+
     private void Start()
     {
         if (GunAnim == null)
@@ -17,5 +23,15 @@ public class GunHolder : MonoBehaviour
             GunAnim = GetComponent<Animator>();
             MuzzleFlash = GetComponentInChildren<ParticleSystem>();
         }
+    }
+
+    public void GunIsPutAway()
+    {
+        OnGunPutAway?.Invoke();
+    }
+
+    public void GunIsAbleToShoot()
+    {
+        OnGunCanShoot?.Invoke();
     }
 }
