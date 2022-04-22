@@ -447,20 +447,35 @@ public class PlayerShoot : MonoBehaviourPun
 
         if (currentGunHolder == null)
         {
-            currentGunHolder = weaponReference[currentGun.name];
             UpdateCurrentVisibleGun();
             return;
         }
-        currentGunHolder.OnGunCanShoot = null;
-        currentGunHolder.OnGunPutAway += UpdateCurrentVisibleGun;
+
+        if (PhotonNetwork.IsConnected && !photonView.IsMine)
+        {
+            UpdateCurrentVisibleGun();
+        }
+        else
+        {
+            currentGunHolder.OnGunCanShoot = null;
+            currentGunHolder.OnGunPutAway += UpdateCurrentVisibleGun;
+        }        
     }
 
     private void UpdateCurrentVisibleGun()
     {
-        currentGunHolder.gameObject.SetActive(false);
+        if (currentGunHolder != null)
+        {
+            currentGunHolder.gameObject.SetActive(false);
+        }
+        
         currentGunHolder = weaponReference[currentGun.name];
-        currentGunHolder.OnGunPutAway = null;
-        currentGunHolder.OnGunCanShoot = () => { canShoot = true; };
+
+        if (!PhotonNetwork.IsConnected || photonView.IsMine)
+        {
+            currentGunHolder.OnGunPutAway = null;
+            currentGunHolder.OnGunCanShoot = () => { canShoot = true; };
+        }        
 
         if (audioSource == null)
         {
