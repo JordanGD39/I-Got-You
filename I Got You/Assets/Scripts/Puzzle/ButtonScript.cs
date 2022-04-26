@@ -7,13 +7,14 @@ public class ButtonScript : MonoBehaviour
     [SerializeField]
     private bool isPressed = false;
     public bool IsPressed { get { return isPressed; } }
+    private bool hasTime = false;
+    public bool HasTime { get { return hasTime; } }
     [SerializeField]
     private int buttonIndex;
     [SerializeField]
-    private GameObject clock;
-    [SerializeField]
-    private List<GameObject> clockObject;
+    private ClockScript clock;
     private Animator anim;
+    
 
     private void Start()
     {
@@ -27,10 +28,11 @@ public class ButtonScript : MonoBehaviour
         if (inRange && Input.GetKeyDown(KeyCode.E))
         {
             isPressed = !isPressed;
+            hasTime = true;
             anim.Play("Pressed");
             Debug.Log("Clock starting!");
-            clockObject[buttonIndex].GetComponent<ClockScript>().Clock();
-            clock.GetComponent<ClockScript>().Clock();
+            clock.Clock();
+          //  clockObject[buttonIndex].GetComponent<ClockScript>().Clock();
         }
     }
     private void OnTriggerEnter(Collider other)

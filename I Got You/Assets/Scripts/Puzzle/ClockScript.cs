@@ -19,6 +19,16 @@ public class ClockScript : MonoBehaviour
     [SerializeField]
     private ButtonScript button;
     private bool pressedOnce = false;
+    private bool clockComplete = false;
+    private ClockManager manager;
+    private int startHour;
+    private int startMinute;
+
+    private void Start()
+    {
+        manager = FindObjectOfType<ClockManager>();
+    }
+
 
     public void Clock() 
     {
@@ -31,6 +41,8 @@ public class ClockScript : MonoBehaviour
                 randomMinute = Random.Range(1, 60);
                 goalHour = randomHour + Random.Range(1, 4);
                 goalMinute = randomMinute + Random.Range(1, 60);
+                startHour = randomHour;
+                startMinute = randomMinute;
                 pressedOnce = true;
 
                 string goalHourZero = "";
@@ -58,15 +70,6 @@ public class ClockScript : MonoBehaviour
 
                 goalTime.text = goalHourZero + goalHour + ":" + goalMinuteZero + goalMinute;
 
-                if (randomHour == goalHour)
-                {
-                    randomHour = Random.Range(1, 24);
-                }
-
-                if (randomMinute == goalMinute)
-                {
-                    randomMinute = Random.Range(1, 60);
-                }
             }
             InvokeRepeating("UpdateClock", 0, 1);
 
@@ -78,6 +81,19 @@ public class ClockScript : MonoBehaviour
         else if (!button.IsPressed)
         {
             CancelInvoke();
+
+            if (goalHour == randomHour && goalMinute == randomMinute && !clockComplete)
+            {
+                manager.FinishedClocks++;
+                clockComplete = true;
+                manager.CheckAllCompleted();
+            }
+
+            if (randomMinute > goalMinute || randomHour > goalHour)
+            {
+                randomHour = startHour;
+                randomMinute = startMinute;
+            }
         }
     }
 
