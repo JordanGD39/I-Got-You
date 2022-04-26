@@ -11,15 +11,38 @@ public class ButtonScript : MonoBehaviour
     private int buttonIndex;
     [SerializeField]
     private GameObject clock;
+    private Animator anim;
 
-
-    private void OnTriggerStay(Collider other)
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        anim = GetComponent<Animator>();
+    }
+
+    private bool inRange = false;
+
+    private void Update()
+    {
+        if (inRange && Input.GetKeyDown(KeyCode.E))
         {
-            isPressed =! isPressed;
+            isPressed = !isPressed;
+            anim.Play("Pressed");
             Debug.Log("Clock starting!");
             clock.GetComponent<ClockScript>().Clock();
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("PlayerCol"))
+        {
+            inRange = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("PlayerCol"))
+        {
+            inRange = false;
         }
     }
 }
