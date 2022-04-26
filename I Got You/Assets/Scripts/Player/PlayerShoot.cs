@@ -14,7 +14,8 @@ public class PlayerShoot : MonoBehaviourPun
     [SerializeField] private int currentMaxAmmo = 0;
     [SerializeField] private int secondaryGunAmmo = 0;
     [SerializeField] private int secondaryGunMaxAmmo = 0;
-    [SerializeField] private bool canShoot = false;
+    [SerializeField] private bool canShoot = true;
+    [SerializeField] private bool switching = false;
     [SerializeField] private Transform shootPoint;
     [SerializeField] private LayerMask hitLayer;
     [SerializeField] private AudioClip emptyAmmo;
@@ -59,7 +60,7 @@ public class PlayerShoot : MonoBehaviourPun
         playerUI = FindObjectOfType<PlayerUI>();
 
         GiveFullAmmo(true);
-        canShoot = false;
+        switching = true;
         StartChangingCurrentGun();
     }
 
@@ -104,7 +105,7 @@ public class PlayerShoot : MonoBehaviourPun
         else
         {
             currentGun = gun;
-            currentGunHolder.gameObject.SetActive(false);
+            PutWeaponAway();
             GiveFullAmmo(false);
         }
 
@@ -119,7 +120,7 @@ public class PlayerShoot : MonoBehaviourPun
             return;
         }
 
-        if (canShoot)
+        if (canShoot && !switching)
         {
             CheckShoot();
         }
@@ -129,7 +130,11 @@ public class PlayerShoot : MonoBehaviourPun
         if (!interacting)
         {
             CheckReload();
-            CheckChangeSelectedWeapon();
+
+            if (!switching)
+            {
+                CheckChangeSelectedWeapon();
+            }            
         }
         else
         {
@@ -474,7 +479,7 @@ public class PlayerShoot : MonoBehaviourPun
         if (!PhotonNetwork.IsConnected || photonView.IsMine)
         {
             currentGunHolder.OnGunPutAway = null;
-            currentGunHolder.OnGunCanShoot = () => { canShoot = true; };
+            currentGunHolder.OnGunCanShoot = () => { switching = false; };
         }        
 
         if (audioSource == null)
@@ -521,8 +526,15 @@ public class PlayerShoot : MonoBehaviourPun
 
     public void PutWeaponAway()
     {
-        canShoot = false;
+        switching = true;
         currentGunHolder.GunAnim.SetTrigger("PutAwayGun");
+    }
+
+    public void PutWeaponBack()
+    {
+        switching = false;
+        currentGunHolder.gameObject.SetActive(false);
+        currentGunHolder.gameObject.SetActive(true);
     }
 }
 

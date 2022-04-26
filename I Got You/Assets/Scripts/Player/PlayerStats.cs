@@ -8,12 +8,14 @@ public class PlayerStats : MonoBehaviourPun
     public enum ClassNames { SCOUT, TANK, SUPPORT, BOMBER }
     [SerializeField] private ClassNames currentClass;
     [SerializeField] private int health = 100;
+    public int Health { get { return health; } }
     [SerializeField] private int maxHealth = 100;
     private int currentMaxHealth = 100;
 
     private PlayerUI playerUI;
     private PlayerRevive playerRevive;
     public PlayerShoot PlayerShootScript { get; private set; }
+    public PlayerHealing PlayerHealingScript { get; private set; }
     private Animator anim;
     private int healthIncreaseCounter = 0;
     private bool isDown = false;
@@ -29,6 +31,7 @@ public class PlayerStats : MonoBehaviourPun
         currentMaxHealth = maxHealth;
         anim = GetComponentInChildren<Animator>();
         PlayerShootScript = GetComponent<PlayerShoot>();
+        PlayerHealingScript = GetComponent<PlayerHealing>();
 
         if (photonView.IsMine || !PhotonNetwork.IsConnected)
         {

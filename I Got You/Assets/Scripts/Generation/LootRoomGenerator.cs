@@ -5,6 +5,12 @@ using Photon.Pun;
 
 public class LootRoomGenerator : MonoBehaviourPun
 {
+    [SerializeField] private float healthDropChance = 20;
+    [SerializeField] private float healthDropMin = 5;
+    [SerializeField] private float healthDropChanceModifier = 2;
+    [SerializeField] private float healthDropChanceIncreasePlayerHealth = 20;
+    [SerializeField] private float minPlayerHealthForMaxChance = 20;
+
     [SerializeField] private float weaponDropChance = 10;
     [SerializeField] private float weaponDropChanceModifier = 3;
     [SerializeField] private float weaponDropChanceLimit = 40;
@@ -79,15 +85,50 @@ public class LootRoomGenerator : MonoBehaviourPun
                 continue;
             }
 
-            rand = Random.Range(0, 100);
+            Debug.Log("YES");
+            loot.gameObject.SetActive(true);
 
             if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
             {
                 photonView.RPC("ShowLootBoxForOthers", RpcTarget.Others, (byte)allLoot.IndexOf(loot));
             }
 
-            Debug.Log("YES");
-            loot.gameObject.SetActive(true);
+            rand = Random.Range(0, 100);
+
+            float itemChance = healthDropChance - (healthDropChanceModifier * difficultyManager.DifficultyLevel);
+
+            if (itemChance < healthDropMin)
+            {
+                itemChance = healthDropMin;
+            }
+
+            float currentAllPlayersHealth = 0;
+            int maxHealthers = 0;
+
+            for (int i = 0; i < playerManager.Players.Count; i++)
+            {
+                currentAllPlayersHealth += playerManager.Players[i].Health;
+
+                if (playerManager.Players[i].PlayerAtMaxHealth())
+                {
+                    maxHealthers++;
+                }
+            }
+
+            if (maxHealthers < playerManager.Players.Count && currentAllPlayersHealth > 0)
+            {
+                float minAllPlayersHealth = minPlayerHealthForMaxChance * playerManager.Players.Count;
+                itemChance += (float)healthDropChanceIncreasePlayerHealth * (minAllPlayersHealth / currentAllPlayersHealth);
+            }
+            Debug.Log("Chance: " + itemChance + " num: " + rand);
+
+            if (rand <= itemChance)
+            {
+                loot.UpdateLootType(LootObject.LootTypes.HEALTH, -1);
+                continue;
+            }
+
+            rand = Random.Range(0, 100);
 
             float chance = weaponDropChance + (weaponDropChanceModifier * difficultyManager.DifficultyLevel);
 

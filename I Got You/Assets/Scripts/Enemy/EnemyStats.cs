@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.AI;
 
 public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
@@ -15,6 +16,7 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     private EnemyManager enemyManager;
     private PlayerManager playerManager;
     private RagdollController ragdollController;
+    private NavMeshAgent agent;
     private List<MonoBehaviour> componentsToWork = new List<MonoBehaviour>();
     private List<Hitbox> hitboxes = new List<Hitbox>();
 
@@ -120,6 +122,9 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         dead = true;
 
+        agent.velocity = Vector3.zero;
+        agent.enabled = false;
+
         if (syncMovement != null)
         {
             syncMovement.IsSyncing = false;
@@ -156,6 +161,13 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     public void CallDisableRagdoll()
     {
         dead = false;
+
+        if (agent == null)
+        {
+            agent = GetComponent<NavMeshAgent>();
+        }
+
+        agent.enabled = true;
 
         if (syncMovement == null)
         {

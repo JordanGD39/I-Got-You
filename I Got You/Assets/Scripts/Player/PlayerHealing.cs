@@ -8,18 +8,27 @@ public class PlayerHealing : MonoBehaviour
     [SerializeField] private float healDelay = 2;
     [SerializeField] private int startingHealthGain = 60;
     [SerializeField] private int healthGain = 60;
+    [SerializeField] private int healthGainPerSip = 1;
     [SerializeField] private float healthGainInterval = 0.25f;
+    [SerializeField] private float afterHealthGainInterval = 0.1f;
     [SerializeField] private bool healing = false;
     private PlayerShoot playerShoot;
     private PlayerStats playerStats;
+    private PlayerUI playerUI;
+    private Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponentInChildren<Animator>();
         playerStats = GetComponent<PlayerStats>();
         playerShoot = GetComponent<PlayerShoot>();
+        playerUI = FindObjectOfType<PlayerUI>();
 
         healthGain = startingHealthGain;
+
+        playerUI.HideChickenSoupBar();
+        playerUI.UpdateHealthItemCount(healingItems);
     }
 
     // Update is called once per frame
@@ -28,12 +37,19 @@ public class PlayerHealing : MonoBehaviour
         CheckHealing();
     }
 
+    public void AddHealthItem()
+    {
+        healingItems++;
+        playerUI.UpdateHealthItemCount(healingItems);
+    }
+
     private void CheckHealing()
     {
         if (!healing && !playerStats.PlayerAtMaxHealth() && healingItems > 0 && Input.GetButtonDown("Item"))
         {
-            healthGain = startingHealthGain;
             healing = true;
+            anim.SetBool("Healing", true);
+            playerShoot.PutWeaponAway();
 
             StartCoroutine(nameof(HealingPlayer));
         }
@@ -45,24 +61,35 @@ public class PlayerHealing : MonoBehaviour
         }
     }
 
-    private IEnumerator HealingPlayer()
+    public IEnumerator HealingPlayer()
     {
-        yield return new WaitForSeconds(healDelay);
+        playerUI.UpdateChickenSoupBar(healthGain, startingHealthGain);
 
-        while (healthGain > 0)
+        yield return new WaitForSeconds(healDelay + healthGainInterval);
+
+        while (healthGain > 0 && healing)
         {
-            healthGain--;
+            healthGain -= healthGainPerSip;
+            playerUI.UpdateChickenSoupBar(healthGain, startingHealthGain);
 
-            playerStats.Heal(1);
-            yield return new WaitForSeconds(healthGainInterval);
+            playerStats.Heal(healthGainPerSip);
+            yield return new WaitForSeconds(healthGainInterval + afterHealthGainInterval);
         }
 
-        healingItems--;
-        StopHealing();
+        if (healing)
+        {
+            healingItems--;
+            healthGain = startingHealthGain;
+            playerUI.UpdateHealthItemCount(healingItems);
+            StopHealing();
+        }        
     }
 
-    private void StopHealing()
+    public void StopHealing()
     {
+        playerUI.HideChickenSoupBar();
+        anim.SetBool("Healing", false);
         healing = false;
+        playerShoot.PutWeaponBack();
     }
 }

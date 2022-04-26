@@ -10,17 +10,21 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Text maxHealthText;
     [SerializeField] private Text ammoText;
     [SerializeField] private Text maxAmmoText;
+    [SerializeField] private Text healthItemCount;
+    [SerializeField] private GameObject healthItemPanel;
     [SerializeField] private TextMeshProUGUI errorText;
     [SerializeField] private TextMeshProUGUI roundText;
     [SerializeField] private RectTransform hitMarker;
     [SerializeField] private RectTransform canvas;
     [SerializeField] private GameObject bloodScreen;
     [SerializeField] private GameObject errorPopup;
-    private Vector2 uiOffset;
+    [SerializeField] private GameObject chickenSoupBarPanel;
+    [SerializeField] private Image chickenSoupBar;
+    //private Vector2 uiOffset;
 
     private void Start()
     {
-        uiOffset = new Vector2(canvas.sizeDelta.x / 2f, canvas.sizeDelta.y / 2f);
+        //uiOffset = new Vector2(canvas.sizeDelta.x / 2f, canvas.sizeDelta.y / 2f);
         bloodScreen.SetActive(false);
         errorPopup.SetActive(false);
     }
@@ -68,5 +72,26 @@ public class PlayerUI : MonoBehaviour
     {
         errorText.text = error;
         errorPopup.gameObject.SetActive(true);
+    }
+
+    public void UpdateHealthItemCount(int itemCount)
+    {
+        healthItemPanel.SetActive(itemCount > 0);
+
+        healthItemCount.text = itemCount.ToString();
+    }
+
+    public void UpdateChickenSoupBar(float currentAmount, float maxAmount)
+    {
+        healthItemPanel.SetActive(false);
+        chickenSoupBarPanel.SetActive(true);
+
+        chickenSoupBar.fillAmount = currentAmount / maxAmount;
+    }
+
+    public void HideChickenSoupBar()
+    {
+        chickenSoupBarPanel.SetActive(false);
+        healthItemPanel.SetActive(true);
     }
 }

@@ -16,6 +16,7 @@ public class PlayerRevive : MonoBehaviourPun
     private PlayerMovement playerMovement;
     private PlayerRotation playerRotation;
     private PlayerShoot playerShoot;
+    private PlayerHealing playerHealing;
     private PlayerManager playerManager;
     private Camera cam;
 
@@ -30,6 +31,7 @@ public class PlayerRevive : MonoBehaviourPun
         playerMovement = GetComponent<PlayerMovement>();
         playerRotation = GetComponent<PlayerRotation>();
         playerShoot = GetComponent<PlayerShoot>();
+        playerHealing = GetComponent<PlayerHealing>();
         deathCam.gameObject.SetActive(false);
 
         if (!PhotonNetwork.IsConnected || photonView.IsMine)
@@ -44,6 +46,9 @@ public class PlayerRevive : MonoBehaviourPun
         damageTimer = 0;
         timerStarted = true;
         playerRotation.StartLerpToResetPos();
+        playerHealing.StopAllCoroutines();
+        playerHealing.StopHealing();
+        playerHealing.enabled = false;
     }
 
     // Update is called once per frame

@@ -5,11 +5,12 @@ using Photon.Pun;
 
 public class LootObject : MonoBehaviourPun
 {
-    public enum LootTypes { PRIMARYWEAPON, SECONDARYWEAPON, SMALLAMMO, MEDIUMAMMO, LARGEAMMO }
+    public enum LootTypes { PRIMARYWEAPON, SECONDARYWEAPON, SMALLAMMO, MEDIUMAMMO, LARGEAMMO, HEALTH }
     [SerializeField] private LootTypes lootType = LootTypes.SMALLAMMO;
 
     [SerializeField] private GameObject ammoCrates;
     [SerializeField] private GameObject weapons;
+    [SerializeField] private GameObject items;
     [SerializeField] private int smallAmmoDrop = 50;
     [SerializeField] private int mediumAmmoDrop = 100;
     private WeaponsHolder weaponsHolder;
@@ -30,13 +31,23 @@ public class LootObject : MonoBehaviourPun
         if (type == LootTypes.PRIMARYWEAPON || type == LootTypes.SECONDARYWEAPON)
         {
             weapons.SetActive(true);
+            items.SetActive(false);
             ammoCrates.SetActive(false);
 
             DeactivateAllWeapons();
         }
+        else if(type == LootTypes.HEALTH)
+        {
+            items.SetActive(true);
+            weapons.SetActive(false);
+            ammoCrates.SetActive(false);
+
+            items.transform.GetChild(0).gameObject.SetActive(false);
+        }
         else
         {
             weapons.SetActive(false);
+            items.SetActive(false);
             ammoCrates.SetActive(true);
             ammoCrates.transform.GetChild(0).gameObject.SetActive(false);
             ammoCrates.transform.GetChild(1).gameObject.SetActive(false);
@@ -77,6 +88,9 @@ public class LootObject : MonoBehaviourPun
                 break;
             case LootTypes.LARGEAMMO:
                 ammoCrates.transform.GetChild(2).gameObject.SetActive(true);
+                break;
+            case LootTypes.HEALTH:
+                items.transform.GetChild(0).gameObject.SetActive(true);
                 break;
         }
 
@@ -128,6 +142,17 @@ public class LootObject : MonoBehaviourPun
             else if (lootType == LootTypes.MEDIUMAMMO)
             {
                 playerManager.StatsOfAllPlayers[other].PlayerShootScript.GiveAmmo(mediumAmmoDrop);
+
+                if (PhotonNetwork.IsConnected)
+                {
+                    photonView.RPC("DeactivateLootForOthers", RpcTarget.Others);
+                }
+
+                gameObject.SetActive(false);
+            }
+            else if (lootType == LootTypes.HEALTH)
+            {
+                playerManager.StatsOfAllPlayers[other].PlayerHealingScript.AddHealthItem();
 
                 if (PhotonNetwork.IsConnected)
                 {
