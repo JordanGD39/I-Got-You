@@ -20,11 +20,6 @@ public class ClockScript : MonoBehaviour
     private ButtonScript button;
     private bool pressedOnce = false;
 
-    private void Update()
-    {
-        Debug.Log(randomMinute);
-    }
-
     public void Clock() 
     {
         if (button.IsPressed)
@@ -34,12 +29,22 @@ public class ClockScript : MonoBehaviour
             {
                 randomHour = Random.Range(1, 24);
                 randomMinute = Random.Range(1, 60);
-                goalHour = Random.Range(1, 24);
-                goalMinute = Random.Range(1, 60);
+                goalHour = randomHour + Random.Range(1, 4);
+                goalMinute = randomMinute + Random.Range(1, 60);
                 pressedOnce = true;
 
                 string goalHourZero = "";
                 string goalMinuteZero = "";
+
+                if (goalHour >= 24)
+                {
+                    goalHour -= 24;
+                }
+
+                if (goalMinute >= 60)
+                {
+                    goalMinute -= 60;
+                }
 
                 if (goalHour >= 0 && goalHour < 10)
                 {
@@ -51,7 +56,7 @@ public class ClockScript : MonoBehaviour
                     goalMinuteZero = "0";
                 }
 
-                goalTime.text = goalHourZero + randomHour + ":" + goalMinuteZero + randomMinute;
+                goalTime.text = goalHourZero + goalHour + ":" + goalMinuteZero + goalMinute;
 
                 if (randomHour == goalHour)
                 {
@@ -73,7 +78,6 @@ public class ClockScript : MonoBehaviour
         else if (!button.IsPressed)
         {
             CancelInvoke();
-            Debug.Log("Clock stopped");
         }
     }
 

@@ -11,6 +11,8 @@ public class ButtonScript : MonoBehaviour
     private int buttonIndex;
     [SerializeField]
     private GameObject clock;
+    [SerializeField]
+    private List<GameObject> clockObject;
     private Animator anim;
 
     private void Start()
@@ -27,6 +29,7 @@ public class ButtonScript : MonoBehaviour
             isPressed = !isPressed;
             anim.Play("Pressed");
             Debug.Log("Clock starting!");
+            clockObject[buttonIndex].GetComponent<ClockScript>().Clock();
             clock.GetComponent<ClockScript>().Clock();
         }
     }
