@@ -78,15 +78,23 @@ public class PlayerHealing : MonoBehaviour
 
         if (healing)
         {
+            StopHealing();
+        }        
+    }
+
+    public void CheckEmpty()
+    {
+        if (healthGain <= 0)
+        {
             healingItems--;
             healthGain = startingHealthGain;
             playerUI.UpdateHealthItemCount(healingItems);
-            StopHealing();
         }        
     }
 
     public void StopHealing()
     {
+        CheckEmpty();
         playerUI.HideChickenSoupBar();
         anim.SetBool("Healing", false);
         healing = false;

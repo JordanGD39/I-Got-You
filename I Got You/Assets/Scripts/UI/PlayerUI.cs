@@ -22,6 +22,8 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Image chickenSoupBar;
     //private Vector2 uiOffset;
 
+    private int itemCount = 0;
+
     private void Start()
     {
         //uiOffset = new Vector2(canvas.sizeDelta.x / 2f, canvas.sizeDelta.y / 2f);
@@ -74,8 +76,9 @@ public class PlayerUI : MonoBehaviour
         errorPopup.gameObject.SetActive(true);
     }
 
-    public void UpdateHealthItemCount(int itemCount)
+    public void UpdateHealthItemCount(int count)
     {
+        itemCount = count;
         healthItemPanel.SetActive(itemCount > 0);
 
         healthItemCount.text = itemCount.ToString();
@@ -92,6 +95,6 @@ public class PlayerUI : MonoBehaviour
     public void HideChickenSoupBar()
     {
         chickenSoupBarPanel.SetActive(false);
-        healthItemPanel.SetActive(true);
+        healthItemPanel.SetActive(itemCount > 0);
     }
 }
