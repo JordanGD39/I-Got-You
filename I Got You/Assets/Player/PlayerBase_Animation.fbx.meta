@@ -1,0 +1,171 @@
+fileFormatVersion: 2
+guid: 1db6ed8a79fd30a4196b1ac4de8b0888
+ModelImporter:
+  serializedVersion: 20200
+  internalIDToNameTable:
+  - first:
+      74: 2441554833981110532
+    second: Idle Basic
+  - first:
+      74: 3918746972727779634
+    second: Walk Forward
+  - first:
+      74: 6470668044965509938
+    second: Walk Backwards
+  - first:
+      74: -8199120552157804618
+    second: Stride Left
+  - first:
+      74: -3769689058135324342
+    second: Stride Right
+  - first:
+      74: -4258715215775422352
+    second: Jump Antic
+  - first:
+      74: 5539831331247536789
+    second: Jump
+  - first:
+      74: 5917537482288442099
+    second: Fall
+  - first:
+      74: -7497848331705974981
+    second: Land
+  - first:
+      74: -1445268244221734047
+    second: Skorpion Hold
+  - first:
+      74: 5351057667487771118
+    second: Skorpion Shoot
+  - first:
+      74: 6899980191543422847
+    second: Skorpion Recover
+  - first:
+      74: 5159149502084362056
+    second: Skorpion Reload
+  - first:
+      74: 7666114318730065124
+    second: Shotgun Hold
+  - first:
+      74: 5168523527451388702
+    second: Shotgun Shoot
+  - first:
+      74: 806016112750649606
+    second: Shotgun Recover
+  - first:
+      74: -2483250232791132071
+    second: Shotgun Pump
+  - first:
+      74: -3320316126190923115
+    second: Shotgun Reload Antic
+  - first:
+      74: -3651695627174740920
+    second: Shotgun Reload
+  - first:
+      74: 4465489542114886503
+    second: MP5 Hold
+  - first:
+      74: 8173037329740025111
+    second: MP5 Shoot
+  - first:
+      74: -6374266035534890095
+    second: MP5 Recover
+  - first:
+      74: -7189203483247163902
+    second: MP5 Reload
+  externalObjects: {}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
