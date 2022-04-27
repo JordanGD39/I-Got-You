@@ -152,7 +152,12 @@ public class LootObject : MonoBehaviourPun
             }
             else if (lootType == LootTypes.HEALTH)
             {
-                playerManager.StatsOfAllPlayers[other].PlayerHealingScript.AddHealthItem();
+                bool succeeded = playerManager.StatsOfAllPlayers[other].PlayerHealingScript.AddHealthItem();
+
+                if (!succeeded)
+                {
+                    return;
+                }
 
                 if (PhotonNetwork.IsConnected)
                 {

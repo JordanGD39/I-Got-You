@@ -15,6 +15,7 @@ public class ClassInfoUI : MonoBehaviourPun
     
     private ClassSelectUI selectUI;
     private bool hasChosen = false;
+    private int playerIndex = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -55,11 +56,11 @@ public class ClassInfoUI : MonoBehaviourPun
         if (!hasChosen)
         {
             selectUI.NumberOfPlayersChosen++;
-        }        
+        }
 
         hasChosen = true;
 
-        if (PhotonFunctionHandler.IsPlayerOnline())
+        if (PhotonNetwork.IsConnected)
         {
             int index = (int)theClassName;
             photonView.RPC("UpdateClassNameOther", RpcTarget.OthersBuffered, (byte)index);

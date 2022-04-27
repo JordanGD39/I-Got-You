@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerHealing : MonoBehaviour
 {
     [SerializeField] private int healingItems = 0;
+    [SerializeField] private int maxHealthItems = 2;
     [SerializeField] private float healDelay = 2;
     [SerializeField] private int startingHealthGain = 60;
     [SerializeField] private int healthGain = 60;
@@ -17,6 +18,8 @@ public class PlayerHealing : MonoBehaviour
     private PlayerUI playerUI;
     private Animator anim;
 
+    private bool buffed = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,10 +28,28 @@ public class PlayerHealing : MonoBehaviour
         playerShoot = GetComponent<PlayerShoot>();
         playerUI = FindObjectOfType<PlayerUI>();
 
-        healthGain = startingHealthGain;
+        if (!buffed)
+        {
+            healthGain = startingHealthGain;
+        }        
 
         playerUI.HideChickenSoupBar();
         playerUI.UpdateHealthItemCount(healingItems);
+        playerUI.UpdateMaxHealthItemCount(maxHealthItems);
+    }
+
+    public void ModifyHealingStat(float multiplier)
+    {
+        if (!buffed)
+        {
+            healthGain = startingHealthGain;
+        }
+
+        buffed = true;
+        healthGain = Mathf.RoundToInt(healthGain * multiplier);
+        maxHealthItems = Mathf.RoundToInt(maxHealthItems * multiplier);
+
+        playerUI.UpdateMaxHealthItemCount(maxHealthItems);
     }
 
     // Update is called once per frame
@@ -37,10 +58,17 @@ public class PlayerHealing : MonoBehaviour
         CheckHealing();
     }
 
-    public void AddHealthItem()
+    public bool AddHealthItem()
     {
+        if (healingItems >= maxHealthItems)
+        {
+            return false;
+        }
+
         healingItems++;
         playerUI.UpdateHealthItemCount(healingItems);
+
+        return true;
     }
 
     private void CheckHealing()

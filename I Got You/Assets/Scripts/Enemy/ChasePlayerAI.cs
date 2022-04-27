@@ -18,8 +18,10 @@ public class ChasePlayerAI : MonoBehaviour
     [SerializeField] private float turnSpeed = 5;
     [SerializeField] private bool animsDone = false;
     private Animator anim;
+    private Vector3 previousAttackingSpot = Vector3.zero;
 
     private bool attacking = false;
+    private int startingAvoidancePriority = 0;
     private bool masterClient = true;
 
     // Start is called before the first frame update
@@ -34,6 +36,7 @@ public class ChasePlayerAI : MonoBehaviour
         playerManager = FindObjectOfType<PlayerManager>();
         
         agent = GetComponent<NavMeshAgent>();
+        startingAvoidancePriority = agent.avoidancePriority;
     }
 
     // Update is called once per frame
@@ -88,12 +91,21 @@ public class ChasePlayerAI : MonoBehaviour
 
         if (distance < distanceToStop)
         {
+            if (agent.avoidancePriority > 10)
+            {
+                previousAttackingSpot = transform.position;
+            }
+
             agent.velocity = Vector3.zero;
-            agent.enabled = false;
+            agent.avoidancePriority = 10;
+
+            agent.Warp(previousAttackingSpot);
+
+            previousAttackingSpot = transform.position;
         }
-        else
+        else if(agent.avoidancePriority != startingAvoidancePriority)
         {
-            agent.enabled = true;
+            agent.avoidancePriority = startingAvoidancePriority;
         }
     }
 

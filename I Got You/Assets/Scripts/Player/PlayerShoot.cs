@@ -19,6 +19,7 @@ public class PlayerShoot : MonoBehaviourPun
     [SerializeField] private Transform shootPoint;
     [SerializeField] private LayerMask hitLayer;
     [SerializeField] private AudioClip emptyAmmo;
+    [SerializeField] private float shootingDamageMultiplier = 1;
 
     private Dictionary<EnemyStats, DamageInfo> damageToEnemies = new Dictionary<EnemyStats, DamageInfo>();
 
@@ -62,6 +63,11 @@ public class PlayerShoot : MonoBehaviourPun
         GiveFullAmmo(true);
         switching = true;
         StartChangingCurrentGun();
+    }
+
+    public void ModifyDamageStat(float multiplier)
+    {
+        shootingDamageMultiplier = multiplier;
     }
 
     public void GiveFullAmmo(bool secondary)
@@ -304,13 +310,13 @@ public class PlayerShoot : MonoBehaviourPun
         EnemyStats enemy = enemyManager.StatsOfAllEnemies[enemyRoot];
         if (damageToEnemies.ContainsKey(enemy))
         {
-            damageToEnemies[enemy].damage += Mathf.RoundToInt(currentGun.Damage * damageMultiplier);
+            damageToEnemies[enemy].damage += Mathf.RoundToInt(currentGun.Damage * damageMultiplier * shootingDamageMultiplier);
             damageToEnemies[enemy].direction = dir;
             return;
         }
 
         DamageInfo damageInfo = new DamageInfo();
-        damageInfo.damage = Mathf.RoundToInt(currentGun.Damage * damageMultiplier);
+        damageInfo.damage = Mathf.RoundToInt(currentGun.Damage * damageMultiplier * shootingDamageMultiplier);
         damageInfo.direction = dir;
 
         damageToEnemies.Add(enemyManager.StatsOfAllEnemies[enemyRoot], damageInfo);

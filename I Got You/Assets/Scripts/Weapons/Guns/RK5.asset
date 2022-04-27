@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acf75c892a478d145a5c742e469f5532, type: 3}
   m_Name: RK5
   m_EditorClassIdentifier: 
-  damage: 8
+  damage: 16
   shootDelay: 0.12
   burstDelay: 0.066
   reloadSpeed: 0.825

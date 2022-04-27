@@ -14,16 +14,16 @@ public class ClassSelectUI : MonoBehaviour
     public int NumberOfPlayersChosen = 0;
 
     private bool hasClicked = false;
+    private int playerIndex = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        int thisPlayerIndex = 0;
         string playerName = "YOU";
 
         if (PhotonFunctionHandler.IsPlayerOnline())
         {
-            thisPlayerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1;
+            playerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1;
 
             string nickName = PhotonNetwork.LocalPlayer.NickName;
 
@@ -43,7 +43,7 @@ public class ClassSelectUI : MonoBehaviour
             }
         }
 
-        infoUI = classInfoParent.GetChild(thisPlayerIndex).GetComponent<ClassInfoUI>();
+        infoUI = classInfoParent.GetChild(playerIndex).GetComponent<ClassInfoUI>();
 
         infoUI.FullOpacityInfo();
 
@@ -62,6 +62,15 @@ public class ClassSelectUI : MonoBehaviour
         if (infoUI == null || !hasClicked)
         {
             return;
+        }
+
+        if (!PlayerChoiceManager.instance.ChosenClasses.ContainsKey(playerIndex))
+        {
+            PlayerChoiceManager.instance.ChosenClasses.Add(playerIndex, currentClass);
+        }  
+        else
+        {
+            PlayerChoiceManager.instance.ChosenClasses[playerIndex] = currentClass;
         }
 
         infoUI.UpdateClassName(currentClass);

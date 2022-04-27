@@ -25,6 +25,13 @@ public class PlayerMovement : MonoBehaviour
         stepOffset = characterController.stepOffset;
     }
 
+    public void ModifySpeedStats(float multiplier)
+    {
+        walkingSpeed *= multiplier;
+        runSpeed *= multiplier;
+        downSpeed *= multiplier;
+    }
+
     // Update is called once per frame
     void Update()
     {

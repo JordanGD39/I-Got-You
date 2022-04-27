@@ -8,9 +8,13 @@ public class PlayerUI : MonoBehaviour
 {
     [SerializeField] private Text healthText;
     [SerializeField] private Text maxHealthText;
+    [SerializeField] private Text shieldHealthText;
+    [SerializeField] private Animator shieldHealthAnim;
+    [SerializeField] private Text maxShieldHealthText;
     [SerializeField] private Text ammoText;
     [SerializeField] private Text maxAmmoText;
     [SerializeField] private Text healthItemCount;
+    [SerializeField] private Text maxHealthItemCount;
     [SerializeField] private GameObject healthItemPanel;
     [SerializeField] private TextMeshProUGUI errorText;
     [SerializeField] private TextMeshProUGUI roundText;
@@ -39,6 +43,23 @@ public class PlayerUI : MonoBehaviour
     public void UpdateMaxHealth(int maxHealth)
     {
         maxHealthText.text = "/" + maxHealth.ToString();
+    }
+
+    public void HideShieldHealth()
+    {
+        shieldHealthText.transform.parent.gameObject.SetActive(false);
+    }
+
+    public void UpdateShieldHealth(float health, int maxHealth)
+    {
+        shieldHealthAnim.SetBool("FadeOut", health == maxHealth);
+
+        shieldHealthText.text = Mathf.RoundToInt(health).ToString();
+    }
+
+    public void UpdateMaxShieldHealth(int maxHealth)
+    {
+        maxShieldHealthText.text = "/" + maxHealth.ToString();
     }
 
     public void UpdateAmmo(int ammo, int maxAmmo)
@@ -82,6 +103,11 @@ public class PlayerUI : MonoBehaviour
         healthItemPanel.SetActive(itemCount > 0);
 
         healthItemCount.text = itemCount.ToString();
+    }
+
+    public void UpdateMaxHealthItemCount(int count)
+    {
+        maxHealthItemCount.text = "/" + count.ToString();
     }
 
     public void UpdateChickenSoupBar(float currentAmount, float maxAmount)
