@@ -19,7 +19,7 @@ TagManager:
   - RenderAlways
   - IgnoreNavmesh
   - ThroughPlayer
-  - 
+  - DontRender
   - 
   - 
   - 

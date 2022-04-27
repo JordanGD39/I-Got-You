@@ -16,6 +16,7 @@ public class PlayerStats : MonoBehaviourPun
     [SerializeField] private int startingShieldHealth = 50;
     [SerializeField] private float regenDelay = 1;
     [SerializeField] private float regenSpeed = 0.25f;
+    [SerializeField] private Transform classModels;
     public bool HasShieldHealth { get; set; } = false;
 
     private PlayerUI playerUI;
@@ -49,8 +50,12 @@ public class PlayerStats : MonoBehaviourPun
         PlayerShootScript = GetComponent<PlayerShoot>();
         PlayerHealingScript = GetComponent<PlayerHealing>();
 
+        classModels.GetChild((int)currentClass).gameObject.SetActive(true);
+
         if (photonView.IsMine || !PhotonNetwork.IsConnected)
         {
+            SetLayerRecursively(classModels.GetChild((int)currentClass).gameObject, 10);
+
             playerUI = FindObjectOfType<PlayerUI>();
 
             if (currentClass != ClassNames.TANK)
@@ -64,6 +69,25 @@ public class PlayerStats : MonoBehaviourPun
             playerUI.UpdateMaxShieldHealth(startingShieldHealth);
             playerRevive = GetComponent<PlayerRevive>();
         }      
+    }
+
+    private void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        if (obj == null)
+        {
+            return;
+        }
+
+        obj.layer = newLayer;
+
+        foreach (Transform child in obj.transform)
+        {
+            if (child == null)
+            {
+                continue;
+            }
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
     }
 
     public void Heal(int healthGain)
