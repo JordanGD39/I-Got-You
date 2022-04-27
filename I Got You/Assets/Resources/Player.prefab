@@ -746,6 +746,7 @@ GameObject:
   - component: {fileID: 6712501813913824977}
   - component: {fileID: 6712501813913824980}
   - component: {fileID: 7996959184458137755}
+  - component: {fileID: 4013014212380019724}
   - component: {fileID: 6712501813913824976}
   - component: {fileID: 6712501813913824983}
   - component: {fileID: 6712501813913824982}
@@ -813,6 +814,18 @@ MonoBehaviour:
   scoutSpeedBuff: 1.1
   supportHealBuff: 1.5
   bomberDamageNerf: 0.75
+--- !u!114 &4013014212380019724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6712501813913824978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c1f92c93fb9c3d4c861a0e52a34dc5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!143 &6712501813913824976
 CharacterController:
   m_ObjectHideFlags: 0
@@ -953,6 +966,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healingItems: 0
+  maxHealthItems: 2
   healDelay: 1.25
   startingHealthGain: 30
   healthGain: 60
@@ -1562,14 +1576,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e281f99d5e99a9b4d93f4f8eb7944bf2, type: 3}
---- !u!4 &8343374651552618438 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3149758804948045098, guid: e281f99d5e99a9b4d93f4f8eb7944bf2, type: 3}
-  m_PrefabInstance: {fileID: 6377009092985920236}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8343374650287659249 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3149758803834667549, guid: e281f99d5e99a9b4d93f4f8eb7944bf2, type: 3}
+  m_PrefabInstance: {fileID: 6377009092985920236}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8343374651552618438 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3149758804948045098, guid: e281f99d5e99a9b4d93f4f8eb7944bf2, type: 3}
   m_PrefabInstance: {fileID: 6377009092985920236}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6477926642429164091
@@ -1805,14 +1819,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e281f99d5e99a9b4d93f4f8eb7944bf2, type: 3}
---- !u!4 &5063138841970412774 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3149758804948045098, guid: e281f99d5e99a9b4d93f4f8eb7944bf2, type: 3}
-  m_PrefabInstance: {fileID: 7923468928451822028}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5063138840752866257 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3149758803834667549, guid: e281f99d5e99a9b4d93f4f8eb7944bf2, type: 3}
+  m_PrefabInstance: {fileID: 7923468928451822028}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5063138841970412774 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3149758804948045098, guid: e281f99d5e99a9b4d93f4f8eb7944bf2, type: 3}
   m_PrefabInstance: {fileID: 7923468928451822028}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8326433269552146326
