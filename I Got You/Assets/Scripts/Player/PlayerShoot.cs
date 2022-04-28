@@ -150,6 +150,8 @@ public class PlayerShoot : MonoBehaviourPun
 
     private void CheckShoot()
     {
+        holdingTrigger = Input.GetAxisRaw("Attack") > 0.5f;
+
         bool attackPressed = Input.GetButtonDown("Attack") || (holdingTrigger && !prevHoldTrigger);
 
         if (currentAmmo < 0 || (currentMaxAmmo <= 0 && currentAmmo <= 0))
@@ -185,8 +187,7 @@ public class PlayerShoot : MonoBehaviourPun
             currentGunHolder.GunAnim.speed = 1;
             audioSource.PlayOneShot(currentGun.SwitchSFX);
         }
-
-        holdingTrigger = Input.GetAxisRaw("Attack") > 0.5f;
+        
         bool attackHold = Input.GetButton("Attack") || holdingTrigger;
 
         prevHoldTrigger = holdingTrigger;

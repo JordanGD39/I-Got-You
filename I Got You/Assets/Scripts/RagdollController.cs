@@ -10,6 +10,7 @@ public class RagdollController : MonoBehaviour
     [SerializeField] private float normalModifier = 3f;
     [SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer;
     [SerializeField] private MeshCollider meshCollider;
+    [SerializeField] private GameObject[] collidersToDisable;
     [SerializeField] private GameObject playerCollider;
     [SerializeField] private Material fadeMat;
     [SerializeField] private float fadeDelay = 3;
@@ -22,7 +23,17 @@ public class RagdollController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        meshCollider.enabled = true;
+        if (meshCollider != null)
+        {
+            meshCollider.enabled = true;
+        }
+        else
+        {
+            foreach (GameObject col in collidersToDisable)
+            {
+                col.SetActive(true);
+            }
+        }
 
         if (anim != null)
         {
@@ -74,14 +85,37 @@ public class RagdollController : MonoBehaviour
                 }
 
                 skinnedMeshRenderer.material = originalMat;
-                meshCollider.enabled = true;
+
+                if (meshCollider != null)
+                {
+                    meshCollider.enabled = true;
+                }
+                else
+                {
+                    foreach (GameObject col in collidersToDisable)
+                    {
+                        col.SetActive(true);
+                    }
+                }
+                
                 playerCollider.SetActive(true);
                 StopAllCoroutines();
             }
             else
             {
                 playerCollider.SetActive(false);
-                meshCollider.enabled = false;
+
+                if (meshCollider != null)
+                {
+                    meshCollider.enabled = false;
+                }
+                else
+                {
+                    foreach (GameObject col in collidersToDisable)
+                    {
+                        col.SetActive(false);
+                    }
+                }
 
                 foreach (Collider item in joint.colliders)
                 {

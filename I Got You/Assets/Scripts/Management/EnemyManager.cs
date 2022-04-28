@@ -6,4 +6,6 @@ public class EnemyManager : MonoBehaviour
 {
     private Dictionary<Transform, EnemyStats> statsOfAllEnemies = new Dictionary<Transform, EnemyStats>();
     public Dictionary<Transform, EnemyStats> StatsOfAllEnemies { get { return statsOfAllEnemies; } }
+
+    public bool ScoutAnalyzing { get; set; } = false;
 }

@@ -17,6 +17,8 @@ public class EnemyGenerator : MonoBehaviour
     [SerializeField] private int enemyInRoomLimit = 10;
     [SerializeField] private int enemiesToSpawnInRoomMin = 6;
     [SerializeField] private int enemiesToSpawnInRoomMax = 6;
+    [SerializeField] private int extraEnemiesPerPlayerMin = 1;
+    [SerializeField] private int extraEnemiesPerPlayerMax = 3;
     [SerializeField] private float wraptorSpawnChance = 20;
     [SerializeField] private float wraptorSpawnChanceLimit = 65;
     [SerializeField] private float wraptorSpawnChanceModifier = 2;
@@ -59,11 +61,11 @@ public class EnemyGenerator : MonoBehaviour
     {
         List<GeneratedEnemyInfo> generatedEnemyInfos = new List<GeneratedEnemyInfo>();
 
-        int randomEnemyCount = 0;
+        int randomEnemyCount = Random.Range(enemiesToSpawnInRoomMin, enemiesToSpawnInRoomMax);
 
-        for (int i = 0; i < playerManager.PlayersInGame.Count; i++)
+        for (int i = 0; i < playerManager.PlayersInGame.Count - 1; i++)
         {
-            randomEnemyCount += Random.Range(enemiesToSpawnInRoomMin, enemiesToSpawnInRoomMax);
+            randomEnemyCount += Random.Range(extraEnemiesPerPlayerMin, extraEnemiesPerPlayerMax);
         }
 
         randomEnemyCount += difficultyManager.DifficultyLevel;

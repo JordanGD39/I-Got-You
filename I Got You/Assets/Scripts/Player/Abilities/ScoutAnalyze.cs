@@ -5,6 +5,7 @@ using UnityEngine;
 public class ScoutAnalyze : MonoBehaviour
 {
     private GameObject analyzeVolume;
+    private EnemyManager enemyManager;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +25,7 @@ public class ScoutAnalyze : MonoBehaviour
         if (Input.GetButtonDown("Ability"))
         {
             analyzeVolume.SetActive(!analyzeVolume.activeSelf);
+            enemyManager.ScoutAnalyzing = !enemyManager.ScoutAnalyzing;
         }
     }
 }
