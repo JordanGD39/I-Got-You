@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float downSpeed = 2;
     [SerializeField] private float gravity = -9.8f;
     [SerializeField] private float jumpHeight = 10;
+    [SerializeField] private Animator anim;
+    [SerializeField] private float dampTime = 0.05f;
     private float stepOffset = 0.5f;
 
     private Vector3 velocity = Vector3.zero;
@@ -22,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         characterController.detectCollisions = false;
         playerStats = GetComponent<PlayerStats>();
+        anim = playerStats.ClassModels.GetChild((int)playerStats.CurrentClass).GetComponent<Animator>();
         stepOffset = characterController.stepOffset;
     }
 
@@ -48,8 +51,6 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 movement = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         movement.Normalize();
-        movement = transform.TransformDirection(movement);
-        movement.y = 0;
 
         float speed = 0;
 
@@ -61,6 +62,10 @@ public class PlayerMovement : MonoBehaviour
         {
             speed = downSpeed;
         }
+        movement = transform.TransformDirection(movement);
+        movement.y = 0;
+
+        anim.SetFloat("Speed", movement.magnitude * speed, dampTime, Time.deltaTime);
 
         characterController.Move(movement * speed * Time.deltaTime);
     }

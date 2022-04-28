@@ -42,6 +42,13 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
     {
         IsSyncing = gameObject.CompareTag("Player");
 
+        if (gameObject.CompareTag("Player"))
+        {
+            PlayerStats playerStats = GetComponent<PlayerStats>();
+
+            animator = playerStats.ClassModels.GetChild((int)playerStats.CurrentClass).GetComponent<Animator>();
+        }
+
         if (!PhotonNetwork.IsConnected)
         {
             if (model != null)

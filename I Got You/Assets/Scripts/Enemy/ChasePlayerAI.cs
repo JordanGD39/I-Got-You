@@ -22,7 +22,6 @@ public class ChasePlayerAI : MonoBehaviour
 
     private bool attacking = false;
     private int startingAvoidancePriority = 0;
-    private bool masterClient = true;
 
     // Start is called before the first frame update
     void Start()

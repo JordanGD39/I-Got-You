@@ -26,7 +26,11 @@ public class PlayerHealing : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         playerStats = GetComponent<PlayerStats>();
         playerShoot = GetComponent<PlayerShoot>();
-        playerUI = FindObjectOfType<PlayerUI>();
+
+        if (playerUI == null)
+        {
+            playerUI = FindObjectOfType<PlayerUI>();
+        }        
 
         if (!buffed)
         {
@@ -48,6 +52,11 @@ public class PlayerHealing : MonoBehaviour
         buffed = true;
         healthGain = Mathf.RoundToInt(healthGain * multiplier);
         maxHealthItems = Mathf.RoundToInt(maxHealthItems * multiplier);
+
+        if (playerUI == null)
+        {
+            playerUI = FindObjectOfType<PlayerUI>();
+        }
 
         playerUI.UpdateMaxHealthItemCount(maxHealthItems);
     }

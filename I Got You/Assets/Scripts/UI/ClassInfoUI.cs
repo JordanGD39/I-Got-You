@@ -15,7 +15,6 @@ public class ClassInfoUI : MonoBehaviourPun
     
     private ClassSelectUI selectUI;
     private bool hasChosen = false;
-    private int playerIndex = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -51,6 +50,17 @@ public class ClassInfoUI : MonoBehaviourPun
     {
         string editedClassName = UpperCaseFirstLetter(System.Enum.GetName(typeof(PlayerStats.ClassNames), (int)theClassName));
 
+        int playerIndex = PhotonNetwork.IsConnected ? (PhotonNetwork.LocalPlayer.ActorNumber - 1) : 0;
+
+        if (!PlayerChoiceManager.instance.ChosenClasses.ContainsKey(playerIndex))
+        {
+            PlayerChoiceManager.instance.ChosenClasses.Add(playerIndex, theClassName);
+        }
+        else
+        {
+            PlayerChoiceManager.instance.ChosenClasses[playerIndex] = theClassName;
+        }
+
         className.text = editedClassName;
 
         if (!hasChosen)
@@ -63,7 +73,7 @@ public class ClassInfoUI : MonoBehaviourPun
         if (PhotonNetwork.IsConnected)
         {
             int index = (int)theClassName;
-            photonView.RPC("UpdateClassNameOther", RpcTarget.OthersBuffered, (byte)index);
+            photonView.RPC("UpdateClassNameOther", RpcTarget.OthersBuffered, (byte)index, (byte)PhotonNetwork.LocalPlayer.ActorNumber);
         }
     }
 
@@ -75,7 +85,7 @@ public class ClassInfoUI : MonoBehaviourPun
     }
 
     [PunRPC]
-    void UpdateClassNameOther(byte classIndex)
+    void UpdateClassNameOther(byte classIndex, byte actorIndex)
     {
         Debug.Log(classIndex);
 
@@ -87,6 +97,18 @@ public class ClassInfoUI : MonoBehaviourPun
         hasChosen = true;
 
         PlayerStats.ClassNames theName = (PlayerStats.ClassNames)classIndex;
+
+        actorIndex -= 1;
+
+        if (!PlayerChoiceManager.instance.ChosenClasses.ContainsKey(actorIndex))
+        {
+            PlayerChoiceManager.instance.ChosenClasses.Add(actorIndex, theName);
+        }
+        else
+        {
+            PlayerChoiceManager.instance.ChosenClasses[actorIndex] = theName;
+        }
+
         string editedClassName = UpperCaseFirstLetter(System.Enum.GetName(typeof(PlayerStats.ClassNames), classIndex));
 
         className.text = editedClassName;

@@ -64,15 +64,6 @@ public class ClassSelectUI : MonoBehaviour
             return;
         }
 
-        if (!PlayerChoiceManager.instance.ChosenClasses.ContainsKey(playerIndex))
-        {
-            PlayerChoiceManager.instance.ChosenClasses.Add(playerIndex, currentClass);
-        }  
-        else
-        {
-            PlayerChoiceManager.instance.ChosenClasses[playerIndex] = currentClass;
-        }
-
         infoUI.UpdateClassName(currentClass);
 
         if (PhotonFunctionHandler.IsPlayerOnline())

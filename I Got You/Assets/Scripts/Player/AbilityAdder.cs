@@ -4,6 +4,8 @@ using Photon.Pun;
 
 public class AbilityAdder : MonoBehaviourPun
 {
+    private PlayerStats playerStats;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -12,8 +14,13 @@ public class AbilityAdder : MonoBehaviourPun
             return;
         }
 
-        PlayerStats playerStats = GetComponent<PlayerStats>();
+        playerStats = GetComponent<PlayerStats>();
 
+        AddAbility();
+    }
+
+    private void AddAbility()
+    {
         if (playerStats.CurrentClass != PlayerStats.ClassNames.SCOUT)
         {
             GameObject.FindGameObjectWithTag("ScoutVolume").SetActive(false);

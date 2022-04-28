@@ -17,6 +17,7 @@ public class PlayerStats : MonoBehaviourPun
     [SerializeField] private float regenDelay = 1;
     [SerializeField] private float regenSpeed = 0.25f;
     [SerializeField] private Transform classModels;
+    public Transform ClassModels { get { return classModels; } }
     public bool HasShieldHealth { get; set; } = false;
 
     private PlayerUI playerUI;
@@ -36,9 +37,13 @@ public class PlayerStats : MonoBehaviourPun
     {
         if (PlayerChoiceManager.instance != null)
         {
-            int playerIndex = PhotonNetwork.IsConnected ? PhotonNetwork.LocalPlayer.ActorNumber - 1 : 0;
+            foreach (int item in PlayerChoiceManager.instance.ChosenClasses.Keys)
+            {
+                Debug.Log("Actor: " + (photonView.OwnerActorNr - 1) +  " KeyNmr: " + item);
+            }
+            int playerIndex = PhotonNetwork.IsConnected ? photonView.OwnerActorNr - 1 : 0;
             currentClass = PlayerChoiceManager.instance.ChosenClasses[playerIndex];
-        }        
+        }
     }
 
     private void Start()
@@ -156,6 +161,8 @@ public class PlayerStats : MonoBehaviourPun
             isDown = true;
             anim.SetBool("Down", true);
             playerRevive.StartTimer();
+            StopCoroutine(nameof(StartShieldRegeneration));
+            playerUI.UpdateShieldHealth(0, startingShieldHealth);
         }
 
         playerUI.UpdateHealth(health);
