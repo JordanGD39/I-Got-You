@@ -16,15 +16,15 @@ public class RoomManager : MonoBehaviourPun
     [SerializeField] private int enemyDeathsInRoom = 0;
     [SerializeField] private int enemyDeathsToClearRoom = 0;
     [SerializeField] private int healthIncreasePerLevel = 20;
-    [SerializeField] private DoorOpen doorToThisRoom;
-    [SerializeField] private DoorOpen doorToOtherRoom;
+    [SerializeField] private DoorOpen[] doorsToThisRoom;
+    [SerializeField] private DoorOpen[] doorsToOtherRoom;
     private int currentNotPlacedIndex = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         difficultyManager = FindObjectOfType<DifficultyManager>();
-        doorToOtherRoom.OnOpenedDoor += PlaceDoorToThisRoom;
+        doorsToOtherRoom[0].OnOpenedDoor += PlaceDoorToThisRoom;
 
         if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
         {
@@ -33,7 +33,7 @@ public class RoomManager : MonoBehaviourPun
 
         boxHolder = GetComponentInChildren<EnemySpawnBoxHolder>();
         enemyGenerator = FindObjectOfType<EnemyGenerator>();
-        doorToThisRoom.OnOpenedDoor += PlaceEnemies;
+        doorsToThisRoom[0].OnOpenedDoor += PlaceEnemies;
     }
 
     private void PlaceEnemies()
@@ -123,9 +123,16 @@ public class RoomManager : MonoBehaviourPun
     {
         difficultyManager.IncreaseDifficulty();
 
-        doorToOtherRoom.gameObject.SetActive(true);
-        doorToOtherRoom.CloseOpeningDoor();
-        doorToThisRoom.gameObject.SetActive(false);
+        foreach (DoorOpen door in doorsToOtherRoom)
+        {
+            door.gameObject.SetActive(true);
+            door.CloseOpeningDoor();
+        }
+
+        foreach (DoorOpen door in doorsToThisRoom)
+        {
+            door.gameObject.SetActive(false);
+        }
 
         if (enemiesInRoom != null)
         {
@@ -140,10 +147,17 @@ public class RoomManager : MonoBehaviourPun
 
     private void DelaySwitchDoor()
     {
-        doorToOtherRoom.ResetDoor();
-        doorToOtherRoom.gameObject.SetActive(false);
-        doorToThisRoom.gameObject.SetActive(true);
-        doorToThisRoom.ResetDoor();
+        foreach (DoorOpen door in doorsToOtherRoom)
+        {
+            door.ResetDoor();
+            door.gameObject.SetActive(false);
+        }
+
+        foreach (DoorOpen door in doorsToThisRoom)
+        {
+            door.gameObject.SetActive(true);
+            door.ResetDoor();
+        }
     }
 
     private void PlaceNotYetSpawnedEnemy(GameObject enemyDied, int listIndex)

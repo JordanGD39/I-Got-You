@@ -10,6 +10,9 @@ public class DoorOpen : MonoBehaviourPun
     [SerializeField] private GameObject doorToClose;
     [SerializeField] private GameObject model;
     [SerializeField] private bool opened = true;
+    [SerializeField] private bool openOnly = false;
+    [SerializeField] private bool playerOpen = true;
+    [SerializeField] private bool allPlayersRequired = true;
     [SerializeField] private Animator openingDoorAnim;
     [SerializeField] private Animator closingDoorAnim;
 
@@ -34,7 +37,7 @@ public class DoorOpen : MonoBehaviourPun
 
     private void OnTriggerEnter(Collider other)
     {
-        if (opened || (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient))
+        if (opened || (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient) || !playerOpen)
         {
             return;
         }
@@ -50,7 +53,7 @@ public class DoorOpen : MonoBehaviourPun
 
             playersInRange.Add(other.gameObject);
 
-            if (playersInRange.Count >= playerManager.Players.Count)
+            if (playersInRange.Count >= playerManager.Players.Count || !allPlayersRequired)
             {
                 OpenDoor();
             }
@@ -65,13 +68,31 @@ public class DoorOpen : MonoBehaviourPun
         }
 
         opened = true;
-        doorToClose.SetActive(true);
+        
         openingDoorAnim.ResetTrigger("Open");
         openingDoorAnim.SetTrigger("Open");
         playersInRange.Clear();
-        closingDoorAnim.ResetTrigger("Close");
-        closingDoorAnim.SetTrigger("Close");
-        OnOpenedDoor?.Invoke();
+
+        if (!openOnly)
+        {
+            doorToClose.SetActive(true);
+            closingDoorAnim.ResetTrigger("Close");
+            closingDoorAnim.SetTrigger("Close");
+            OnOpenedDoor?.Invoke();
+        }        
+    }
+
+    public void OpenClosedDoor()
+    {
+        if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("OpenClosedDoorOthers", RpcTarget.Others);
+        }
+
+        opened = false;
+
+        closingDoorAnim.ResetTrigger("Open");
+        closingDoorAnim.SetTrigger("Open");
     }
 
     [PunRPC]
@@ -80,9 +101,15 @@ public class DoorOpen : MonoBehaviourPun
         OpenDoor();
     }
 
+    [PunRPC]
+    void OpenClosedDoorOthers()
+    {
+        OpenClosedDoor();
+    }
+
     private void OnTriggerExit(Collider other)
     {
-        if (opened || (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient))
+        if (opened || (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient) || !playerOpen)
         {
             return;
         }

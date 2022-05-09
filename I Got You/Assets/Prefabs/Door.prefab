@@ -359,6 +359,8 @@ MonoBehaviour:
   doorToClose: {fileID: 8802004519448721983}
   model: {fileID: 8802004519156722822}
   opened: 1
+  openOnly: 0
+  playerOpen: 1
   openingDoorAnim: {fileID: 8802004519156722817}
   closingDoorAnim: {fileID: 8802004519448721978}
 --- !u!114 &1814990265623649405
