@@ -26,6 +26,7 @@ public class LootRoomGenerator : MonoBehaviourPun
     [SerializeField] private float dropChance = 40;
 
     [SerializeField] private List<LootObject> allLoot = new List<LootObject>();
+    public List<LootObject> AllLoot { get { return allLoot; } }
     [SerializeField] private DoorOpen doorOpen;
     [SerializeField] private DoorOpen doorOutHere;
     [SerializeField] private List<LootObject> onePlayerLootDrops = new List<LootObject>();
@@ -42,9 +43,16 @@ public class LootRoomGenerator : MonoBehaviourPun
         difficultyManager = FindObjectOfType<DifficultyManager>();
         playerManager = FindObjectOfType<PlayerManager>();
 
-        doorOpen.OnOpenedDoor += PlaceLoot;
-        doorOutHere.OnOpenedDoor += TurnOffLootOthers;
-        doorOpen.gameObject.SetActive(false);        
+        if (doorOpen != null)
+        {
+            doorOpen.OnOpenedDoor += PlaceLoot;
+            doorOpen.gameObject.SetActive(false);
+        }
+
+        if (doorOutHere != null)
+        {
+            doorOutHere.OnOpenedDoor += TurnOffLootOthers;
+        }      
     }
 
     private void UpdateLootBasedOnPlayers()

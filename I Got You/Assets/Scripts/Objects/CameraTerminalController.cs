@@ -38,7 +38,11 @@ public class CameraTerminalController : MonoBehaviour
         movement = camera.TransformDirection(movement);
         movement.y = 0;
 
-        camera.localPosition += cameraSpeed * Time.deltaTime * movement;
+        float speed = 0;
+
+        speed = Input.GetButton("Sprint") ? cameraBoostSpeed : cameraSpeed;
+
+        camera.localPosition += speed * Time.deltaTime * movement;
 
         Vector3 restrictedPos = camera.localPosition;
 

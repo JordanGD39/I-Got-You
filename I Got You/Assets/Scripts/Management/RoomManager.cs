@@ -9,6 +9,8 @@ public class RoomManager : MonoBehaviourPun
     private DifficultyManager difficultyManager;
     private EnemyGenerator enemyGenerator;
 
+    public enum RoomModes {NONE, BATTLEONLY, PUZZLEEAT}
+    [SerializeField] private RoomModes roomMode;
     [SerializeField] private List<EnemyGenerator.GeneratedEnemyInfo> enemiesInRoom;
     [SerializeField] private List<int> enemiesNotPlacedCount = new List<int>();
     [SerializeField] private float enemyPlaceAtY = 0;
@@ -33,7 +35,20 @@ public class RoomManager : MonoBehaviourPun
 
         boxHolder = GetComponentInChildren<EnemySpawnBoxHolder>();
         enemyGenerator = FindObjectOfType<EnemyGenerator>();
-        doorsToThisRoom[0].OnOpenedDoor += PlaceEnemies;
+
+        switch (roomMode)
+        {
+            case RoomModes.NONE:
+                break;
+            case RoomModes.BATTLEONLY:
+                doorsToThisRoom[0].OnOpenedDoor += PlaceEnemies;
+                break;
+            case RoomModes.PUZZLEEAT:
+                doorsToThisRoom[0].OnOpenedDoor += GetComponent<PuzzleEat>().StartPuzzle;
+                break;
+            default:
+                break;
+        }     
     }
 
     private void PlaceEnemies()
