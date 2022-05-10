@@ -37,7 +37,7 @@ public class InteractableObject : MonoBehaviourPun
     protected virtual void PlayerTriggerEntered(PlayerStats playerStats)
     {
         playerStats.OnInteract = (PlayerStats stats) => {
-            string playerName = PhotonNetwork.IsConnected ? PhotonNetwork.PlayerList[stats.photonView.ControllerActorNr].NickName : "LocalPlayer";
+            string playerName = PhotonNetwork.IsConnected ? stats.photonView.Owner.NickName : "LocalPlayer";
             Debug.Log(playerName + " interacted with " + gameObject.name);
         };
     }

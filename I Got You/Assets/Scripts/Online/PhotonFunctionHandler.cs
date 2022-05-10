@@ -8,7 +8,7 @@ public static class PhotonFunctionHandler
 {
     public static GameObject InstantiateGameObject(GameObject theObject, Vector3 pos, Quaternion rotation)
     {
-        if (IsPlayerOnline())
+        if (PhotonNetwork.IsConnected)
         {
             return PhotonNetwork.Instantiate(theObject.name, pos, rotation);
         }

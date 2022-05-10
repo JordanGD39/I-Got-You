@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class KeycardObject : InteractableObject
 {
@@ -14,11 +15,28 @@ public class KeycardObject : InteractableObject
 
         if (playerStats.CurrentClass == assignedClass)
         {
-            playerStats.OnInteract += (PlayerStats stats) => { stats.PickUpInteractable(this); gameObject.SetActive(false); };
+            playerStats.OnInteract += PickUpKeycard;
         }
         else
         {
             Debug.Log("Not autorized to hold Keycard!");
         }
+    }
+
+    private void PickUpKeycard(PlayerStats stats)
+    {
+        stats.PickUpInteractable(this);
+
+        if (PhotonNetwork.IsConnected)
+        {
+            photonView.RPC("RemoveKeycardOthers", RpcTarget.Others);
+        }
+
+        transform.GetChild(0).gameObject.SetActive(false);
+    }
+
+    private void RemoveKeycardOthers()
+    {
+        transform.GetChild(0).gameObject.SetActive(false);
     }
 }

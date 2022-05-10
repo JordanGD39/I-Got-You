@@ -4813,7 +4813,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6712501813913824978, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6712501813913824980, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: currentClass
@@ -42780,6 +42780,7 @@ MonoBehaviour:
   cameraBoostSpeed: 16
   boundsX: {x: 0.6, y: 49}
   boundsZ: {x: -28.7, y: 19.5}
+  timeToCloseCam: 0.5
 --- !u!54 &1786818755
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -43490,8 +43491,8 @@ MonoBehaviour:
   enemyInRoomLimit: 10
   enemiesToSpawnInRoomMin: 1
   enemiesToSpawnInRoomMax: 1
-  extraEnemiesPerPlayerMin: 1
-  extraEnemiesPerPlayerMax: 3
+  extraEnemiesPerPlayerMin: 0
+  extraEnemiesPerPlayerMax: 0
   wraptorSpawnChance: 3
   wraptorSpawnChanceLimit: 15
   wraptorSpawnChanceModifier: 0.5

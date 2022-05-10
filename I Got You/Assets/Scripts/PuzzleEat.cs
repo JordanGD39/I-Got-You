@@ -23,14 +23,30 @@ public class PuzzleEat : MonoBehaviourPun
     {
         playerManager = FindObjectOfType<PlayerManager>();
 
-        int playerCount = PhotonNetwork.IsConnected ? PhotonNetwork.CountOfPlayersInRooms : 2;
+        int playerCount = PhotonNetwork.IsConnected ? PhotonNetwork.CountOfPlayersInRooms : 1;
+
+        if (playerCount <= 1)
+        {
+            playerCount = 2;
+        }
 
         for (int i = 0; i < playerCount - 1; i++)
         {
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                break;
+            }
+
             GameObject keycard = PhotonFunctionHandler.InstantiateGameObject(keycardPrefab, Vector3.zero, Quaternion.identity);
+            Debug.Log("Instantiating " + keycard.name);
 
             availableKeyCardsPool.Add(keycard.GetComponent<KeycardObject>());
             keycard.SetActive(false);
+
+            if (PhotonNetwork.IsConnected)
+            {
+                photonView.RPC("AddKeycardToListOthers", RpcTarget.Others, keycard.GetPhotonView().ViewID);
+            }
         }
 
         if (PhotonNetwork.IsConnected)
@@ -44,6 +60,15 @@ public class PuzzleEat : MonoBehaviourPun
             controlRoomDoor.PlayerOpen = false;
             controlRoomDoor.OpenOnly = true;
         }
+    }
+
+    [PunRPC]
+    void AddKeycardToListOthers(int viewId)
+    {
+        GameObject keycard = PhotonNetwork.GetPhotonView(viewId).gameObject;
+        availableKeyCardsPool.Add(keycard.GetComponent<KeycardObject>());
+
+        keycard.SetActive(false);
     }
 
     public void StartPuzzle()
@@ -87,6 +112,7 @@ public class PuzzleEat : MonoBehaviourPun
     void AddKeycardRolesOthers(int viewId)
     {
         AddKeycardRoles(PhotonNetwork.GetPhotonView(viewId).gameObject);
+        mazeDoor.OpenDoor();
     }
 
     private void AddKeycards()
@@ -96,13 +122,13 @@ public class PuzzleEat : MonoBehaviourPun
             return;
         }
 
-        GameObject playerOpeningControlRoom = PhotonNetwork.IsConnected ? controlRoomDoor.PlayersInRange[0] : null;
+        GameObject playerOpeningControlRoom = PhotonNetwork.IsConnected ? controlRoomDoor.PlayersInRange[0].transform.root.gameObject : null;
 
         AddKeycardRoles(playerOpeningControlRoom);
 
         if (PhotonNetwork.IsConnected)
         {
-            photonView.RPC("AddKeycardRolesOthers", RpcTarget.Others, controlRoomDoor.PlayersInRange[0].transform.root.gameObject.GetPhotonView().ViewID);
+            photonView.RPC("AddKeycardRolesOthers", RpcTarget.Others, playerOpeningControlRoom.GetPhotonView().ViewID);
         }
 
         int playerCount = playerManager.Players.Count - 1;

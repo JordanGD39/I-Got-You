@@ -6126,6 +6126,7 @@ MonoBehaviour:
   regenDelay: 3
   regenSpeed: 12
   classModels: {fileID: 8294922196663411535}
+  currentHoldingObject: {fileID: 0}
 --- !u!114 &7996959184458137755
 MonoBehaviour:
   m_ObjectHideFlags: 0
