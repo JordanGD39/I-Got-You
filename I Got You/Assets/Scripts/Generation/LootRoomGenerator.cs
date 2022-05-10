@@ -52,10 +52,15 @@ public class LootRoomGenerator : MonoBehaviourPun
         if (doorOutHere != null)
         {
             doorOutHere.OnOpenedDoor += TurnOffLootOthers;
-        }      
+        }
+
+        foreach (LootObject item in allLoot)
+        {
+            item.gameObject.SetActive(false);
+        }
     }
 
-    private void UpdateLootBasedOnPlayers()
+    public void UpdateLootBasedOnPlayers()
     {
         playerCount = playerManager.Players.Count;
 

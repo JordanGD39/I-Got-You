@@ -44,7 +44,7 @@ public class RoomManager : MonoBehaviourPun
                 doorsToThisRoom[0].OnOpenedDoor += PlaceEnemies;
                 break;
             case RoomModes.PUZZLEEAT:
-                doorsToThisRoom[0].OnOpenedDoor += GetComponent<PuzzleEat>().StartPuzzle;
+                //doorsToThisRoom[0].OnOpenedDoor += GetComponent<PuzzleEat>().StartPuzzle;
                 break;
             default:
                 break;

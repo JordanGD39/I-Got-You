@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class LootObject : MonoBehaviourPun
+public class LootObject : InteractableObject
 {
     public enum LootTypes { PRIMARYWEAPON, SECONDARYWEAPON, SMALLAMMO, MEDIUMAMMO, LARGEAMMO, HEALTH }
     [SerializeField] private LootTypes lootType = LootTypes.SMALLAMMO;
@@ -14,7 +14,6 @@ public class LootObject : MonoBehaviourPun
     [SerializeField] private int smallAmmoDrop = 50;
     [SerializeField] private int mediumAmmoDrop = 100;
     private WeaponsHolder weaponsHolder;
-    private PlayerManager playerManager;
 
     public GunObject currentGun { get; private set; }
 
@@ -119,75 +118,51 @@ public class LootObject : MonoBehaviourPun
         UpdateLootType((LootTypes)typeIndex, weaponIndex);
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected override void PlayerTriggerEntered(PlayerStats playerStats)
     {
-        if (playerManager == null)
+        base.PlayerTriggerEntered(playerStats);
+
+        if (lootType == LootTypes.SMALLAMMO)
         {
-            return;
+            playerStats.PlayerShootScript.GiveAmmo(smallAmmoDrop);
+
+            if (PhotonNetwork.IsConnected)
+            {
+                photonView.RPC("DeactivateLootForOthers", RpcTarget.Others);
+            }
+
+            gameObject.SetActive(false);
         }
-
-        if (other.CompareTag("PlayerCol"))
+        else if (lootType == LootTypes.MEDIUMAMMO)
         {
-            if (lootType == LootTypes.SMALLAMMO)
+            playerStats.PlayerShootScript.GiveAmmo(mediumAmmoDrop);
+
+            if (PhotonNetwork.IsConnected)
             {
-                playerManager.StatsOfAllPlayers[other].PlayerShootScript.GiveAmmo(smallAmmoDrop);
-
-                if (PhotonNetwork.IsConnected)
-                {
-                    photonView.RPC("DeactivateLootForOthers", RpcTarget.Others);
-                }
-
-                gameObject.SetActive(false);
+                photonView.RPC("DeactivateLootForOthers", RpcTarget.Others);
             }
-            else if (lootType == LootTypes.MEDIUMAMMO)
-            {
-                playerManager.StatsOfAllPlayers[other].PlayerShootScript.GiveAmmo(mediumAmmoDrop);
 
-                if (PhotonNetwork.IsConnected)
-                {
-                    photonView.RPC("DeactivateLootForOthers", RpcTarget.Others);
-                }
-
-                gameObject.SetActive(false);
-            }
-            else if (lootType == LootTypes.HEALTH)
-            {
-                bool succeeded = playerManager.StatsOfAllPlayers[other].PlayerHealingScript.AddHealthItem();
-
-                if (!succeeded)
-                {
-                    return;
-                }
-
-                if (PhotonNetwork.IsConnected)
-                {
-                    photonView.RPC("DeactivateLootForOthers", RpcTarget.Others);
-                }
-
-                gameObject.SetActive(false);
-            }
-            else
-            {
-                playerManager.StatsOfAllPlayers[other].OnInteract += PlayerInteracted;
-            }
+            gameObject.SetActive(false);
         }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (playerManager == null)
+        else if (lootType == LootTypes.HEALTH)
         {
-            return;
-        }
+            bool succeeded = playerStats.PlayerHealingScript.AddHealthItem();
 
-        if (other.CompareTag("PlayerCol") && lootType != LootTypes.SMALLAMMO && lootType != LootTypes.MEDIUMAMMO)
-        {
-            PlayerStats playerStats = playerManager.StatsOfAllPlayers[other];
-
-            if (playerStats.OnInteract != null)
+            if (!succeeded)
             {
-                playerStats.OnInteract -= PlayerInteracted;
+                return;
             }
+
+            if (PhotonNetwork.IsConnected)
+            {
+                photonView.RPC("DeactivateLootForOthers", RpcTarget.Others);
+            }
+
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            playerStats.OnInteract += PlayerInteracted;
         }
     }
 

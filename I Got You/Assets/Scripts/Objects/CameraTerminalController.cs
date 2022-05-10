@@ -11,6 +11,11 @@ public class CameraTerminalController : MonoBehaviour
     [SerializeField] private float cameraBoostSpeed = 12;
     [SerializeField] private Vector2 boundsX;
     [SerializeField] private Vector2 boundsZ;
+    [SerializeField] private float timeToCloseCam = 0.5f;
+
+    private PlayerStats playerStatsControllingCam;
+    private float timer = 0;
+    private Camera playerCam;
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +29,24 @@ public class CameraTerminalController : MonoBehaviour
     {
         if (controllingCamera)
         {
+            if (timer < timeToCloseCam)
+            {
+                timer += Time.deltaTime;
+            }
+            else
+            {
+                CheckStopLookingTroughCamera();
+            }
+            
             UpdateCameraMovement();
+        }
+    }
+
+    private void CheckStopLookingTroughCamera()
+    {
+        if (Input.GetButtonDown("Interact"))
+        {
+            SetCameraControl(playerStatsControllingCam, false);
         }
     }
 
@@ -77,11 +99,19 @@ public class CameraTerminalController : MonoBehaviour
 
     private void SwitchToCameraControl(PlayerStats playerStats)
     {
-        terminalCamera.SetActive(true);
-        Camera.main.enabled = false;
-        playerStats.GetComponent<PlayerMovement>().enabled = false;
-        playerStats.GetComponent<PlayerRotation>().enabled = false;
-        playerStats.PlayerShootScript.enabled = false;
-        controllingCamera = true;
+        playerStatsControllingCam = playerStats;
+        playerCam = Camera.main;
+        playerStats.OnInteract = null;
+        SetCameraControl(playerStats, true);
+    }
+
+    private void SetCameraControl(PlayerStats playerStats, bool activeCamera)
+    {
+        terminalCamera.SetActive(activeCamera);
+        playerCam.enabled = !activeCamera;
+        playerStats.GetComponent<PlayerMovement>().enabled = !activeCamera;
+        playerStats.GetComponent<PlayerRotation>().enabled = !activeCamera;
+        playerStats.PlayerShootScript.enabled = !activeCamera;
+        controllingCamera = activeCamera;
     }
 }

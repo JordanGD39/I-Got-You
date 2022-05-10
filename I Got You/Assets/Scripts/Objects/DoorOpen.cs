@@ -7,11 +7,14 @@ public class DoorOpen : MonoBehaviourPun
 {
     private PlayerManager playerManager;
     [SerializeField] private List<GameObject> playersInRange = new List<GameObject>();
+    public List<GameObject> PlayersInRange { get { return playersInRange; } }
     [SerializeField] private GameObject doorToClose;
     [SerializeField] private GameObject model;
     [SerializeField] private bool opened = true;
     [SerializeField] private bool openOnly = false;
+    public bool OpenOnly { get { return openOnly; } set { openOnly = value; } }
     [SerializeField] private bool playerOpen = true;
+    public bool PlayerOpen { get { return playerOpen; } set { playerOpen = value; } }
     [SerializeField] private bool allPlayersRequired = true;
     [SerializeField] private Animator openingDoorAnim;
     [SerializeField] private Animator closingDoorAnim;
@@ -60,7 +63,7 @@ public class DoorOpen : MonoBehaviourPun
         }
     }
 
-    private void OpenDoor()
+    public void OpenDoor()
     {
         if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
         {
@@ -71,15 +74,15 @@ public class DoorOpen : MonoBehaviourPun
         
         openingDoorAnim.ResetTrigger("Open");
         openingDoorAnim.SetTrigger("Open");
-        playersInRange.Clear();
 
         if (!openOnly)
         {
             doorToClose.SetActive(true);
             closingDoorAnim.ResetTrigger("Close");
             closingDoorAnim.SetTrigger("Close");
-            OnOpenedDoor?.Invoke();
-        }        
+        }
+
+        OnOpenedDoor?.Invoke();
     }
 
     public void OpenClosedDoor()
@@ -142,6 +145,7 @@ public class DoorOpen : MonoBehaviourPun
         doorToClose.SetActive(false);
         model.SetActive(false);
         model.SetActive(true);
+        playersInRange.Clear();
 
         if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
         {

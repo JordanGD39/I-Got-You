@@ -32,6 +32,7 @@ public class PlayerStats : MonoBehaviourPun
 
     public delegate void Interact(PlayerStats playerStats);
     public Interact OnInteract;
+    [SerializeField] private InteractableObject currentHoldingObject;
 
     private void Awake()
     {
@@ -74,6 +75,11 @@ public class PlayerStats : MonoBehaviourPun
             playerUI.UpdateMaxShieldHealth(startingShieldHealth);
             playerRevive = GetComponent<PlayerRevive>();
         }      
+    }
+
+    public void PickUpInteractable(InteractableObject interactable)
+    {
+        currentHoldingObject = interactable;
     }
 
     private void SetLayerRecursively(GameObject obj, int newLayer)
