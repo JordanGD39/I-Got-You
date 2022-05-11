@@ -16,6 +16,13 @@ public class InteractableObject : MonoBehaviourPun
         }
 
         playerManager = FindObjectOfType<PlayerManager>();
+
+        AfterStart();
+    }
+
+    protected virtual void AfterStart()
+    {
+        //Start override
     }
 
     private void OnTriggerEnter(Collider other)

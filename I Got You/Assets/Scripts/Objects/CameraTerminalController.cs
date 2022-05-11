@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraTerminalController : MonoBehaviour
+public class CameraTerminalController : InteractableObject
 {
-    private PlayerManager playerManager;
     [SerializeField] private GameObject terminalCamera;
     private bool controllingCamera = false;
     [SerializeField] private float cameraSpeed = 3;
@@ -18,7 +17,7 @@ public class CameraTerminalController : MonoBehaviour
     private Camera playerCam;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void AfterStart()
     {
         playerManager = FindObjectOfType<PlayerManager>();
         terminalCamera.SetActive(false);
@@ -77,24 +76,11 @@ public class CameraTerminalController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected override void PlayerTriggerEntered(PlayerStats playerStats)
     {
-        if (other.CompareTag("PlayerCol"))
-        {
-            PlayerStats playerStats = playerManager.StatsOfAllPlayers[other];
+        base.PlayerTriggerEntered(playerStats);
 
-            playerStats.OnInteract = SwitchToCameraControl;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("PlayerCol"))
-        {
-            PlayerStats playerStats = playerManager.StatsOfAllPlayers[other];
-
-            playerStats.OnInteract = null;
-        }
+        playerStats.OnInteract += SwitchToCameraControl;
     }
 
     private void SwitchToCameraControl(PlayerStats playerStats)

@@ -12,6 +12,7 @@ public class DoorOpen : MonoBehaviourPun
     [SerializeField] private GameObject model;
     [SerializeField] private bool opened = true;
     [SerializeField] private bool openOnly = false;
+    [SerializeField] private bool beginOpened = true;
     public bool OpenOnly { get { return openOnly; } set { openOnly = value; } }
     [SerializeField] private bool playerOpen = true;
     public bool PlayerOpen { get { return playerOpen; } set { playerOpen = value; } }
@@ -26,8 +27,12 @@ public class DoorOpen : MonoBehaviourPun
     void Start()
     {
         playerManager = FindObjectOfType<PlayerManager>();
-        doorToClose.SetActive(false);
-        opened = true;
+
+        if (beginOpened)
+        {
+            doorToClose.SetActive(false);
+            opened = true;
+        }        
 
         if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
         {

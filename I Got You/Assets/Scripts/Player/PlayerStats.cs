@@ -32,7 +32,8 @@ public class PlayerStats : MonoBehaviourPun
 
     public delegate void Interact(PlayerStats playerStats);
     public Interact OnInteract;
-    [SerializeField] private InteractableObject currentHoldingObject;
+    [SerializeField] private List<InteractableObject> inventoryOfInteractables = new List<InteractableObject>();
+    public List<InteractableObject> InventoryOfInteractables { get { return inventoryOfInteractables; } }
 
     private void Awake()
     {
@@ -79,7 +80,12 @@ public class PlayerStats : MonoBehaviourPun
 
     public void PickUpInteractable(InteractableObject interactable)
     {
-        currentHoldingObject = interactable;
+        inventoryOfInteractables.Add(interactable);
+    }
+
+    public void RemoveInteractable(InteractableObject interactable)
+    {
+        inventoryOfInteractables.Remove(interactable);
     }
 
     private void SetLayerRecursively(GameObject obj, int newLayer)

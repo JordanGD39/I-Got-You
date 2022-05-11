@@ -12,12 +12,13 @@ public class PuzzleEat : MonoBehaviourPun
     [SerializeField] private List<KeycardObject> usedKeycardsPool = new List<KeycardObject>();
     [SerializeField] private List<PlayerStats.ClassNames> keycardRoles = new List<PlayerStats.ClassNames>();
     [SerializeField] private List<PlayerStats.ClassNames> availableKeycardRoles;
-    [SerializeField] private List<PlayerStats.ClassNames> deliveredKeycardRoles = new List<PlayerStats.ClassNames>();
     private PlayerManager playerManager;
     [SerializeField] private DoorOpen controlRoomDoor;
     [SerializeField] private DoorOpen mazeDoor;
+    [SerializeField] private DoorOpen[] doorsOut;
 
     private bool puzzleStarted = false;
+    private int keycardsDelivered = 0;
 
     private void Start()
     {
@@ -32,7 +33,7 @@ public class PuzzleEat : MonoBehaviourPun
 
         for (int i = 0; i < playerCount - 1; i++)
         {
-            if (!PhotonNetwork.IsMasterClient)
+            if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
             {
                 break;
             }
@@ -185,5 +186,29 @@ public class PuzzleEat : MonoBehaviourPun
     void PlaceKeycardOthers(byte randomClassIndex, byte randomLootPositionIndex)
     {
         PlaceKeycard(randomClassIndex, randomLootPositionIndex);
+    }
+
+    public void CheckPuzzleCompletion(bool localPlayerDelivered)
+    {
+        if (PhotonNetwork.IsConnected && localPlayerDelivered)
+        {
+            photonView.RPC("UpdateKeycardsDeliveredOthers", RpcTarget.Others);
+        }
+
+        keycardsDelivered++;
+
+        if (keycardsDelivered == keycardRoles.Count)
+        {
+            foreach (DoorOpen door in doorsOut)
+            {
+                door.OpenClosedDoor();
+            }
+        }
+    }
+
+    [PunRPC]
+    void UpdateKeycardsDeliveredOthers()
+    {
+        CheckPuzzleCompletion(false);
     }
 }

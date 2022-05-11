@@ -26,6 +26,7 @@ public class KeycardObject : InteractableObject
     private void PickUpKeycard(PlayerStats stats)
     {
         stats.PickUpInteractable(this);
+        stats.OnInteract = null;
 
         if (PhotonNetwork.IsConnected)
         {

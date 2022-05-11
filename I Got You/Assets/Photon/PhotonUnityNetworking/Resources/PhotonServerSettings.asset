@@ -66,6 +66,7 @@ MonoBehaviour:
   - AddKeycardRolesOthers
   - PlaceKeycardOthers
   - AddKeycardToListOthers
+  - UpdateKeycardsDeliveredOthers
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
