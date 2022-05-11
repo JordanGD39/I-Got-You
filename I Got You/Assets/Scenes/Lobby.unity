@@ -149,7 +149,7 @@ RectTransform:
   m_GameObject: {fileID: 102129970}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.35, y: 1.35, z: 1}
   m_Children:
   - {fileID: 1948431737}
   - {fileID: 1398022514}
@@ -160,8 +160,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -91.186035, y: 0}
-  m_SizeDelta: {x: -346.2921, y: 190.79}
+  m_AnchoredPosition: {x: -96.73619, y: 10}
+  m_SizeDelta: {x: -425.3306, y: 190.79}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &102129972
 MonoBehaviour:
@@ -181,11 +181,11 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 10
+  m_Spacing: -25
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
@@ -1251,6 +1251,18 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753008, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
+      propertyPath: m_AnimationTriggers.m_PressedTrigger
+      value: Highlighted
+      objectReference: {fileID: 0}
+    - target: {fileID: 7613868399338753008, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
+      propertyPath: m_AnimationTriggers.m_SelectedTrigger
+      value: Disabled
+      objectReference: {fileID: 0}
+    - target: {fileID: 7613868399338753008, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
+      propertyPath: m_AnimationTriggers.m_HighlightedTrigger
+      value: Disabled
+      objectReference: {fileID: 0}
+    - target: {fileID: 7613868399338753008, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 304834883}
@@ -1300,11 +1312,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 135.92368
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 190.79
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1542,6 +1554,18 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753008, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
+      propertyPath: m_AnimationTriggers.m_PressedTrigger
+      value: Highlighted
+      objectReference: {fileID: 0}
+    - target: {fileID: 7613868399338753008, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
+      propertyPath: m_AnimationTriggers.m_SelectedTrigger
+      value: Disabled
+      objectReference: {fileID: 0}
+    - target: {fileID: 7613868399338753008, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
+      propertyPath: m_AnimationTriggers.m_HighlightedTrigger
+      value: Disabled
+      objectReference: {fileID: 0}
+    - target: {fileID: 7613868399338753008, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 304834883}
@@ -1595,11 +1619,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 132.57344
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 190.79
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2169,6 +2193,18 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753008, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
+      propertyPath: m_AnimationTriggers.m_PressedTrigger
+      value: Highlighted
+      objectReference: {fileID: 0}
+    - target: {fileID: 7613868399338753008, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
+      propertyPath: m_AnimationTriggers.m_SelectedTrigger
+      value: Disabled
+      objectReference: {fileID: 0}
+    - target: {fileID: 7613868399338753008, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
+      propertyPath: m_AnimationTriggers.m_HighlightedTrigger
+      value: Disabled
+      objectReference: {fileID: 0}
+    - target: {fileID: 7613868399338753008, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 304834883}
@@ -2222,11 +2258,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 145.0172
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 183.2424
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3355,7 +3391,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5ee0b21e9d64f134fbbec54bbf624ac4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ce7b90fe6e80f134f99fdd44747fb85e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3494,6 +3530,18 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753008, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
+      propertyPath: m_AnimationTriggers.m_PressedTrigger
+      value: Highlighted
+      objectReference: {fileID: 0}
+    - target: {fileID: 7613868399338753008, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
+      propertyPath: m_AnimationTriggers.m_SelectedTrigger
+      value: Disabled
+      objectReference: {fileID: 0}
+    - target: {fileID: 7613868399338753008, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
+      propertyPath: m_AnimationTriggers.m_HighlightedTrigger
+      value: Disabled
+      objectReference: {fileID: 0}
+    - target: {fileID: 7613868399338753008, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 304834883}
@@ -3543,11 +3591,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 134.00925
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 190.79
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_LocalPosition.x
