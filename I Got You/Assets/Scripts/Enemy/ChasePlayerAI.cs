@@ -7,6 +7,7 @@ using Photon.Pun;
 public class ChasePlayerAI : MonoBehaviour
 {
     private AttackAnimationHandler attackAnimationHandler;
+    private EnemyRoam enemyRoam;
     private PlayerManager playerManager;
     private NavMeshAgent agent;
     private NavMeshObstacle navMeshObstacle;
@@ -31,6 +32,7 @@ public class ChasePlayerAI : MonoBehaviour
             return;
         }
 
+        enemyRoam = GetComponentInChildren<EnemyRoam>();
         anim = GetComponentInChildren<Animator>();
         playerManager = FindObjectOfType<PlayerManager>();
         
@@ -69,7 +71,7 @@ public class ChasePlayerAI : MonoBehaviour
             }
         }
 
-        if (target != null && agent.enabled)
+        if (target != null && agent.enabled && enemyRoam == null)
         {
             agent.SetDestination(target.position);
         }

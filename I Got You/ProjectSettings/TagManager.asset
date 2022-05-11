@@ -8,6 +8,7 @@ TagManager:
   - HeadEnemyCol
   - PlayerCol
   - ScoutVolume
+  - ExcludeGround
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - IgnoreNavmesh
   - ThroughPlayer
   - DontRender
-  - 
+  - Ground
   - 
   - 
   - 

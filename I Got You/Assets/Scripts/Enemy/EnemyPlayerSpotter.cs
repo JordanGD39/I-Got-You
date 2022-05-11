@@ -7,6 +7,7 @@ public class EnemyPlayerSpotter : MonoBehaviour
 {
     [SerializeField] private Transform eyes;
     [SerializeField] private Transform target;
+    public Transform Target { get { return target; } }
     [SerializeField] private float viewDistance = 3;
     [SerializeField] private float fov = 105;
     [SerializeField] private float forgetPlayerTime = 3;
@@ -17,6 +18,7 @@ public class EnemyPlayerSpotter : MonoBehaviour
     private float baseSpeed = 10;
     private float baseRotSpeed = 210;
     private bool playerSpotted = false;
+    public bool PlayerSpotted { get { return playerSpotted; } }
     private float sightTimer = 0;
     private bool lookingAtTarget = false;
 
@@ -66,12 +68,20 @@ public class EnemyPlayerSpotter : MonoBehaviour
         {
             if (!lookingAtTarget)
             {
-                lookingAtTarget = true;
-                playerSpotted = true;
+                if (standStillTime > 0)
+                {
+                    lookingAtTarget = true;
+                    playerSpotted = true;
 
-                agent.speed = 0;
+                    agent.speed = 0;
 
-                Invoke(nameof(ChangeAgentSpeed), standStillTime);
+                    Invoke(nameof(ChangeAgentSpeed), standStillTime);
+                }
+                else
+                {
+                    ChangeAgentSpeed();
+                }
+               
                 return;
             }
             else if(agent.speed == 0)
