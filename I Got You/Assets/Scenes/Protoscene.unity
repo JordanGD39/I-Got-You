@@ -51402,13 +51402,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 615900521100986869, guid: 36c32765b475fdd4aa27aaad6c23feea, type: 3}
-      propertyPath: m_AngularSpeed
-      value: 720
-      objectReference: {fileID: 0}
     - target: {fileID: 4985828584067027529, guid: 36c32765b475fdd4aa27aaad6c23feea, type: 3}
       propertyPath: sceneViewId
       value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 7607219629237280456, guid: 36c32765b475fdd4aa27aaad6c23feea, type: 3}
+      propertyPath: extraRotationSpeed
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 8446402261544813549, guid: 36c32765b475fdd4aa27aaad6c23feea, type: 3}
       propertyPath: damage
