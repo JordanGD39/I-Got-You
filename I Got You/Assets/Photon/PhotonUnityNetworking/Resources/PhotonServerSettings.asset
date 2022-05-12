@@ -16,7 +16,7 @@ MonoBehaviour:
     AppIdRealtime: 1bd36c72-dc10-4111-86d0-db7ff2f81caa
     AppIdFusion: 
     AppIdChat: 
-    AppIdVoice: 
+    AppIdVoice: 61e913f1-6962-4742-b39a-8887a3b7ee78
     AppVersion: 
     UseNameServer: 1
     FixedRegion: 
@@ -67,6 +67,9 @@ MonoBehaviour:
   - PlaceKeycardOthers
   - AddKeycardToListOthers
   - UpdateKeycardsDeliveredOthers
+  - CantHearYou
+  - ChangeColour
+  - HeresWhy
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
