@@ -6,6 +6,10 @@ public class PuzzleStartButton : MonoBehaviour
 {
     [SerializeField]
     private bool isPressed = false;
+
+    [SerializeField]
+    private bool inTrigger = false;
+
     [SerializeField]
     private PuzzleManager manager;
 
@@ -18,16 +22,27 @@ public class PuzzleStartButton : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (!isPressed && Input.GetKeyDown(KeyCode.E))
+        if (inTrigger && Input.GetButtonDown("Interact"))
         {
             manager.ScreenSequence();
             // start screen sequence
             isPressed = true;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("PlayerCol"))
+        { 
+            inTrigger = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("PlayerCol"))
+        {
+            inTrigger = false;
         }
     }
 }

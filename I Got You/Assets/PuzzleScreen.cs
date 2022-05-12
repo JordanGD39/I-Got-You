@@ -6,46 +6,27 @@ public class PuzzleScreen : MonoBehaviour
 {
     [SerializeField]
     private int colourInt;
+    public int ColourInt { get { return colourInt; } }
     [SerializeField]
     private GameObject screen;
-    private Renderer matColour;
+    private MeshRenderer matColour;
+    public MeshRenderer MatColour { get { return matColour; } }
     private PuzzleManager manager;
 
     // Start is called before the first frame update
     void Start()
     {
-        matColour = screen.GetComponent<Renderer>();
+        matColour = screen.GetComponent<MeshRenderer>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        StartCoroutine("ShowSequence");
-    }
-
-    public IEnumerator ShowSequence()
+  /*  public IEnumerator ShowSequence()
     {
         for (int i = 0; i < manager.RandomInt.Count; i++)
         {
             colourInt = manager.RandomInt[i];
-            switch (colourInt)
-            {
-                case 1:
-                    matColour.material.color = Color.red;
-                    break;
-
-                case 2:
-                    matColour.material.color = Color.green;
-                    break;
-
-                case 3:
-                    matColour.material.color = Color.blue;
-                    break;
-                default:
-                    break;
+            
             }
             yield return new WaitForSeconds(2f); 
         }
-        
-    }
+    } */
 }
