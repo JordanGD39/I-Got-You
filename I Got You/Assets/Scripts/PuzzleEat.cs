@@ -139,7 +139,7 @@ public class PuzzleEat : MonoBehaviourPun
             playerCount = 1;
         }
 
-        Debug.Log(playerCount + " count");
+        //Debug.Log(playerCount + " count");
 
         for (int i = 0; i < playerCount; i++)
         {
@@ -162,7 +162,7 @@ public class PuzzleEat : MonoBehaviourPun
     {
         //int rand = Random.Range(0, availableKeycardRoles.Count);
 
-        Debug.Log(randomClassIndex + " " + randomLootPositionIndex);
+        //Debug.Log(randomClassIndex + " " + randomLootPositionIndex);
 
         PlayerStats.ClassNames classToGive = availableKeycardRoles[randomClassIndex];
 

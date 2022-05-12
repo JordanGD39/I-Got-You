@@ -7,7 +7,19 @@ public class KeycardObject : InteractableObject
 {
     [SerializeField] private PlayerStats.ClassNames assignedClass;
 
-    public PlayerStats.ClassNames AssignedClass { get { return assignedClass; } set { assignedClass = value; } }
+    public PlayerStats.ClassNames AssignedClass { get { return assignedClass; } set { assignedClass = value; UpdateKeycardModel(); } }
+
+    [SerializeField] private Transform classCardsParent;
+
+    private void UpdateKeycardModel()
+    {
+        foreach (Transform child in classCardsParent)
+        {
+            child.gameObject.SetActive(false);
+        }
+
+        classCardsParent.GetChild((int)assignedClass).gameObject.SetActive(true);
+    }
 
     protected override void PlayerTriggerEntered(PlayerStats playerStats)
     {

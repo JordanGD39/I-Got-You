@@ -84,7 +84,7 @@ public class LootRoomGenerator : MonoBehaviourPun
     public void PlaceLoot()
     {
         UpdateLootBasedOnPlayers();
-        Debug.Log("CALLED");
+        //Debug.Log("CALLED");
 
         foreach (LootObject loot in allLoot)
         {
@@ -93,12 +93,12 @@ public class LootRoomGenerator : MonoBehaviourPun
             //No loot
             if (rand > dropChance)
             {
-                Debug.Log("NADA");
+                //Debug.Log("NADA");
                 loot.gameObject.SetActive(false);
                 continue;
             }
 
-            Debug.Log("YES");
+            //Debug.Log("YES");
             loot.gameObject.SetActive(true);
 
             if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
@@ -133,7 +133,7 @@ public class LootRoomGenerator : MonoBehaviourPun
                 float minAllPlayersHealth = minPlayerHealthForMaxChance * playerManager.Players.Count;
                 itemChance += (float)healthDropChanceIncreasePlayerHealth * (minAllPlayersHealth / currentAllPlayersHealth);
             }
-            Debug.Log("Chance: " + itemChance + " num: " + rand);
+            //Debug.Log("Chance: " + itemChance + " num: " + rand);
 
             if (rand <= itemChance)
             {
