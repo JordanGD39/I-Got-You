@@ -159,6 +159,7 @@ GameObject:
   - component: {fileID: 8802004519448721980}
   - component: {fileID: 8802004519448721981}
   - component: {fileID: 8802004519448721978}
+  - component: {fileID: 883854031822317442}
   m_Layer: 8
   m_Name: Model (1)
   m_TagString: Untagged
@@ -261,6 +262,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!208 &883854031822317442
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8802004519448721983}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &8802004519934201564
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,7 +377,9 @@ MonoBehaviour:
   model: {fileID: 8802004519156722822}
   opened: 1
   openOnly: 0
+  beginOpened: 1
   playerOpen: 1
+  allPlayersRequired: 1
   openingDoorAnim: {fileID: 8802004519156722817}
   closingDoorAnim: {fileID: 8802004519448721978}
 --- !u!114 &1814990265623649405
