@@ -37,7 +37,7 @@ public class CameraTerminalController : InteractableObject
                 CheckStopLookingTroughCamera();
             }
             
-            UpdateCameraMovement();
+            //UpdateCameraMovement();
         }
     }
 
