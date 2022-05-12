@@ -464,6 +464,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -89.544
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout (7)
@@ -997,7 +1005,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23014
+  m_Name: pb_Mesh40080
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1358,6 +1366,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout
@@ -2415,6 +2431,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout
@@ -3508,7 +3532,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24192
+  m_Name: pb_Mesh41270
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4274,6 +4298,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout (1)
@@ -4689,7 +4721,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23190
+  m_Name: pb_Mesh40256
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4853,7 +4885,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23500
+  m_Name: pb_Mesh40566
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5283,6 +5315,98 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 504d116e2fe808947a09a99b65e26121, type: 3}
+--- !u!1001 &526324699
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1470630078}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 45.883
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.024
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -25.348
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.50008726
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.49991274
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.50008726
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.49991274
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -89.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
+    - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Name
+      value: MDL_chair_blockout (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+--- !u!4 &526324700 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+  m_PrefabInstance: {fileID: 526324699}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &526324701 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+  m_PrefabInstance: {fileID: 526324699}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &526324702
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 526324701}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.0074929576, y: 0.0111477785, z: 0.08}
+  m_Center: {x: 0, y: -0.000041882395, z: 0.008845022}
 --- !u!1001 &529045190
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5652,63 +5776,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.007492961, y: 0.011147785, z: 0.08}
   m_Center: {x: -8.940822e-10, y: -0.000041882995, z: 0.01028174}
---- !u!1001 &556248151
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1470630078}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 45.86
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -25.34
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.50008726
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.49991274
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.50008726
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.49991274
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -89.98
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
-      propertyPath: m_Name
-      value: MDL_chair_blockout
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
 --- !u!1 &560749346
 GameObject:
   m_ObjectHideFlags: 0
@@ -7324,6 +7391,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -89.544
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout (6)
@@ -7408,6 +7483,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -89.544
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout (4)
@@ -8985,6 +9068,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout (8)
@@ -9085,6 +9176,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout (10)
@@ -40321,6 +40420,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout (5)
@@ -40405,6 +40512,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout (4)
@@ -40489,6 +40604,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout (9)
@@ -40774,6 +40897,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -89.544
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout (5)
@@ -40976,6 +41107,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout (11)
@@ -42001,6 +42140,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout (6)
@@ -42739,6 +42886,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout (2)
@@ -43073,6 +43228,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout (1)
@@ -43884,11 +44047,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50aca47e58b03af4b864a39b30c67327, type: 3}
---- !u!4 &1369849926 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
-  m_PrefabInstance: {fileID: 556248151}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1370048673
 GameObject:
   m_ObjectHideFlags: 0
@@ -70590,7 +70748,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1369849926}
+  - {fileID: 526324700}
   - {fileID: 1786818753}
   - {fileID: 1230270436}
   m_Father: {fileID: 1776464272}
@@ -70855,6 +71013,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout (7)
@@ -71344,6 +71510,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout (2)
@@ -71843,6 +72017,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout (3)
@@ -72952,7 +73134,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23800
+  m_Name: pb_Mesh40860
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -73571,6 +73753,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a7d50e3b1ece61b48b62f0e832f50245, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 5305444606710631050, guid: a75d35cc7d27949459125f5807590a05, type: 3}
     - target: {fileID: 919132149155446097, guid: 70ddcfe546839c54dbb0cd2c11421976, type: 3}
       propertyPath: m_Name
       value: MDL_chair_blockout (3)
@@ -77791,15 +77981,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 615900521100986867, guid: 36c32765b475fdd4aa27aaad6c23feea, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 615900521100986867, guid: 36c32765b475fdd4aa27aaad6c23feea, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 615900521100986867, guid: 36c32765b475fdd4aa27aaad6c23feea, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 615900521100986867, guid: 36c32765b475fdd4aa27aaad6c23feea, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
