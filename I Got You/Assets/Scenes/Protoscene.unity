@@ -5480,7 +5480,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6712501813913824977, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.7
+      value: -1.9
       objectReference: {fileID: 0}
     - target: {fileID: 6712501813913824977, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5488,7 +5488,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6712501813913824977, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 40
+      value: -15.9
       objectReference: {fileID: 0}
     - target: {fileID: 6712501813913824977, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -73487,10 +73487,10 @@ MonoBehaviour:
   wraptorPrefab: {fileID: 5385682122100596849, guid: 0e1254e9248c68c4d871151e51ac7181, type: 3}
   enemySpawnCount: 20
   enemyInRoomLimit: 10
-  enemiesToSpawnInRoomMin: 1
-  enemiesToSpawnInRoomMax: 1
-  extraEnemiesPerPlayerMin: 0
-  extraEnemiesPerPlayerMax: 0
+  enemiesToSpawnInRoomMin: 4
+  enemiesToSpawnInRoomMax: 6
+  extraEnemiesPerPlayerMin: 1
+  extraEnemiesPerPlayerMax: 3
   wraptorSpawnChance: 3
   wraptorSpawnChanceLimit: 15
   wraptorSpawnChanceModifier: 0.5
