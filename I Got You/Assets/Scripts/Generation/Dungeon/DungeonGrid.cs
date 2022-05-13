@@ -42,8 +42,16 @@ public class DungeonGrid : MonoBehaviour
         return false;
     }
 
-    private void SetGridCellsToType(DungeonCell.CellTypes cellType)
+    public void SetGridCellsToType(DungeonCell.CellTypes cellType, Vector2Int pos, Vector3 scale)
     {
+        for (int i = Mathf.FloorToInt(-scale.x); i < Mathf.CeilToInt(scale.x); i++)
+        {
+            for (int j = Mathf.FloorToInt(-scale.z); j < Mathf.CeilToInt(scale.z); j++)
+            {
+                Vector2Int checkGridPos = new Vector2Int(pos.x + i, pos.y + j);
 
+                grid[checkGridPos].cellType = cellType;
+            }
+        }
     }
 }
