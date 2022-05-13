@@ -6,15 +6,19 @@ using UnityEngine;
 public class DungeonGenerator : MonoBehaviour
 {
     private DungeonGrid dungeonGrid;
+    private PrimMinimumSpanningTree primMinimumSpanningTree;
+
     [SerializeField] private List<GameObject> roomPrefabs = new List<GameObject>();
     [SerializeField] private List<GameObject> rooms = new List<GameObject>();
     //private Delaunay2D delaunay;
     [SerializeField] private List<Vertex> vertices;
     private TriangleNet.Mesh mesh;
+    private int maxEdgeIndex = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        primMinimumSpanningTree = GetComponent<PrimMinimumSpanningTree>();
         dungeonGrid = GetComponent<DungeonGrid>();
         dungeonGrid.GenerateGrid();
 
@@ -26,6 +30,15 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         Triangulate();
+
+        primMinimumSpanningTree.CreateMinimumSpanningTree(mesh);
+
+        InvokeRepeating(nameof(IncreaseMaxEdgeIndex), 0.5f, 0.5f);
+    }
+
+    private void IncreaseMaxEdgeIndex()
+    {
+        maxEdgeIndex++;
     }
 
     private void PlaceRoom()
@@ -66,7 +79,7 @@ public class DungeonGenerator : MonoBehaviour
             polygon.Add(new Vertex(rooms[i].transform.position.x, rooms[i].transform.position.z));
         }
 
-        TriangleNet.Meshing.ConstraintOptions options = new TriangleNet.Meshing.ConstraintOptions() { ConformingDelaunay = true };
+        TriangleNet.Meshing.ConstraintOptions options = new TriangleNet.Meshing.ConstraintOptions() { ConformingDelaunay = false };
         mesh = (TriangleNet.Mesh)polygon.Triangulate(options);
     }
 
@@ -80,13 +93,22 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         Gizmos.color = Color.green;
+        int i = 0;
+
         foreach (Edge edge in mesh.Edges)
         {
+            if (i > maxEdgeIndex)
+            {
+                break;
+            }
+
             Vertex v0 = mesh.vertices[edge.P0];
             Vertex v1 = mesh.vertices[edge.P1];
             Vector3 p0 = new Vector3((float)v0.x, 0.0f, (float)v0.y);
             Vector3 p1 = new Vector3((float)v1.x, 0.0f, (float)v1.y);
             Gizmos.DrawLine(p0, p1);
+
+            i++;
         }
     }
 }
