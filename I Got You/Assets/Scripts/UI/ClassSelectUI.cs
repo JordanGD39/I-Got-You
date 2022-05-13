@@ -64,6 +64,8 @@ public class ClassSelectUI : MonoBehaviour
             return;
         }
 
+        //hier classes locken als ze zijn gekozen??
+
         infoUI.UpdateClassName(currentClass);
 
         if (PhotonFunctionHandler.IsPlayerOnline())

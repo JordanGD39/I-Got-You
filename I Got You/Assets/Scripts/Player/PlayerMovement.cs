@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpHeight = 10;
     [SerializeField] private Animator anim;
     [SerializeField] private float dampTime = 0.05f;
+    [SerializeField] private float[] healthArray = { 0.081f, 0.157f, 0.233f, 0.312f, 0.391f, 0.469f, 0.546f, 0.625f, 0.703f, 0.779f, 0.858f, 0.939f, 1f };
     private float stepOffset = 0.5f;
 
     private Vector3 velocity = Vector3.zero;
