@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TriangleNet.Geometry;
 using UnityEngine;
 
@@ -7,17 +8,20 @@ public class DungeonGenerator : MonoBehaviour
 {
     private DungeonGrid dungeonGrid;
     private PrimMinimumSpanningTree primMinimumSpanningTree;
+    private AStarPathFinding aStarPathFinding;
 
     [SerializeField] private List<GameObject> roomPrefabs = new List<GameObject>();
     [SerializeField] private List<GameObject> rooms = new List<GameObject>();
+    [SerializeField] private GameObject hallwayPrefab;
+    [SerializeField] private Dictionary<Vector3, GameObject> roomsDictionary = new Dictionary<Vector3, GameObject>();
     //private Delaunay2D delaunay;
     [SerializeField] private List<Vertex> vertices;
     private TriangleNet.Mesh mesh;
-    private int maxEdgeIndex = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        aStarPathFinding = GetComponent<AStarPathFinding>();
         primMinimumSpanningTree = GetComponent<PrimMinimumSpanningTree>();
         dungeonGrid = GetComponent<DungeonGrid>();
         dungeonGrid.GenerateGrid();
@@ -31,14 +35,82 @@ public class DungeonGenerator : MonoBehaviour
 
         Triangulate();
 
-        primMinimumSpanningTree.CreateMinimumSpanningTree(mesh);
+        primMinimumSpanningTree.StartCreationOfMinimumSpanningTree(mesh);
+        List<GridNode> allHallwayNodes = new List<GridNode>();
 
-        InvokeRepeating(nameof(IncreaseMaxEdgeIndex), 0.5f, 0.5f);
+        foreach (PrimEdge edge in primMinimumSpanningTree.MinimumSpanningTree)
+        {
+            Vector3 pos = primMinimumSpanningTree.AllPoints[edge.startNode];
+            Vector3 targetPos = primMinimumSpanningTree.AllPoints[edge.endNode];
+
+            List<GridNode> gridNodes = 
+                aStarPathFinding.FindPath(ChooseDoor(roomsDictionary[pos], targetPos), ChooseDoor(roomsDictionary[targetPos], pos));
+
+            if (gridNodes != null)
+            {
+                allHallwayNodes.AddRange(gridNodes);
+
+                foreach (GridNode node in gridNodes)
+                {
+                    node.dungeonCell.cellType = DungeonCell.CellTypes.HALLWAY;
+                }
+            }
+        }
+
+        StartCoroutine(SlowdownHallwayCreation(allHallwayNodes));
+
+        //foreach (GridNode node in allHallwayNodes)
+        //{
+        //    GameObject hallway = Instantiate(hallwayPrefab, node.dungeonCell.transform.position, Quaternion.identity);
+        //}
+        //List<GridNode> gridNodes = aStarPathFinding.FindPath();
     }
 
-    private void IncreaseMaxEdgeIndex()
+    private IEnumerator SlowdownHallwayCreation(List<GridNode> allHallwayNodes)
     {
-        maxEdgeIndex++;
+        while (!primMinimumSpanningTree.ShowMST)
+        {
+            yield return null;
+        }
+
+        allHallwayNodes = allHallwayNodes.Distinct().ToList();
+
+        foreach (GridNode node in allHallwayNodes)
+        {
+            GameObject hallway = Instantiate(hallwayPrefab, node.dungeonCell.transform.position, Quaternion.identity);
+
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        foreach (var item in dungeonGrid.Grid)
+        {
+            Destroy(item.Value.gameObject);
+        }
+
+        dungeonGrid.Grid.Clear();
+    }
+
+    private DungeonCell ChooseDoor(GameObject currentRoom, Vector3 targetPos)
+    {
+        Transform chosenDoor = null;
+
+        float lowestDistance = Mathf.Infinity;
+        for (int i = 0; i < currentRoom.transform.GetChild(1).childCount; i++)
+        {
+            float distance = Vector3.Distance(currentRoom.transform.GetChild(1).GetChild(i).position, targetPos);
+
+            if (distance < lowestDistance)
+            {
+                lowestDistance = distance;
+                chosenDoor = currentRoom.transform.GetChild(1).GetChild(i);
+            }
+        }
+
+        Vector2Int flooredPos = new Vector2Int(Mathf.FloorToInt(chosenDoor.position.x), Mathf.FloorToInt(chosenDoor.position.z));
+
+        Debug.Log(flooredPos);
+
+        return dungeonGrid.Grid[flooredPos];
     }
 
     private void PlaceRoom()
@@ -63,9 +135,12 @@ public class DungeonGenerator : MonoBehaviour
             return;
         }
 
-        GameObject room = Instantiate(roomPrefab, new Vector3(randomGridPos.x, 0, randomGridPos.y), Quaternion.identity);
+        Vector3 pos = new Vector3(randomGridPos.x, 0, randomGridPos.y);
+
+        GameObject room = Instantiate(roomPrefab, pos, Quaternion.identity);
         dungeonGrid.SetGridCellsToType(DungeonCell.CellTypes.ROOM, randomGridPos, scale);
         rooms.Add(room);
+        roomsDictionary.Add(pos, room);
 
         roomPrefabs.RemoveAt(randRoom);
     }
@@ -81,34 +156,5 @@ public class DungeonGenerator : MonoBehaviour
 
         TriangleNet.Meshing.ConstraintOptions options = new TriangleNet.Meshing.ConstraintOptions() { ConformingDelaunay = false };
         mesh = (TriangleNet.Mesh)polygon.Triangulate(options);
-    }
-
-
-    public void OnDrawGizmosSelected()
-    {
-        if (mesh == null)
-        {
-            // We're probably in the editor
-            return;
-        }
-
-        Gizmos.color = Color.green;
-        int i = 0;
-
-        foreach (Edge edge in mesh.Edges)
-        {
-            if (i > maxEdgeIndex)
-            {
-                break;
-            }
-
-            Vertex v0 = mesh.vertices[edge.P0];
-            Vertex v1 = mesh.vertices[edge.P1];
-            Vector3 p0 = new Vector3((float)v0.x, 0.0f, (float)v0.y);
-            Vector3 p1 = new Vector3((float)v1.x, 0.0f, (float)v1.y);
-            Gizmos.DrawLine(p0, p1);
-
-            i++;
-        }
     }
 }

@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 1241354191}
   - component: {fileID: 1241354192}
   - component: {fileID: 1241354193}
+  - component: {fileID: 1241354194}
   m_Layer: 0
   m_Name: ProceduralGenerator
   m_TagString: Untagged
@@ -189,6 +190,7 @@ MonoBehaviour:
   - {fileID: 6848045823560444070, guid: 6e5ab3d9405f06149815d761dc0284c4, type: 3}
   - {fileID: 2812921008930282821, guid: db73cfc1176d8014689d4920ce35ae15, type: 3}
   rooms: []
+  hallwayPrefab: {fileID: 2474323079140865056, guid: e40e825b1d591e6488301ed3012f4868, type: 3}
 --- !u!114 &1241354193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,8 +203,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77cc0def4db8d484a8c0f8a3dcb48ea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  randomEdgeChance: 20
+  chanceToAddOneEdge: 80
   allPoints: []
-  primEdgeDatas: []
+  primNodes: []
+  primQueue: []
+  visistedNodes: 
+  minimumSpanningTree: []
+  debugConnections: []
+--- !u!114 &1241354194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241354189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 534aff342c393a041a39d54eb438edee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1433760834
 GameObject:
   m_ObjectHideFlags: 0
