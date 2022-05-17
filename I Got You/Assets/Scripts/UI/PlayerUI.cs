@@ -24,6 +24,8 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private GameObject errorPopup;
     [SerializeField] private GameObject chickenSoupBarPanel;
     [SerializeField] private Image chickenSoupBar;
+    [SerializeField] private Image healthBar;
+    [SerializeField] private float[] healthArray = {0, 0.081f, 0.157f, 0.233f, 0.312f, 0.391f, 0.469f, 0.546f, 0.625f, 0.703f, 0.779f, 0.858f, 0.939f, 1f };
     //private Vector2 uiOffset;
 
     private int itemCount = 0;
@@ -35,15 +37,54 @@ public class PlayerUI : MonoBehaviour
         errorPopup.SetActive(false);
     }
 
-    public void UpdateHealth(int health)
+    public void UpdateHealth(float health, float maxHealth)
     {
-        healthText.text = health.ToString();        
+        //healthText.text = health.ToString();
+        float healthPercentage = health / maxHealth;
+        bool reverseSearch = false;
+
+        if (healthPercentage > 0.5f)
+        {
+            //start searching from 0 in array
+            reverseSearch = true;
+        }
+
+        float promisingHealthValue = 0;
+        float lowestDiff = 2;
+
+        int j = 0;
+
+        for (int i = 0; i < healthArray.Length; i++)
+        {
+            j = i;
+
+            if (reverseSearch)
+            {
+                j = healthArray.Length - 1 - i;
+            }
+
+            float diff = Mathf.Abs(healthPercentage - healthArray[j]);
+
+            if (diff > lowestDiff && lowestDiff < 0.2f)
+            {
+                break;
+            }
+
+            if (diff < lowestDiff)
+            {
+                lowestDiff = diff;
+                promisingHealthValue = healthArray[j];
+            }
+        }
+
+        Debug.Log(lowestDiff);
+        healthBar.fillAmount = promisingHealthValue;
     }
 
-    public void UpdateMaxHealth(int maxHealth)
-    {
-        maxHealthText.text = "/" + maxHealth.ToString();
-    }
+    //public void UpdateMaxHealth(float maxHealth)
+    //{
+        //maxHealthText.text = "/" + maxHealth.ToString();
+    //}
 
     public void HideShieldHealth()
     {

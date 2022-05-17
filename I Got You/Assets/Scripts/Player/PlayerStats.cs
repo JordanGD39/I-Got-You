@@ -70,8 +70,8 @@ public class PlayerStats : MonoBehaviourPun
                 playerUI.HideShieldHealth();
             }
 
-            playerUI.UpdateHealth(health);
-            playerUI.UpdateMaxHealth(maxHealth);
+            playerUI.UpdateHealth(health, maxHealth);
+            //playerUI.UpdateMaxHealth(maxHealth);
             playerUI.UpdateShieldHealth(shieldHealth, startingShieldHealth);
             playerUI.UpdateMaxShieldHealth(startingShieldHealth);
             playerRevive = GetComponent<PlayerRevive>();
@@ -116,7 +116,7 @@ public class PlayerStats : MonoBehaviourPun
             health = currentMaxHealth;
         }
 
-        playerUI.UpdateHealth(health);
+        playerUI.UpdateHealth(health, maxHealth);
     }
 
     public bool PlayerAtMaxHealth()
@@ -177,7 +177,7 @@ public class PlayerStats : MonoBehaviourPun
             playerUI.UpdateShieldHealth(0, startingShieldHealth);
         }
 
-        playerUI.UpdateHealth(health);
+        playerUI.UpdateHealth(health, maxHealth);
     }
 
     private IEnumerator StartShieldRegeneration()
@@ -205,6 +205,6 @@ public class PlayerStats : MonoBehaviourPun
 
         currentMaxHealth = Mathf.RoundToInt(maxHealth * (1 + (0.25f * (float)healthIncreaseCounter)));
 
-        playerUI.UpdateMaxHealth(currentMaxHealth);
+        //playerUI.UpdateMaxHealth(currentMaxHealth);
     }
 }
