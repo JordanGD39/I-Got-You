@@ -5451,8 +5451,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 39.8, y: 0}
-  m_SizeDelta: {x: 57.3061, y: 50}
+  m_AnchoredPosition: {x: 40.864, y: -0.000002861}
+  m_SizeDelta: {x: 81.7271, y: 71.7075}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &608282154
 MonoBehaviour:
@@ -5474,7 +5474,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 80c90e7959a315b4a96c29a45ecb2787, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ba724bb967b20fb4186a062535bb635b, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -5504,7 +5504,7 @@ GameObject:
   - component: {fileID: 613359374}
   - component: {fileID: 613359373}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Healthbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5614,8 +5614,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 6712501813913824978, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
   playerOffline: {fileID: 529045191}
-  minPos: {x: -4.5, y: 0, z: -13}
-  maxPos: {x: 4.5, y: 0, z: -17}
+  minPos: {x: 0, y: 0, z: 0}
+  maxPos: {x: 0, y: 0, z: 0}
 --- !u!114 &623612094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37053,7 +37053,7 @@ MonoBehaviour:
   maxHealthText: {fileID: 305426948}
   shieldHealthText: {fileID: 1100187982}
   shieldHealthAnim: {fileID: 1140378119}
-  maxShieldHealthText: {fileID: 646159593}
+  maxShieldHealthText: {fileID: 305426948}
   ammoText: {fileID: 1581596335}
   maxAmmoText: {fileID: 1477841373}
   healthItemCount: {fileID: 654724507}
@@ -37067,6 +37067,22 @@ MonoBehaviour:
   errorPopup: {fileID: 470871008}
   chickenSoupBarPanel: {fileID: 772100892}
   chickenSoupBar: {fileID: 1470080553}
+  healthBar: {fileID: 613359373}
+  healthArray:
+  - 0
+  - 0.081
+  - 0.157
+  - 0.233
+  - 0.312
+  - 0.391
+  - 0.469
+  - 0.546
+  - 0.625
+  - 0.703
+  - 0.779
+  - 0.858
+  - 0.939
+  - 1
 --- !u!1001 &969542092
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38286,7 +38302,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 98.002, y: -101.8}
+  m_AnchoredPosition: {x: 98.002, y: -116.7}
   m_SizeDelta: {x: 106.4421, y: 51.91}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1140378117
