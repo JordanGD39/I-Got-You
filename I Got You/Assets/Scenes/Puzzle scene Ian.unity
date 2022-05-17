@@ -156,8 +156,10 @@ MonoBehaviour:
   - {fileID: 523278795}
   - {fileID: 1693109089}
   - {fileID: 634555538}
+  playerInput: 
   randomInt: 
   maxSequence: 5
+  openDoor: 0
 --- !u!4 &116550052
 Transform:
   m_ObjectHideFlags: 0
@@ -392,6 +394,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   codeInput: 3
   monitor: {fileID: 2099658086}
+  manager: {fileID: 116550051}
 --- !u!1 &1049639473
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,6 +697,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   codeInput: 2
   monitor: {fileID: 2099658086}
+  manager: {fileID: 116550051}
 --- !u!1001 &1243133069
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -956,6 +960,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   codeInput: 1
   monitor: {fileID: 2099658086}
+  manager: {fileID: 116550051}
 --- !u!1 &1475605443 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5053361071203791828, guid: 5fcfda65aa68ee34faef6b94aa725d9e, type: 3}

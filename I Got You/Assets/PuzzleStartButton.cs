@@ -13,16 +13,10 @@ public class PuzzleStartButton : MonoBehaviour
     [SerializeField]
     private PuzzleManager manager;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
-        if (inTrigger && Input.GetButtonDown("Interact"))
+        if (manager.RandomInt.Count == 0 && inTrigger && Input.GetButtonDown("Interact") && !manager.OpenDoor)
         {
             manager.ScreenSequence();
             // start screen sequence
