@@ -8,7 +8,7 @@ public class HallwayTile : MonoBehaviour
     private DungeonGrid grid;
     private DungeonGenerator dungeonGenerator;
     private bool extraWallPlaced = false;
-
+    
     public void CheckSurroundings(DungeonGrid aGrid, DungeonGenerator gen, bool extra)
     {
         extraWallPlaced = extra;
@@ -16,6 +16,7 @@ public class HallwayTile : MonoBehaviour
         dungeonGenerator = gen;
 
         Vector2Int gridPos = new Vector2Int((int)transform.position.x, (int)transform.position.z);
+        grid.Grid[gridPos].cellType = DungeonCell.CellTypes.HALLWAY;
 
         CheckPosForHallway(gridPos - new Vector2Int(1, 0), 0);
         CheckPosForHallway(gridPos + new Vector2Int(0, 1), 1);
@@ -34,14 +35,24 @@ public class HallwayTile : MonoBehaviour
 
                     grid.Grid[posToCheck].cellType = DungeonCell.CellTypes.HALLWAY;
                     dungeonGenerator.ExtraHallways.Add(grid.Grid[posToCheck]);
-                    walls[wallToRemove].SetActive(false);
+                    RemoveWall(wallToRemove);
                 }
                 break;
             case DungeonCell.CellTypes.HALLWAY:
-                walls[wallToRemove].SetActive(false);
+                RemoveWall(wallToRemove);
+
+                if (grid.Grid[posToCheck].extraWallRemoval >= 0)
+                {
+                    RemoveWall(grid.Grid[posToCheck].extraWallRemoval);
+                }
                 break;
             case DungeonCell.CellTypes.ROOM:
                 break;
         }
+    }
+
+    public void RemoveWall(int wallIndex)
+    {
+        walls[wallIndex].SetActive(false);
     }
 }

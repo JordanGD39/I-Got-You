@@ -188,107 +188,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
---- !u!1 &1241354189
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1241354190}
-  - component: {fileID: 1241354191}
-  - component: {fileID: 1241354192}
-  - component: {fileID: 1241354193}
-  - component: {fileID: 1241354194}
-  m_Layer: 0
-  m_Name: ProceduralGenerator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1241354190
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1241354189}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1241354191
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1241354189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 836a0445be7fedf4497cc50bab9d0263, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gridSize: {x: 100, y: 100}
-  dungeonCellPrefab: {fileID: 1073323699902804974, guid: 9413d0483f4544d4e8ef8b2c0e6edd12, type: 3}
---- !u!114 &1241354192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1241354189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4995f1ebb11b480408e4becdfe812ba7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  roomPrefabs:
-  - {fileID: 7239954299339552470, guid: ddb16369f9f81414599529faad8b0a84, type: 3}
-  - {fileID: 2918243186305277774, guid: 3b4a2d25372117a49b9372c7c3bdb7f7, type: 3}
-  - {fileID: 9124675404554466276, guid: 2aaa91fea15485b48b4546f46edbc6d1, type: 3}
-  - {fileID: 6848045823560444070, guid: 6e5ab3d9405f06149815d761dc0284c4, type: 3}
-  - {fileID: 2812921008930282821, guid: db73cfc1176d8014689d4920ce35ae15, type: 3}
-  rooms: []
-  hallwayPrefab: {fileID: 7838144655838495395, guid: d76b097fc7830fa4d9cc0f41539272a9, type: 3}
-  extraHallways: []
---- !u!114 &1241354193
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1241354189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77cc0def4db8d484a8c0f8a3dcb48ea1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  randomEdgeChance: 20
-  chanceToAddOneEdge: 80
-  allPoints: []
-  primNodes: []
-  primQueue: []
-  visistedNodes: 
-  minimumSpanningTree: []
-  debugConnections: []
---- !u!114 &1241354194
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1241354189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 534aff342c393a041a39d54eb438edee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1433760834
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,3 +281,60 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1001 &7162548950402971121
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7162548949459417660, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
+      propertyPath: m_Name
+      value: ProceduralGenerator
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162548949459417663, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162548949459417663, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162548949459417663, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162548949459417663, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162548949459417663, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162548949459417663, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162548949459417663, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162548949459417663, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162548949459417663, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162548949459417663, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162548949459417663, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d82171684748eaa49a7316eec13e61ad, type: 3}

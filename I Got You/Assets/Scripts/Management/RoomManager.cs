@@ -19,14 +19,12 @@ public class RoomManager : MonoBehaviourPun
     [SerializeField] private int enemyDeathsToClearRoom = 0;
     [SerializeField] private int healthIncreasePerLevel = 20;
     [SerializeField] private DoorOpen[] doorsToThisRoom;
-    [SerializeField] private DoorOpen[] doorsToOtherRoom;
     private int currentNotPlacedIndex = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        difficultyManager = FindObjectOfType<DifficultyManager>();
-        doorsToOtherRoom[0].OnOpenedDoor += PlaceDoorToThisRoom;
+        difficultyManager = FindObjectOfType<DifficultyManager>(); 
 
         if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
         {
@@ -59,7 +57,6 @@ public class RoomManager : MonoBehaviourPun
         }
 
         int enemiesPlaced = 0;
-        int enemyTypesPlaced = 0;
 
         enemyDeathsInRoom = 0;
         currentNotPlacedIndex = 0;
@@ -138,16 +135,10 @@ public class RoomManager : MonoBehaviourPun
     {
         difficultyManager.IncreaseDifficulty();
 
-        foreach (DoorOpen door in doorsToOtherRoom)
-        {
-            door.gameObject.SetActive(true);
-            door.CloseOpeningDoor();
-        }
-
-        foreach (DoorOpen door in doorsToThisRoom)
-        {
-            door.gameObject.SetActive(false);
-        }
+        doorsToThisRoom[0].OpenClosedDoor();
+        doorsToThisRoom[1].OpenOnly = true;
+        doorsToThisRoom[1].OpenDoor();
+        doorsToThisRoom[1].OpenClosedDoor();
 
         if (enemiesInRoom != null)
         {
@@ -162,12 +153,6 @@ public class RoomManager : MonoBehaviourPun
 
     private void DelaySwitchDoor()
     {
-        foreach (DoorOpen door in doorsToOtherRoom)
-        {
-            door.ResetDoor();
-            door.gameObject.SetActive(false);
-        }
-
         foreach (DoorOpen door in doorsToThisRoom)
         {
             door.gameObject.SetActive(true);

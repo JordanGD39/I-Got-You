@@ -73,7 +73,7 @@ public class AStarPathFinding : MonoBehaviour
             Mathf.Abs((int)start.transform.position.z - (int)target.transform.position.z);
     }
 
-    public List<GridNode> FindPath(DungeonCell start, DungeonCell target)
+    public List<GridNode> FindPath(DungeonCell start, DungeonCell target, int wallToRemove)
     {
         createdGridNodes.Clear();
         dungeonCellNodesCreated.Clear();
@@ -118,6 +118,7 @@ public class AStarPathFinding : MonoBehaviour
             if (currentNode.dungeonCell == targetCell)
             {
                 GridNode currentPathTile = currentNode;
+                currentPathTile.dungeonCell.extraWallRemoval = wallToRemove;
 
                 List<GridNode> path = new List<GridNode>();
 
