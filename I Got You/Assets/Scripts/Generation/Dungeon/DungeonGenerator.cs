@@ -14,6 +14,8 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField] private List<GameObject> rooms = new List<GameObject>();
     [SerializeField] private GameObject hallwayPrefab;
     [SerializeField] private Dictionary<Vector3, GameObject> roomsDictionary = new Dictionary<Vector3, GameObject>();
+    [SerializeField] private List<DungeonCell> extraHallways = new List<DungeonCell>();
+    public List<DungeonCell> ExtraHallways { get { return extraHallways; } }
     //private Delaunay2D delaunay;
     [SerializeField] private List<Vertex> vertices;
     private TriangleNet.Mesh mesh;
@@ -75,12 +77,32 @@ public class DungeonGenerator : MonoBehaviour
 
         allHallwayNodes = allHallwayNodes.Distinct().ToList();
 
+        List<HallwayTile> tilesToRecheck = new List<HallwayTile>();
+
         foreach (GridNode node in allHallwayNodes)
         {
             GameObject hallway = Instantiate(hallwayPrefab, node.dungeonCell.transform.position, Quaternion.identity);
+            HallwayTile tile = hallway.GetComponent<HallwayTile>();
+            tile.CheckSurroundings(dungeonGrid, this, false);
+            tilesToRecheck.Add(tile);
 
             yield return new WaitForSeconds(0.05f);
         }
+
+        foreach (DungeonCell cell in extraHallways)
+        {
+            GameObject hallway = Instantiate(hallwayPrefab, cell.transform.position, Quaternion.identity);
+            hallway.GetComponent<HallwayTile>().CheckSurroundings(dungeonGrid, this, true);
+
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        foreach (HallwayTile tile in tilesToRecheck)
+        {
+            tile.CheckSurroundings(dungeonGrid, this, true);
+        }
+
+        extraHallways.Clear();
 
         foreach (var item in dungeonGrid.Grid)
         {

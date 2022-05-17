@@ -174,7 +174,6 @@ public class AStarPathFinding : MonoBehaviour
     }
 }
 
-[Serializable]
 public class GridNode
 {
     public DungeonCell dungeonCell;
