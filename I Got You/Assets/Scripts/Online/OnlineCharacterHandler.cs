@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Voice.PUN;
+using Photon.Voice.Unity;
 
 public class OnlineCharacterHandler : MonoBehaviourPun
 {
@@ -27,6 +29,8 @@ public class OnlineCharacterHandler : MonoBehaviourPun
         foreach (MonoBehaviour item in scripts)
         {
             if (item is PhotonView) { continue; }
+            if (item is PhotonVoiceView) { continue; }
+            if (item is Recorder) { continue; }
             if (item is PlayerStats){ continue; }
             if (item is SyncMovement){ continue; }
             if (item is EnemyStats){ continue; }
