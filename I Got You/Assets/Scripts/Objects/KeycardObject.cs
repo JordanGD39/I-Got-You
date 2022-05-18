@@ -11,6 +11,11 @@ public class KeycardObject : InteractableObject
 
     [SerializeField] private Transform classCardsParent;
 
+    protected override void AfterStart()
+    {
+        interactText = " to pickup Keycard";
+    }
+
     private void UpdateKeycardModel()
     {
         foreach (Transform child in classCardsParent)
@@ -31,7 +36,7 @@ public class KeycardObject : InteractableObject
         }
         else
         {
-            Debug.Log("Not autorized to hold Keycard!");
+            playerUI.ShowNotification("Not autorized to hold Keycard");
         }
     }
 
@@ -48,7 +53,8 @@ public class KeycardObject : InteractableObject
         transform.GetChild(0).gameObject.SetActive(false);
     }
 
-    private void RemoveKeycardOthers()
+    [PunRPC]
+    void RemoveKeycardOthers()
     {
         transform.GetChild(0).gameObject.SetActive(false);
     }

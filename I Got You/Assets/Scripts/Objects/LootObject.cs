@@ -67,6 +67,8 @@ public class LootObject : InteractableObject
                 weaponIndex = rand;
 
                 weapons.transform.GetChild(0).GetChild(rand).gameObject.SetActive(true);
+
+                interactText = " to pickup weapon";
                 break;
             case LootTypes.SECONDARYWEAPON:
                 weapons.transform.GetChild(1).gameObject.SetActive(true);
@@ -78,6 +80,7 @@ public class LootObject : InteractableObject
                 currentGun = weaponsHolder.SecondaryGuns[rand];
 
                 weapons.transform.GetChild(1).GetChild(rand).gameObject.SetActive(true);
+                interactText = " to pickup weapon";
                 break;
             case LootTypes.SMALLAMMO:
                 ammoCrates.transform.GetChild(0).gameObject.SetActive(true);
@@ -86,6 +89,7 @@ public class LootObject : InteractableObject
                 ammoCrates.transform.GetChild(1).gameObject.SetActive(true);
                 break;
             case LootTypes.LARGEAMMO:
+                interactText = " to open ammo crate";
                 ammoCrates.transform.GetChild(2).gameObject.SetActive(true);
                 break;
             case LootTypes.HEALTH:
@@ -124,7 +128,9 @@ public class LootObject : InteractableObject
 
         if (lootType == LootTypes.SMALLAMMO)
         {
+            playerStats.OnInteract = null;
             playerStats.PlayerShootScript.GiveAmmo(smallAmmoDrop);
+            playerUI.HideInteractPanel();
 
             if (PhotonNetwork.IsConnected)
             {
@@ -135,17 +141,21 @@ public class LootObject : InteractableObject
         }
         else if (lootType == LootTypes.MEDIUMAMMO)
         {
+            playerStats.OnInteract = null;
             playerStats.PlayerShootScript.GiveAmmo(mediumAmmoDrop);
 
             if (PhotonNetwork.IsConnected)
             {
                 photonView.RPC("DeactivateLootForOthers", RpcTarget.Others);
             }
+            playerUI.HideInteractPanel();
 
             gameObject.SetActive(false);
         }
         else if (lootType == LootTypes.HEALTH)
         {
+            playerStats.OnInteract = null;
+            playerUI.HideInteractPanel();
             bool succeeded = playerStats.PlayerHealingScript.AddHealthItem();
 
             if (!succeeded)
@@ -194,7 +204,7 @@ public class LootObject : InteractableObject
                 break;
         }
 
-        playerStats.OnInteract -= PlayerInteracted;
+        playerStats.OnInteract = null;
     }
 
     private void SwapWeapon(PlayerShoot playerShoot)

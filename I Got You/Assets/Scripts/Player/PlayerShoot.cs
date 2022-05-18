@@ -29,7 +29,6 @@ public class PlayerShoot : MonoBehaviourPun
     private bool holdingTrigger = false;
     private bool prevHoldTrigger = false;
     private bool reloading = false;
-    private bool interacting = false;
 
     private PlayerUI playerUI;
     private PlayerStats playerStats;
@@ -133,7 +132,7 @@ public class PlayerShoot : MonoBehaviourPun
         
         CheckInteract();
 
-        if (!interacting)
+        if (playerStats.OnInteract == null)
         {
             CheckReload();
 
@@ -141,10 +140,6 @@ public class PlayerShoot : MonoBehaviourPun
             {
                 CheckChangeSelectedWeapon();
             }            
-        }
-        else
-        {
-            interacting = false;
         }
     }
 
@@ -527,7 +522,6 @@ public class PlayerShoot : MonoBehaviourPun
         if (Input.GetButtonDown("Interact") && playerStats.OnInteract != null)
         {
             playerStats.OnInteract(playerStats);
-            interacting = true;
         }
     }
 

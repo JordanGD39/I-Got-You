@@ -11,6 +11,7 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     [SerializeField] private int health = 100;
     public int Health { get { return health; } set { health = value; } }
     [SerializeField] private int damage = 20;
+    [SerializeField] private bool invincible = false;
     public int ListIndex { get; set; } = -1;
 
     private EnemyManager enemyManager;
@@ -36,7 +37,7 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
         if (!PhotonNetwork.IsMasterClient)
         {
             enemyManager.StatsOfAllEnemies.Add(transform, this);
-        }        
+        }
     }
 
     // Start is called before the first frame update
@@ -51,7 +52,7 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
             ragdollController.SetRagdollActive(false);
         }        
 
-        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
+        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected && GetComponent<EnemyRoam>() == null)
         {
             gameObject.SetActive(false);
         }
@@ -86,6 +87,11 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     public void Damage(int dmg, Vector3 shootDir)
     {
+        if (invincible)
+        {
+            return;
+        }
+
         health -= dmg;
 
         if (dead)
