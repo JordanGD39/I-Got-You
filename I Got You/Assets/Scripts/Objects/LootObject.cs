@@ -128,7 +128,9 @@ public class LootObject : InteractableObject
 
         if (lootType == LootTypes.SMALLAMMO)
         {
+            playerStats.OnInteract = null;
             playerStats.PlayerShootScript.GiveAmmo(smallAmmoDrop);
+            playerUI.HideInteractPanel();
 
             if (PhotonNetwork.IsConnected)
             {
@@ -139,17 +141,21 @@ public class LootObject : InteractableObject
         }
         else if (lootType == LootTypes.MEDIUMAMMO)
         {
+            playerStats.OnInteract = null;
             playerStats.PlayerShootScript.GiveAmmo(mediumAmmoDrop);
 
             if (PhotonNetwork.IsConnected)
             {
                 photonView.RPC("DeactivateLootForOthers", RpcTarget.Others);
             }
+            playerUI.HideInteractPanel();
 
             gameObject.SetActive(false);
         }
         else if (lootType == LootTypes.HEALTH)
         {
+            playerStats.OnInteract = null;
+            playerUI.HideInteractPanel();
             bool succeeded = playerStats.PlayerHealingScript.AddHealthItem();
 
             if (!succeeded)
@@ -198,7 +204,7 @@ public class LootObject : InteractableObject
                 break;
         }
 
-        playerStats.OnInteract -= PlayerInteracted;
+        playerStats.OnInteract = null;
     }
 
     private void SwapWeapon(PlayerShoot playerShoot)
