@@ -67,6 +67,8 @@ public class LootObject : InteractableObject
                 weaponIndex = rand;
 
                 weapons.transform.GetChild(0).GetChild(rand).gameObject.SetActive(true);
+
+                interactText = " to pickup weapon";
                 break;
             case LootTypes.SECONDARYWEAPON:
                 weapons.transform.GetChild(1).gameObject.SetActive(true);
@@ -78,6 +80,7 @@ public class LootObject : InteractableObject
                 currentGun = weaponsHolder.SecondaryGuns[rand];
 
                 weapons.transform.GetChild(1).GetChild(rand).gameObject.SetActive(true);
+                interactText = " to pickup weapon";
                 break;
             case LootTypes.SMALLAMMO:
                 ammoCrates.transform.GetChild(0).gameObject.SetActive(true);
@@ -86,6 +89,7 @@ public class LootObject : InteractableObject
                 ammoCrates.transform.GetChild(1).gameObject.SetActive(true);
                 break;
             case LootTypes.LARGEAMMO:
+                interactText = " to open ammo crate";
                 ammoCrates.transform.GetChild(2).gameObject.SetActive(true);
                 break;
             case LootTypes.HEALTH:

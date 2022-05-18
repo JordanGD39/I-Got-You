@@ -6,6 +6,7 @@ using Photon.Pun;
 public class DoorOpen : MonoBehaviourPun
 {
     private PlayerManager playerManager;
+    private PlayerUI playerUI;
     [SerializeField] private List<GameObject> playersInRange = new List<GameObject>();
     public List<GameObject> PlayersInRange { get { return playersInRange; } }
     [SerializeField] private GameObject doorToClose;
@@ -27,6 +28,7 @@ public class DoorOpen : MonoBehaviourPun
     void Start()
     {
         playerManager = FindObjectOfType<PlayerManager>();
+        playerUI = FindObjectOfType<PlayerUI>();
 
         if (beginOpened)
         {
@@ -57,6 +59,11 @@ public class DoorOpen : MonoBehaviourPun
                 return;
             }
 
+            if (allPlayersRequired)
+            {
+                playerUI.ShowNotification("All players are required to open this door");
+            }     
+
             playerManager.RemoveMissingPlayers();
 
             playersInRange.Add(other.gameObject);
@@ -74,6 +81,8 @@ public class DoorOpen : MonoBehaviourPun
         {
             photonView.RPC("OpenDoorOthers", RpcTarget.Others);
         }
+
+        playerUI.HideInteractPanel();
 
         opened = true;
         
@@ -124,6 +133,7 @@ public class DoorOpen : MonoBehaviourPun
 
         if (other.CompareTag("PlayerCol") && playersInRange.Contains(other.gameObject))
         {
+            playerUI.HideInteractPanel();
             playersInRange.Remove(other.gameObject);
         }
     }

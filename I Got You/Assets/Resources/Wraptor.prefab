@@ -432,6 +432,7 @@ MonoBehaviour:
   startingHealth: 80
   health: 100
   damage: 40
+  invincible: 0
 --- !u!195 &5385682122100596854
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -558,6 +559,7 @@ GameObject:
   - component: {fileID: 5385682123832297534}
   - component: {fileID: 346591835888670713}
   - component: {fileID: 8272320249983466585}
+  - component: {fileID: 4898547828076776625}
   m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
@@ -615,6 +617,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1200b8986ac214aa4b9b9810696996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4898547828076776625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5385682123832297535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 1
+    Name: Attacking
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!1 &6310096522517604304
 GameObject:
   m_ObjectHideFlags: 0

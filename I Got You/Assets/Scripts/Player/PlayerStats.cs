@@ -73,7 +73,6 @@ public class PlayerStats : MonoBehaviourPun
             playerUI.UpdateHealth(health, maxHealth);
             //playerUI.UpdateMaxHealth(maxHealth);
             playerUI.UpdateShieldHealth(shieldHealth, startingShieldHealth);
-            playerUI.UpdateMaxShieldHealth(startingShieldHealth);
             playerRevive = GetComponent<PlayerRevive>();
         }      
     }

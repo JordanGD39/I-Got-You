@@ -823,6 +823,7 @@ MonoBehaviour:
   startingHealth: 50
   health: 100
   damage: 20
+  invincible: 0
 --- !u!195 &5385682122100596854
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ public class KeycardScanner : InteractableObject
     protected override void AfterStart()
     {
         puzzleEat = GetComponentInParent<PuzzleEat>();
+        interactText = " to scan Keycard";
     }
 
     protected override void PlayerTriggerEntered(PlayerStats playerStats)
@@ -30,6 +31,11 @@ public class KeycardScanner : InteractableObject
                 puzzleEat.CheckPuzzleCompletion(true);
                 cardsToRemove.Add(item);
             }
+        }
+
+        if (cardsToRemove.Count == 0)
+        {
+            playerUI.ShowNotification("No Keycards to scan!");
         }
 
         foreach (InteractableObject item in cardsToRemove)

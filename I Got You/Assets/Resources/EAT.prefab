@@ -141,6 +141,7 @@ GameObject:
   - component: {fileID: 8446402261544813549}
   - component: {fileID: 8459402345535183903}
   - component: {fileID: 8492645322141974620}
+  - component: {fileID: 6944613078866055459}
   m_Layer: 6
   m_Name: EAT
   m_TagString: Untagged
@@ -240,7 +241,7 @@ MonoBehaviour:
   lerpPosSpeed: 5
   lerpRotSpeed: 5
   distanceToTeleport: 3
-  checkMasterClient: 0
+  checkMasterClient: 1
   model: {fileID: 4275329711273623453}
   animator: {fileID: 4842886506046649266}
 --- !u!114 &8446402261544813549
@@ -258,6 +259,7 @@ MonoBehaviour:
   startingHealth: 50
   health: 100
   damage: 999
+  invincible: 1
 --- !u!114 &8459402345535183903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,6 +300,18 @@ MonoBehaviour:
   distanceToStop: 1.25
   turnSpeed: 5
   animsDone: 0
+--- !u!114 &6944613078866055459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615900521100986864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9ba8082f08c8e4dac976a9bcdd92f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3305885592032613717
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,6 +448,7 @@ GameObject:
   - component: {fileID: 1582283079376880872}
   - component: {fileID: 4842886506046649266}
   - component: {fileID: 4414307186922323882}
+  - component: {fileID: 1881999421439592390}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -489,6 +504,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df1200b8986ac214aa4b9b9810696996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1881999421439592390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4275329711273623453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 1
+    Name: Attacking
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!1 &8849038227018065581
 GameObject:
   m_ObjectHideFlags: 0
