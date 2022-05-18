@@ -32,9 +32,13 @@ public class DoorOpen : MonoBehaviourPun
 
         if (beginOpened)
         {
-            doorToClose.SetActive(false);
+            OpenDoor();
             opened = true;
         }        
+        else
+        {
+            doorToClose.SetActive(false);
+        }
 
         if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
         {
