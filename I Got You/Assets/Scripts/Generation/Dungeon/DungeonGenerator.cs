@@ -11,7 +11,7 @@ public class DungeonGenerator : MonoBehaviour
     private AStarPathFinding aStarPathFinding;
 
     [SerializeField] private List<GameObject> roomPrefabs = new List<GameObject>();
-    [SerializeField] private List<GameObject> rooms = new List<GameObject>();
+    [SerializeField] private List<GenerationRoomData> rooms = new List<GenerationRoomData>();
     [SerializeField] private GameObject hallwayPrefab;
     [SerializeField] private Dictionary<Vector3, GameObject> roomsDictionary = new Dictionary<Vector3, GameObject>();
     [SerializeField] private List<Vector3> placedHallwaysPos = new List<Vector3>();
@@ -19,6 +19,10 @@ public class DungeonGenerator : MonoBehaviour
     public List<DungeonCell> ExtraHallways { get { return extraHallways; } }
     //private Delaunay2D delaunay;
     [SerializeField] private List<Vertex> vertices;
+    [SerializeField] private float seperationDistanceMultiplier = 1.5f;
+    [SerializeField] private float radius = 0;
+    [SerializeField] private Vector3 roomPos;
+    private float padding = 5;
     private TriangleNet.Mesh mesh;
 
     private int currentWallToRemove = -1;
@@ -26,6 +30,9 @@ public class DungeonGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Plane padding is the scale * 10 / 2
+        padding = 10 / 2;
+
         aStarPathFinding = GetComponent<AStarPathFinding>();
         primMinimumSpanningTree = GetComponent<PrimMinimumSpanningTree>();
         dungeonGrid = GetComponent<DungeonGrid>();
@@ -38,9 +45,49 @@ public class DungeonGenerator : MonoBehaviour
             PlaceRoom();
         }
 
+        SeperateRooms();
+
+        foreach (GenerationRoomData room in rooms)
+        {
+            room.transform.position = new Vector3(Mathf.RoundToInt(room.transform.position.x), 
+                0, Mathf.RoundToInt(room.transform.position.z));
+
+            roomsDictionary.Add(room.transform.position, room.gameObject);
+
+            dungeonGrid.SetGridCellsToType(DungeonCell.CellTypes.ROOM, 
+                new Vector2Int(Mathf.RoundToInt(room.transform.position.x), Mathf.RoundToInt(room.transform.position.z)), room.RoomScaleObject.localScale * padding);
+
+            foreach (Transform opening in room.Openings)
+            {
+                for (int i = 0; i < opening.childCount; i++)
+                {
+                    Vector3 pos = opening.GetChild(i).transform.position;
+
+                    DungeonCell val;
+
+                    if (dungeonGrid.Grid.TryGetValue(new Vector2Int(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.z)), out val))
+                    {
+                        val.cellType = DungeonCell.CellTypes.NONE;
+                    }
+                }
+            }
+
+            foreach (Transform cell in room.CellsToMakeRoomForOpening)
+            {
+                Vector3 pos = cell.transform.position;
+                DungeonCell val = null;
+
+                if (dungeonGrid.Grid.TryGetValue(new Vector2Int(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.z)), out val))
+                {
+                    val.cellType = DungeonCell.CellTypes.NONE;
+                }               
+            }
+        }
+
         Triangulate();
 
         primMinimumSpanningTree.StartCreationOfMinimumSpanningTree(mesh);
+
         List<GridNode> allHallwayNodes = new List<GridNode>();
 
         foreach (PrimEdge edge in primMinimumSpanningTree.MinimumSpanningTree)
@@ -119,10 +166,8 @@ public class DungeonGenerator : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
 
-        foreach (GameObject room in rooms)
+        foreach (GenerationRoomData generationRoomData in rooms)
         {
-            GenerationRoomData generationRoomData = room.GetComponent<GenerationRoomData>();
-
             foreach (Transform opening in generationRoomData.ChosenOpenings)
             {
                 if (placedHallwaysPos.Contains(opening.GetChild(1).transform.position))
@@ -179,7 +224,7 @@ public class DungeonGenerator : MonoBehaviour
         Debug.Log(chosenDoor.transform.position + " " + flooredPos +  " " + dungeonGrid.Grid[flooredPos].gameObject);
         generationRoomData.ChosenOpenings.Add(generationRoomData.Openings[chosenIndex]);
 
-        Debug.Log(flooredPos);
+        dungeonGrid.Grid[flooredPos].extraWallRemoval = currentWallToRemove;
 
         return dungeonGrid.Grid[flooredPos];
     }
@@ -190,30 +235,137 @@ public class DungeonGenerator : MonoBehaviour
         GameObject roomPrefab = roomPrefabs[randRoom];
         Transform scaleObject = roomPrefab.GetComponent<GenerationRoomData>().RoomScaleObject;
 
-        int roundedX = Mathf.RoundToInt(scaleObject.localScale.x);
-        int roundedZ = Mathf.RoundToInt(scaleObject.localScale.z);
+        int roundedX = Mathf.RoundToInt(scaleObject.localScale.x * padding);
+        int roundedZ = Mathf.RoundToInt(scaleObject.localScale.z * padding);
 
         int randX = Random.Range(roundedX, dungeonGrid.GridSize.x - roundedX);
         int randZ = Random.Range(roundedZ, dungeonGrid.GridSize.y - roundedZ);
 
         Vector2Int randomGridPos = new Vector2Int(randX, randZ);
 
-        bool roomHere = dungeonGrid.CheckIfRoomIsHere(randomGridPos, scaleObject.localScale);
+        //bool roomHere = dungeonGrid.CheckIfRoomIsHere(randomGridPos, scaleObject.localScale);
 
-        if (roomHere)
-        {
-            PlaceRoom();
-            return;
-        }
+        //if (roomHere)
+        //{
+        //    PlaceRoom();
+        //    return;
+        //}
 
         Vector3 pos = new Vector3(randomGridPos.x, 0, randomGridPos.y);
 
         GameObject room = Instantiate(roomPrefab, pos, Quaternion.identity);
-        dungeonGrid.SetGridCellsToType(DungeonCell.CellTypes.ROOM, randomGridPos, scaleObject.localScale);
-        rooms.Add(room);
-        roomsDictionary.Add(pos, room);
+        //dungeonGrid.SetGridCellsToType(DungeonCell.CellTypes.ROOM, randomGridPos, scaleObject.localScale);
+        rooms.Add(room.GetComponent<GenerationRoomData>());
 
         roomPrefabs.RemoveAt(randRoom);
+    }
+
+    private void SeperateRooms()
+    {
+        int loopCounter = 0, maxLoops = 9999; //just an example
+
+        while (RoomsOverlap())
+        {
+            if (loopCounter >= maxLoops)
+            {
+                Debug.LogError("INFINTE WHILE LOOP DETECTED!");
+                break;
+            }
+
+            foreach (GenerationRoomData room in rooms)
+            {
+                float minDistance = Mathf.Max(room.RoomScaleObject.localScale.x, room.RoomScaleObject.localScale.z) * padding * seperationDistanceMultiplier;
+                radius = minDistance;
+
+                foreach (GenerationRoomData otherRoom in rooms)
+                {
+                    if (room == otherRoom)
+                    {
+                        continue;
+                    }
+
+                    float distance = Vector3.Distance(room.transform.position, otherRoom.transform.position);
+
+                    if (distance < minDistance)
+                    {
+                        Vector3 dirToOtherRoom = room.transform.position - otherRoom.transform.position;
+
+                        if (dirToOtherRoom == Vector3.zero)
+                        {
+                            dirToOtherRoom = Vector3.forward;
+                        }
+
+                        roomPos = room.transform.position;
+
+                        room.transform.position += dirToOtherRoom;
+
+                        float clampedX = Mathf.Clamp(room.transform.position.x, room.RoomScaleObject.localScale.x * padding,
+                            dungeonGrid.GridSize.x - room.RoomScaleObject.localScale.x * padding);
+
+                        float clampedZ = Mathf.Clamp(room.transform.position.z, room.RoomScaleObject.localScale.z * padding,
+                            dungeonGrid.GridSize.y - room.RoomScaleObject.localScale.z * padding);
+
+                        if (Vector3.Distance(room.oldPos, room.transform.position) < 2)
+                        {
+                            room.StuckTimes++;
+
+                            if (room.StuckTimes > 2)
+                            {
+                                int roundedX = Mathf.RoundToInt(room.RoomScaleObject.localScale.x * padding);
+                                int roundedZ = Mathf.RoundToInt(room.RoomScaleObject.localScale.z * padding);
+
+                                int randX = Random.Range(roundedX, dungeonGrid.GridSize.x - roundedX);
+                                int randZ = Random.Range(roundedZ, dungeonGrid.GridSize.y - roundedZ);
+
+                                room.transform.position = new Vector3(randX, 0, randZ);
+                                room.oldPos = room.transform.position;
+
+                                room.StuckTimes = 0;
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            room.StuckTimes = 0;
+                        }
+
+                        room.transform.position = new Vector3(clampedX, 0, clampedZ);
+
+                        room.oldPos = room.transform.position;
+                        Debug.Log(room.transform.position);
+                    }
+                }
+            }
+
+            loopCounter++;
+        }        
+    }
+
+    private bool RoomsOverlap()
+    {
+        foreach (GenerationRoomData room in rooms)
+        {
+            foreach (GenerationRoomData otherRoom in rooms)
+            {
+                if (otherRoom == room)
+                {
+                    continue;
+                }
+
+                float minDistance = Mathf.Max(room.RoomScaleObject.localScale.x, room.RoomScaleObject.localScale.z) * padding * seperationDistanceMultiplier;
+
+                float distance = Vector3.Distance(room.transform.position, otherRoom.transform.position);
+
+                //Debug.Log(distance + " dist " + minDistance);
+
+                if (Mathf.Round(distance) < minDistance)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private void Triangulate()
@@ -227,5 +379,11 @@ public class DungeonGenerator : MonoBehaviour
 
         TriangleNet.Meshing.ConstraintOptions options = new TriangleNet.Meshing.ConstraintOptions() { ConformingDelaunay = false };
         mesh = (TriangleNet.Mesh)polygon.Triangulate(options);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(roomPos, radius);
     }
 }

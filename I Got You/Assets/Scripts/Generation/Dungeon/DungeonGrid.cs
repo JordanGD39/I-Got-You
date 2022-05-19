@@ -50,7 +50,12 @@ public class DungeonGrid : MonoBehaviour
             {
                 Vector2Int checkGridPos = new Vector2Int(pos.x + i, pos.y + j);
 
-                grid[checkGridPos].cellType = cellType;
+                DungeonCell val;
+
+                if (grid.TryGetValue(checkGridPos, out val))
+                {
+                    val.cellType = cellType;
+                }                 
             }
         }
     }

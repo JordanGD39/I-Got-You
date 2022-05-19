@@ -26,7 +26,14 @@ public class HallwayTile : MonoBehaviour
 
     private void CheckPosForHallway(Vector2Int posToCheck, int wallToRemove)
     {
-        switch (grid.Grid[posToCheck].cellType)
+        DungeonCell cell;
+
+        if (!grid.Grid.TryGetValue(posToCheck, out cell))
+        {
+            return;
+        }
+
+        switch (cell.cellType)
         {
             case DungeonCell.CellTypes.NONE:
                 if (!extraWallPlaced)
