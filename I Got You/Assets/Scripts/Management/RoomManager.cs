@@ -22,6 +22,8 @@ public class RoomManager : MonoBehaviourPun
     [SerializeField] private DoorOpen[] doorsToOtherRoom;
     private int currentNotPlacedIndex = 0;
 
+    private bool puzzlesCompleted = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -138,6 +140,21 @@ public class RoomManager : MonoBehaviourPun
     {
         difficultyManager.IncreaseDifficulty();
 
+        if (puzzlesCompleted)
+        {
+            OpenAllDoors();
+        }
+
+        if (enemiesInRoom != null)
+        {
+            enemiesInRoom.Clear();
+        }        
+    }
+
+    public void OpenAllDoors()
+    {
+        puzzlesCompleted = true;
+
         foreach (DoorOpen door in doorsToOtherRoom)
         {
             door.gameObject.SetActive(true);
@@ -148,11 +165,6 @@ public class RoomManager : MonoBehaviourPun
         {
             door.gameObject.SetActive(false);
         }
-
-        if (enemiesInRoom != null)
-        {
-            enemiesInRoom.Clear();
-        }        
     }
 
     private void PlaceDoorToThisRoom()

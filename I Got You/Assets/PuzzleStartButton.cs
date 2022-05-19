@@ -18,7 +18,7 @@ public class PuzzleStartButton : MonoBehaviour
     {
         if (manager.RandomInt.Count == 0 && inTrigger && Input.GetButtonDown("Interact") && !manager.OpenDoor)
         {
-            manager.ScreenSequence();
+            manager.ScreenSequence(true);
             // start screen sequence
             isPressed = true;
         }

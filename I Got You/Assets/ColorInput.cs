@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class ColorInput : MonoBehaviour
+public class ColorInput : MonoBehaviourPun
 {
     [SerializeField]
     private int codeInput;
@@ -24,29 +25,45 @@ public class ColorInput : MonoBehaviour
     {
         if (!manager.OpenDoor && inRange && Input.GetButtonDown("Interact"))
         {
-            switch (codeInput)
-            {
-                case 1:
-                    render.material.color = Color.red;
-                    StartCoroutine(WaitTime());
-                    manager.PlayerInput.Add(codeInput);
-                    break;
-                case 2:
-                    render.material.color = Color.green;
-                    StartCoroutine(WaitTime());
-                    manager.PlayerInput.Add(codeInput);
-                    break;
-                case 3:
-                    render.material.color = Color.blue;
-                    StartCoroutine(WaitTime());
-                    manager.PlayerInput.Add(codeInput);
-                    break;
-                default:
-                    break;
-            }
-
-            manager.CheckCorrectStep();
+            AddInput(true);
         }
+    }
+
+    private void AddInput(bool localPlayer)
+    {
+        if (localPlayer && PhotonNetwork.IsConnected)
+        {
+            photonView.RPC("AddInputOthers", RpcTarget.Others);
+        }
+
+        switch (codeInput)
+        {
+            case 1:
+                render.material.color = Color.red;
+                StartCoroutine(WaitTime());
+                manager.PlayerInput.Add(codeInput);
+                break;
+            case 2:
+                render.material.color = Color.green;
+                StartCoroutine(WaitTime());
+                manager.PlayerInput.Add(codeInput);
+                break;
+            case 3:
+                render.material.color = Color.blue;
+                StartCoroutine(WaitTime());
+                manager.PlayerInput.Add(codeInput);
+                break;
+            default:
+                break;
+        }
+
+        manager.CheckCorrectStep();
+    }
+
+    [PunRPC]
+    void AddInputOthers()
+    {
+        AddInput(false);
     }
 
     IEnumerator WaitTime()

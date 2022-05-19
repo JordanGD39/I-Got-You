@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class PuzzleManager : MonoBehaviour
+public class PuzzleManager : MonoBehaviourPun
 {
     [SerializeField]
     private List<GameObject> screens;
@@ -19,7 +20,9 @@ public class PuzzleManager : MonoBehaviour
     [SerializeField]
     private bool openDoor = false;
     public bool OpenDoor { get { return openDoor; } }
+    [SerializeField] private RoomDoorOpener doorOpener;
     public int Score { get { return score; } }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,14 +31,29 @@ public class PuzzleManager : MonoBehaviour
             Debug.Log(randomInt.ToString());
         }
     }
-    public void ScreenSequence()
+
+    public void ScreenSequence(bool localPlayer)
     {
-        randomInt.Clear();
+        randomInt.Clear();    
 
         while (randomInt.Count < maxSequence)
         {
             randomInt.Add(Random.Range(1, 4));
         }
+
+        if (localPlayer && PhotonNetwork.IsConnected)
+        {
+            photonView.RPC("StartScreenSequenceOthers", RpcTarget.Others, randomInt.ToArray());
+        }
+
+        StartCoroutine(ShowSequence());
+    }
+
+    [PunRPC]
+    void StartScreenSequenceOthers(int[] ints)
+    {
+        randomInt = new List<int>(ints);
+
         StartCoroutine(ShowSequence());
     }
 
@@ -108,8 +126,7 @@ public class PuzzleManager : MonoBehaviour
 
         if (score >= randomInt.Count)
         {
-            openDoor = true;
+            doorOpener.CheckCompletion();
         }
     }
-
 }

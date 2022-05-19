@@ -71,6 +71,12 @@ MonoBehaviour:
   - ChangeColour
   - HeresWhy
   - RemoveKeycardOthers
+  - CheckStepOthers
+  - StartScreenSequenceOthers
+  - StartClockOthers
+  - CheckAllCompletedOthers
+  - StartRandomClockOthers
+  - AddInputOthers
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
