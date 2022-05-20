@@ -12,6 +12,7 @@ public class DoorOpen : MonoBehaviourPun
     [SerializeField] private GameObject doorToClose;
     [SerializeField] private GameObject model;
     [SerializeField] private bool opened = true;
+    public bool Opened { get { return opened; } }
     [SerializeField] private bool openOnly = false;
     [SerializeField] private bool beginOpened = true;
     public bool OpenOnly { get { return openOnly; } set { openOnly = value; } }

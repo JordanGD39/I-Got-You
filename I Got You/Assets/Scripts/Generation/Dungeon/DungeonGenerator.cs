@@ -24,8 +24,11 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField] private Vector3 roomPos;
     private float padding = 5;
     private TriangleNet.Mesh mesh;
-
     private int currentWallToRemove = -1;
+
+    public delegate void GenerationDone();
+    public GenerationDone OnGenerationDone;
+    public GenerationRoomData StartingRoom { get; private set; }
 
     // Start is called before the first frame update
     void Start()
@@ -111,12 +114,7 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         SlowdownHallwayCreation(allHallwayNodes);
-
-        //foreach (GridNode node in allHallwayNodes)
-        //{
-        //    GameObject hallway = Instantiate(hallwayPrefab, node.dungeonCell.transform.position, Quaternion.identity);
-        //}
-        //List<GridNode> gridNodes = aStarPathFinding.FindPath();
+        OnGenerationDone?.Invoke();
     }
 
     private void SlowdownHallwayCreation(List<GridNode> allHallwayNodes)
@@ -276,8 +274,14 @@ public class DungeonGenerator : MonoBehaviour
         Vector3 pos = new Vector3(randomGridPos.x, 0, randomGridPos.y);
 
         GameObject room = Instantiate(roomPrefab, pos, Quaternion.identity);
-        //dungeonGrid.SetGridCellsToType(DungeonCell.CellTypes.ROOM, randomGridPos, scaleObject.localScale);
-        rooms.Add(room.GetComponent<GenerationRoomData>());
+        GenerationRoomData generationRoomData = room.GetComponent<GenerationRoomData>();
+
+        if (room.CompareTag("StartingRoom"))
+        {
+            StartingRoom = generationRoomData;
+        }
+
+        rooms.Add(generationRoomData);
 
         roomPrefabs.RemoveAt(randRoom);
     }

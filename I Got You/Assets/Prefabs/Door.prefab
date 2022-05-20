@@ -1023,7 +1023,7 @@ MonoBehaviour:
   model: {fileID: 8802004519156722822}
   opened: 1
   openOnly: 0
-  beginOpened: 1
+  beginOpened: 0
   playerOpen: 1
   allPlayersRequired: 1
   openingDoorAnim: {fileID: 8802004519156722817}

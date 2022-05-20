@@ -42626,6 +42626,9 @@ MonoBehaviour:
   healthIncreasePerLevel: 20
   doorsToThisRoom:
   - {fileID: 4833208311650832959}
+  doorsToOtherRoom:
+  - {fileID: 4833208312082573855}
+  - {fileID: 4833208311650487870}
 --- !u!114 &4121920812478566393
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,13 +12,13 @@ public class InteractableObject : MonoBehaviourPun
     // Start is called before the first frame update
     private void Start()
     {
-        if (playerManager != null)
+        if (playerManager != null && playerUI != null)
         {
             return;
         }
 
         playerManager = FindObjectOfType<PlayerManager>();
-        playerUI = FindObjectOfType<PlayerUI>();
+        playerUI = FindObjectOfType<PlayerUI>(true);
 
         AfterStart();
     }

@@ -28,7 +28,11 @@ public class RoomManager : MonoBehaviourPun
     void Start()
     {
         difficultyManager = FindObjectOfType<DifficultyManager>();
-        doorsToOtherRoom[0].OnOpenedDoor += PlaceDoorToThisRoom;
+
+        for (int i = 0; i < doorsToOtherRoom.Length; i++)
+        {
+            doorsToOtherRoom[i].OnOpenedDoor += PlaceDoorToThisRoom;
+        }
 
         if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
         {
@@ -43,7 +47,11 @@ public class RoomManager : MonoBehaviourPun
             case RoomModes.NONE:
                 break;
             case RoomModes.BATTLEONLY:
-                doorsToThisRoom[0].OnOpenedDoor += PlaceEnemies;
+                for (int i = 0; i < doorsToThisRoom.Length; i++)
+                {
+                    doorsToThisRoom[i].OnOpenedDoor += PlaceEnemies;
+                }
+                puzzlesCompleted = true;
                 break;
             case RoomModes.PUZZLEEAT:
                 //doorsToThisRoom[0].OnOpenedDoor += GetComponent<PuzzleEat>().StartPuzzle;
@@ -157,13 +165,14 @@ public class RoomManager : MonoBehaviourPun
 
         foreach (DoorOpen door in doorsToOtherRoom)
         {
-            door.gameObject.SetActive(true);
             door.CloseOpeningDoor();
         }
 
         foreach (DoorOpen door in doorsToThisRoom)
         {
-            door.gameObject.SetActive(false);
+            door.OpenOnly = true;
+            door.OpenDoor();
+            door.OpenClosedDoor();
         }
     }
 
