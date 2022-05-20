@@ -110,7 +110,7 @@ public class DungeonGenerator : MonoBehaviour
             }
         }
 
-        StartCoroutine(SlowdownHallwayCreation(allHallwayNodes));
+        SlowdownHallwayCreation(allHallwayNodes);
 
         //foreach (GridNode node in allHallwayNodes)
         //{
@@ -119,20 +119,15 @@ public class DungeonGenerator : MonoBehaviour
         //List<GridNode> gridNodes = aStarPathFinding.FindPath();
     }
 
-    private IEnumerator SlowdownHallwayCreation(List<GridNode> allHallwayNodes)
+    private void SlowdownHallwayCreation(List<GridNode> allHallwayNodes)
     {
-        while (!primMinimumSpanningTree.ShowMST)
-        {
-            yield return null;
-        }
-
         allHallwayNodes = allHallwayNodes.Distinct().ToList();
 
         List<HallwayTile> tilesToRecheck = new List<HallwayTile>();
 
         foreach (GridNode node in allHallwayNodes)
         {
-            if (placedHallwaysPos.Contains(node.dungeonCell.transform.position))
+            if (placedHallwaysPos.Contains(node.dungeonCell.transform.position) || node.dungeonCell.extraWallRemoval >= 0)
             {
                 continue;
             }
@@ -141,46 +136,62 @@ public class DungeonGenerator : MonoBehaviour
             HallwayTile tile = hallway.GetComponent<HallwayTile>();
             tile.CheckSurroundings(dungeonGrid, this, false);
 
-            if (node.dungeonCell.extraWallRemoval >= 0)
-            {
-                tile.RemoveWall(node.dungeonCell.extraWallRemoval);
-            }
-
             tilesToRecheck.Add(tile);
             placedHallwaysPos.Add(node.dungeonCell.transform.position);
-
-            yield return new WaitForSeconds(0.05f);
         }
 
         foreach (DungeonCell cell in extraHallways)
         {
-            if (placedHallwaysPos.Contains(cell.transform.position))
+            if (placedHallwaysPos.Contains(cell.transform.position) || cell.extraWallRemoval >= 0)
             {
                 continue;
             }
 
             GameObject hallway = Instantiate(hallwayPrefab, cell.transform.position, Quaternion.identity);
-            hallway.GetComponent<HallwayTile>().CheckSurroundings(dungeonGrid, this, true);
+            HallwayTile tile = hallway.GetComponent<HallwayTile>();
+            tile.CheckSurroundings(dungeonGrid, this, true);
             placedHallwaysPos.Add(cell.transform.position);
-
-            yield return new WaitForSeconds(0.05f);
+            tilesToRecheck.Add(tile);
         }
 
         foreach (GenerationRoomData generationRoomData in rooms)
         {
-            foreach (Transform opening in generationRoomData.ChosenOpenings)
+            List<Transform> chosenOpenings = generationRoomData.ChosenOpenings.Distinct().ToList();
+
+            for (int i = 0; i < generationRoomData.Openings.Length; i++)
             {
-                if (placedHallwaysPos.Contains(opening.GetChild(1).transform.position))
+                Transform opening = generationRoomData.Openings[i];
+
+                if (!generationRoomData.ChosenOpenings.Contains(opening))
                 {
                     continue;
                 }
 
-                GameObject hallway = Instantiate(hallwayPrefab, opening.GetChild(1).transform.position, Quaternion.identity);
-                hallway.GetComponent<HallwayTile>().CheckSurroundings(dungeonGrid, this, true);
-                placedHallwaysPos.Add(opening.GetChild(1).transform.position);
+                for (int j = 0; j < opening.childCount; j++)
+                {
+                    Vector3 openingPos = opening.GetChild(j).transform.position;
 
-                yield return new WaitForSeconds(0.05f);
-            }            
+                    if (placedHallwaysPos.Contains(openingPos))
+                    {
+                        continue;
+                    }
+
+                    GameObject hallway = Instantiate(hallwayPrefab, openingPos, Quaternion.identity);
+                    HallwayTile tile = hallway.GetComponent<HallwayTile>();
+                    tile.CheckSurroundings(dungeonGrid, this, true);
+                    tilesToRecheck.Add(tile);
+                    placedHallwaysPos.Add(openingPos);
+
+                    DungeonCell cell;
+
+                    if (dungeonGrid.Grid.TryGetValue(new Vector2Int(Mathf.RoundToInt(openingPos.x), Mathf.RoundToInt(openingPos.z)), out cell))
+                    {
+                        cell.cellType = DungeonCell.CellTypes.HALLWAY;
+                        cell.extraWallRemoval = generationRoomData.WallToRemove[i];
+                        tile.RemoveWall(cell.extraWallRemoval);
+                    }
+                }
+            }
         }
 
         foreach (HallwayTile tile in tilesToRecheck)
@@ -221,12 +232,23 @@ public class DungeonGenerator : MonoBehaviour
         currentWallToRemove = generationRoomData.WallToRemove[chosenIndex];
 
         Vector2Int flooredPos = new Vector2Int(Mathf.FloorToInt(chosenDoor.position.x), Mathf.FloorToInt(chosenDoor.position.z));
-        Debug.Log(chosenDoor.transform.position + " " + flooredPos +  " " + dungeonGrid.Grid[flooredPos].gameObject);
         generationRoomData.ChosenOpenings.Add(generationRoomData.Openings[chosenIndex]);
 
-        dungeonGrid.Grid[flooredPos].extraWallRemoval = currentWallToRemove;
+        DungeonCell cell;
 
-        return dungeonGrid.Grid[flooredPos];
+        if (dungeonGrid.Grid.TryGetValue(flooredPos, out cell))
+        {
+            cell.extraWallRemoval = currentWallToRemove;
+
+            return cell;
+        }
+        else
+        {
+            Vector2Int ceiledPos = new Vector2Int(Mathf.CeilToInt(chosenDoor.position.x), Mathf.CeilToInt(chosenDoor.position.z));
+            dungeonGrid.Grid[ceiledPos].extraWallRemoval = currentWallToRemove;
+
+            return dungeonGrid.Grid[ceiledPos];
+        }
     }
 
     private void PlaceRoom()
@@ -262,7 +284,7 @@ public class DungeonGenerator : MonoBehaviour
 
     private void SeperateRooms()
     {
-        int loopCounter = 0, maxLoops = 9999; //just an example
+        int loopCounter = 0, maxLoops = 30000; //just an example
 
         while (RoomsOverlap())
         {

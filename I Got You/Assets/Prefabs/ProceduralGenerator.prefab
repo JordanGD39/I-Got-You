@@ -70,7 +70,7 @@ MonoBehaviour:
   hallwayPrefab: {fileID: 7838144655838495395, guid: d76b097fc7830fa4d9cc0f41539272a9, type: 3}
   placedHallwaysPos: []
   extraHallways: []
-  seperationDistanceMultiplier: 2
+  seperationDistanceMultiplier: 1.8
   radius: 0
   roomPos: {x: 0, y: 0, z: 0}
 --- !u!114 &7162548949459417632

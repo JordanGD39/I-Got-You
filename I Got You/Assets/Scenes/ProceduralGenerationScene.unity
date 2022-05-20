@@ -295,22 +295,26 @@ PrefabInstance:
     - target: {fileID: 7162548949459417633, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
       propertyPath: roomPrefabs.Array.data[5]
       value: 
-      objectReference: {fileID: 4049260677296841894, guid: e4973f7fafb4af747aba3a83d9862a82, type: 3}
+      objectReference: {fileID: 7855538103156852665, guid: 41679d3500a487c4b85a43c08a1de731, type: 3}
     - target: {fileID: 7162548949459417633, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
       propertyPath: roomPrefabs.Array.data[6]
       value: 
       objectReference: {fileID: 4049260677296841894, guid: e4973f7fafb4af747aba3a83d9862a82, type: 3}
+    - target: {fileID: 7162548949459417633, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
+      propertyPath: seperationDistanceMultiplier
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7162548949459417660, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
       propertyPath: m_Name
       value: ProceduralGenerator
       objectReference: {fileID: 0}
     - target: {fileID: 7162548949459417662, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
       propertyPath: gridSize.x
-      value: 170
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 7162548949459417662, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
       propertyPath: gridSize.y
-      value: 170
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 7162548949459417663, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
       propertyPath: m_RootOrder
