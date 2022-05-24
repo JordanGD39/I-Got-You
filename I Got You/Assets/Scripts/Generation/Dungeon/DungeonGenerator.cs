@@ -243,9 +243,26 @@ public class DungeonGenerator : MonoBehaviour
         else
         {
             Vector2Int ceiledPos = new Vector2Int(Mathf.CeilToInt(chosenDoor.position.x), Mathf.CeilToInt(chosenDoor.position.z));
-            dungeonGrid.Grid[ceiledPos].extraWallRemoval = currentWallToRemove;
 
-            return dungeonGrid.Grid[ceiledPos];
+            if (!dungeonGrid.Grid.TryGetValue(ceiledPos, out cell))
+            {
+                float closestDist = Mathf.Infinity;
+
+                foreach (var item in dungeonGrid.Grid)
+                {
+                    float dist = Vector2Int.Distance(ceiledPos, item.Key);
+
+                    if (dist < closestDist)
+                    {
+                        closestDist = dist;
+                        cell = item.Value;
+                    }
+                }
+            }
+
+            cell.extraWallRemoval = currentWallToRemove;
+
+            return cell;
         }
     }
 

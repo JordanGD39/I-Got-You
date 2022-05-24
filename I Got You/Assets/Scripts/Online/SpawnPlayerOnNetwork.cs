@@ -68,6 +68,7 @@ public class SpawnPlayerOnNetwork : MonoBehaviourPun
         playerOffline.SetActive(true);
 
         PlayerStats playerStats = playerOffline.GetComponent<PlayerStats>();
+        playerManager.LocalPlayer = playerStats;
 
         playerManager.Players.Add(playerStats);
         playerManager.PlayersInGame.Add(playerStats);
@@ -81,6 +82,7 @@ public class SpawnPlayerOnNetwork : MonoBehaviourPun
         GameObject player = PhotonNetwork.Instantiate(playerPrefab.name, startingRoomPos + randomPos, Quaternion.identity);
 
         PlayerStats playerStats = player.GetComponent<PlayerStats>();
+        playerManager.LocalPlayer = playerStats;
 
         playerManager.Players.Add(playerStats);
         playerManager.PlayersInGame.Add(playerStats);

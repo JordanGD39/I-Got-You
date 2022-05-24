@@ -16,6 +16,8 @@ public class PlayerManager : MonoBehaviour
     
     public Dictionary<Collider, PlayerStats> StatsOfAllPlayers { get; private set; } = new Dictionary<Collider, PlayerStats>();
 
+    public PlayerStats LocalPlayer { get; set; }
+
     public void RemoveMissingPlayers()
     {
         players = players.Where(item => item != null).ToList();

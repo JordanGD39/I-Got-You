@@ -98,7 +98,7 @@ public class PlayerStats : MonoBehaviourPun
 
         foreach (Transform child in obj.transform)
         {
-            if (child == null)
+            if (child == null || child.GetComponent<SpriteRenderer>() != null)
             {
                 continue;
             }

@@ -99,6 +99,6 @@ public class ClassSelectUI : MonoBehaviour
             PhotonNetwork.CurrentRoom.IsOpen = false;
         }
         
-        PhotonFunctionHandler.LoadSceneAsync("Room build");
+        PhotonFunctionHandler.LoadSceneAsync("GameScene");
     }
 }

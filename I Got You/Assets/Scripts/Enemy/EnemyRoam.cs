@@ -94,7 +94,6 @@ public class EnemyRoam : MonoBehaviour
 
         if (Vector3.Distance(maybeTargetPos, transform.position) < minimumDistance)
         {
-            Debug.Log("Not far enough");
             alreadyInvoking = false;
             return;
         }
@@ -107,7 +106,6 @@ public class EnemyRoam : MonoBehaviour
         {
             if (hit.collider.gameObject.CompareTag("ExcludeGround"))
             {
-                Debug.Log("Exclusion zone");
                 alreadyInvoking = false;
                 return;
             }
@@ -115,7 +113,6 @@ public class EnemyRoam : MonoBehaviour
             if (hit.collider != null)
             {
                 alreadyInvoking = false;
-                Debug.Log("Something is there " + hit.collider.gameObject);
                 return;
             }
         }
@@ -132,7 +129,6 @@ public class EnemyRoam : MonoBehaviour
             else
             {
                 alreadyInvoking = false;
-                Debug.Log("Someting is nearby the target pos");
             }
         }
     }

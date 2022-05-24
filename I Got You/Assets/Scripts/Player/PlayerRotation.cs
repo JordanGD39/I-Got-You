@@ -31,7 +31,7 @@ public class PlayerRotation : MonoBehaviourPun
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-     /*   InputUI inputUI = FindObjectOfType<InputUI>();
+        InputUI inputUI = FindObjectOfType<InputUI>();
 
         inputUI.OnTogglePausedGame += () => 
         {
@@ -42,7 +42,7 @@ public class PlayerRotation : MonoBehaviourPun
 
         inputUI.SettingsUI.OnChangedSensitivity += ChangeSensitivity;
 
-        ChangeSensitivity(PlayerPrefs.GetInt("Sensitivity", 6)); */
+        ChangeSensitivity(PlayerPrefs.GetInt("Sensitivity", 6));
     }
 
     private void ChangeSensitivity(int val)

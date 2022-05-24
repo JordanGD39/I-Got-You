@@ -23,6 +23,7 @@ public class RoomManager : MonoBehaviourPun
     private int currentNotPlacedIndex = 0;
 
     private bool puzzlesCompleted = false;
+    private bool battleStarted = false;
 
     // Start is called before the first frame update
     void Start()
@@ -63,13 +64,13 @@ public class RoomManager : MonoBehaviourPun
 
     private void PlaceEnemies()
     {
-        if (enemiesInRoom != null && enemiesInRoom.Count > 0)
+        if (enemiesInRoom != null && enemiesInRoom.Count > 0 || battleStarted)
         {
             return;
         }
 
         int enemiesPlaced = 0;
-        int enemyTypesPlaced = 0;
+        battleStarted = true;
 
         enemyDeathsInRoom = 0;
         currentNotPlacedIndex = 0;
@@ -238,7 +239,8 @@ public class RoomManager : MonoBehaviourPun
 
     private void PlaceEnemy(GameObject enemy)
     {
-        BoxCollider chosenBox = boxHolder.SpawnBoxes[Random.Range(0, boxHolder.SpawnBoxes.Count)];
+        int rand = Random.Range(0, boxHolder.SpawnBoxes.Count);
+        BoxCollider chosenBox = boxHolder.SpawnBoxes[rand];
         Vector3 center = chosenBox.transform.position;
         Vector3 randomPosInBox = center + new Vector3(Random.Range(-chosenBox.size.x, chosenBox.size.x), 0, Random.Range(-chosenBox.size.z, chosenBox.size.z));
         randomPosInBox.y = enemyPlaceAtY;
@@ -263,6 +265,7 @@ public class RoomManager : MonoBehaviourPun
         stats.OnEnemyDied += CountEnemyDeath;
 
         enemy.transform.position = randomPosInBox;
+        Debug.Log("Enemy with index: " + stats.ListIndex + " spawned in box: " + rand + " pos: " + randomPosInBox);
         enemy.SetActive(true);
     }
 

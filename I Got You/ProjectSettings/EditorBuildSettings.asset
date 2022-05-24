@@ -14,7 +14,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Protoscene.unity
     guid: b8990b45c1d8887449535aeae027edea
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Room build.unity
     guid: 60cad05a9aa76cf4facd691109ca036a
+  - enabled: 1
+    path: Assets/Scenes/GameScene.unity
+    guid: 1a663f3ab92f1dd41b0fd00aafab445f
   m_configObjects: {}

@@ -39,6 +39,11 @@ public class InteractableObject : MonoBehaviourPun
         {
             PlayerStats playerStats = playerManager.StatsOfAllPlayers[other];
 
+            if (playerStats != playerManager.LocalPlayer)
+            {
+                return;
+            }
+
             PlayerTriggerEntered(playerStats);
             //playerStats.OnInteract = (PlayerStats stats) => { pickedUp = true; };
         }
@@ -66,6 +71,11 @@ public class InteractableObject : MonoBehaviourPun
         {
             playerUI.HideInteractPanel();
             PlayerStats playerStats = playerManager.StatsOfAllPlayers[other];
+
+            if (playerStats != playerManager.LocalPlayer)
+            {
+                return;
+            }
 
             playerStats.OnInteract = null;
         }

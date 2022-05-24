@@ -366,7 +366,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-595574
+  m_Name: pb_Mesh-12476
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -660,7 +660,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-21975124
+  m_Name: pb_Mesh-10188
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -824,7 +824,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-21972320
+  m_Name: pb_Mesh-7384
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1017,6 +1017,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5067127988478479107, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
+      propertyPath: m_Color.b
+      value: 0.39999998
+      objectReference: {fileID: 0}
+    - target: {fileID: 5067127988478479107, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
+      propertyPath: m_Color.g
+      value: 0.39999998
+      objectReference: {fileID: 0}
+    - target: {fileID: 5067127988478479107, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5072103542370614709, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1201,8 +1213,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 6712501813913824978, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
   playerOffline: {fileID: 529045191}
-  minPos: {x: -4.5, y: 0, z: -13}
-  maxPos: {x: 4.5, y: 0, z: -17}
+  minPos: {x: -1, y: 0, z: -1}
+  maxPos: {x: 1, y: 0, z: 1}
 --- !u!114 &623612094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1811,7 +1823,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-21972310
+  m_Name: pb_Mesh-7374
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
