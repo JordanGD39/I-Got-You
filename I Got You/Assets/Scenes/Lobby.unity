@@ -4103,7 +4103,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1573767624
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4300,7 +4300,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1615161318
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4379,7 +4379,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1646954600
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5101,7 +5101,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1991194649
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5844,6 +5844,18 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: d14b42c4de4190b41b8807f3592ab256, type: 3}
+    - target: {fileID: 7613868399338753009, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7613868399338753009, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7613868399338753009, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753010, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_Name
       value: ScoutButton
