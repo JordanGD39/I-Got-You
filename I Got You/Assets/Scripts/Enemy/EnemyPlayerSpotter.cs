@@ -38,7 +38,10 @@ public class EnemyPlayerSpotter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerInSightCheck();
+        if (chaseAI.TargetPlayer != null)
+        {
+            PlayerInSightCheck();
+        }        
     }
 
     private void PlayerInSightCheck()

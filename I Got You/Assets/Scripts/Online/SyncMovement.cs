@@ -69,6 +69,7 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
         {
             model.SetActive(false);
             transform.position = Vector3.zero;
+            IsSyncing = true;
             StartCoroutine(nameof(TeleportToSync));
         }
     }

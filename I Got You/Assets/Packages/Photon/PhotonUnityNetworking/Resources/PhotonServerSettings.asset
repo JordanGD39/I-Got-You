@@ -77,6 +77,8 @@ MonoBehaviour:
   - CheckAllCompletedOthers
   - StartRandomClockOthers
   - AddInputOthers
+  - StartGenerationForOthers
+  - PlaceRoomOthers
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

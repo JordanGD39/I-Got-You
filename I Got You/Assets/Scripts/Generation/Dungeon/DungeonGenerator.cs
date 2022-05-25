@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using TriangleNet.Geometry;
 using UnityEngine;
+using Photon.Pun;
 
-public class DungeonGenerator : MonoBehaviour
+public class DungeonGenerator : MonoBehaviourPun
 {
     private DungeonGrid dungeonGrid;
     private PrimMinimumSpanningTree primMinimumSpanningTree;
@@ -39,17 +40,68 @@ public class DungeonGenerator : MonoBehaviour
         aStarPathFinding = GetComponent<AStarPathFinding>();
         primMinimumSpanningTree = GetComponent<PrimMinimumSpanningTree>();
         dungeonGrid = GetComponent<DungeonGrid>();
-        dungeonGrid.GenerateGrid();
 
-        int roomCount = roomPrefabs.Count;
-
-        for (int i = 0; i < roomCount; i++)
+        if (!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient)
         {
-            PlaceRoom();
+            dungeonGrid.GenerateGrid();
+
+            int roomCount = roomPrefabs.Count;
+
+            for (int i = 0; i < roomCount; i++)
+            {
+                PlaceRoom();                
+            }
+
+            SeperateRooms();
+
+            if (PhotonNetwork.IsConnected)
+            {
+                foreach (GenerationRoomData room in rooms)
+                {
+                    photonView.RPC("PlaceRoomOthers", RpcTarget.OthersBuffered, 
+                        room.gameObject.GetPhotonView().ViewID, new Vector2(room.transform.position.x, room.transform.position.z));
+                }
+            }
+
+            int ticks = (int)System.DateTime.Now.Ticks;
+            Random.InitState(ticks);
+
+            if (PhotonNetwork.IsConnected)
+            {
+                photonView.RPC("StartGenerationForOthers", RpcTarget.OthersBuffered, ticks);
+            }            
+
+            StartGeneration();
+        }        
+    }
+
+    [PunRPC]
+    void PlaceRoomOthers(int viewId, Vector2 pos)
+    {
+        GameObject room = PhotonNetwork.GetPhotonView(viewId).gameObject;
+        room.transform.position = new Vector3(pos.x, 0, pos.y);
+        GenerationRoomData generationRoomData = room.GetComponent<GenerationRoomData>();
+
+        if (room.CompareTag("StartingRoom"))
+        {
+            StartingRoom = generationRoomData;
         }
 
-        SeperateRooms();
+        rooms.Add(generationRoomData);
+    }
 
+    [PunRPC]
+    void StartGenerationForOthers(int seed)
+    {
+        dungeonGrid.GenerateGrid();
+
+        Random.InitState(seed);
+
+        StartGeneration();
+    }
+
+    private void StartGeneration()
+    {
         foreach (GenerationRoomData room in rooms)
         {
             room.transform.position = new Vector3(Mathf.RoundToInt(room.transform.position.x), 
@@ -113,11 +165,11 @@ public class DungeonGenerator : MonoBehaviour
             }
         }
 
-        SlowdownHallwayCreation(allHallwayNodes);
+        CreateHallways(allHallwayNodes);
         OnGenerationDone?.Invoke();
     }
 
-    private void SlowdownHallwayCreation(List<GridNode> allHallwayNodes)
+    private void CreateHallways(List<GridNode> allHallwayNodes)
     {
         allHallwayNodes = allHallwayNodes.Distinct().ToList();
 
@@ -290,7 +342,7 @@ public class DungeonGenerator : MonoBehaviour
 
         Vector3 pos = new Vector3(randomGridPos.x, 0, randomGridPos.y);
 
-        GameObject room = Instantiate(roomPrefab, pos, Quaternion.identity);
+        GameObject room = PhotonFunctionHandler.InstantiateGameObject(roomPrefab, pos, Quaternion.identity);
         GenerationRoomData generationRoomData = room.GetComponent<GenerationRoomData>();
 
         if (room.CompareTag("StartingRoom"))

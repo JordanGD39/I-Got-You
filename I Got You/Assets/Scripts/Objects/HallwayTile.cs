@@ -15,8 +15,16 @@ public class HallwayTile : MonoBehaviour
         grid = aGrid;
         dungeonGenerator = gen;
 
-        Vector2Int gridPos = new Vector2Int((int)transform.position.x, (int)transform.position.z);
-        grid.Grid[gridPos].cellType = DungeonCell.CellTypes.HALLWAY;
+        Vector2Int gridPos = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
+
+        DungeonCell cell;
+
+        if (!grid.Grid.TryGetValue(gridPos, out cell))
+        {
+            return;
+        }
+
+        cell.cellType = DungeonCell.CellTypes.HALLWAY;
 
         CheckPosForHallway(gridPos - new Vector2Int(1, 0), 0);
         CheckPosForHallway(gridPos + new Vector2Int(0, 1), 1);

@@ -43,7 +43,7 @@ public class ChasePlayerAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
+        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected || !agent.isOnNavMesh)
         {
             return;
         }

@@ -52,7 +52,8 @@ public class DoorOpen : MonoBehaviourPun
 
     private void OnTriggerEnter(Collider other)
     {
-        if (opened || (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient) || !playerOpen)
+        if (opened || !playerOpen || (playerManager != null && PhotonNetwork.IsConnected 
+            && playerManager.PlayersInGame.Count < PhotonNetwork.CurrentRoom.PlayerCount))
         {
             return;
         }
@@ -64,10 +65,15 @@ public class DoorOpen : MonoBehaviourPun
                 return;
             }
 
-            if (allPlayersRequired)
+            if (allPlayersRequired && playerManager.StatsOfAllPlayers[other] == playerManager.LocalPlayer)
             {
                 playerUI.ShowNotification("All players are required to open this door");
-            }     
+            }
+
+            if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
+            {
+                return;
+            }
 
             playerManager.RemoveMissingPlayers();
 
@@ -131,14 +137,24 @@ public class DoorOpen : MonoBehaviourPun
 
     private void OnTriggerExit(Collider other)
     {
-        if (opened || (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient) || !playerOpen)
+        if (opened || !playerOpen || (playerManager != null && PhotonNetwork.IsConnected
+            && playerManager.PlayersInGame.Count < PhotonNetwork.CurrentRoom.PlayerCount))
         {
             return;
         }
 
-        if (other.CompareTag("PlayerCol") && playersInRange.Contains(other.gameObject))
+        if (other.CompareTag("PlayerCol"))
         {
-            playerUI.HideInteractPanel();
+            if (playerManager.StatsOfAllPlayers[other] == playerManager.LocalPlayer)
+            {
+                playerUI.HideInteractPanel();
+            }
+
+            if (!playersInRange.Contains(other.gameObject))
+            {
+                return;
+            }
+            
             playersInRange.Remove(other.gameObject);
         }
     }

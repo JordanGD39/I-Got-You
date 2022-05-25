@@ -217,7 +217,13 @@ public class LootObject : InteractableObject
 
         if (secondaryWasNull)
         {
+            if (PhotonNetwork.IsConnected)
+            {
+                photonView.RPC("DeactivateLootForOthers", RpcTarget.Others);
+            }                
+
             gameObject.SetActive(false);
+
             return;
         }
 
