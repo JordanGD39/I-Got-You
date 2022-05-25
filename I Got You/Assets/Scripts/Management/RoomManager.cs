@@ -273,6 +273,7 @@ public class RoomManager : MonoBehaviourPun
     void PlaceEnemyForOthersRPC(int viewId)
     {
         GameObject enemy = PhotonNetwork.GetPhotonView(viewId).gameObject;
+        enemy.GetComponent<EnemyStats>().CallDisableRagdoll();
         enemy.SetActive(true);
     }
 }
