@@ -9,8 +9,10 @@ public class RoomManager : MonoBehaviourPun
     private DifficultyManager difficultyManager;
     private EnemyGenerator enemyGenerator;
 
-    public enum RoomModes {NONE, BATTLEONLY, PUZZLEEAT}
+    public enum RoomModes {NONE, BATTLEONLY, PUZZLEEAT, PUZZLECLOCK, PUZZLESIMON}
     [SerializeField] private RoomModes roomMode;
+    public RoomModes RoomMode { get { return roomMode; } }
+    [SerializeField] private GameObject[] puzzleObjects;
     [SerializeField] private List<EnemyGenerator.GeneratedEnemyInfo> enemiesInRoom;
     [SerializeField] private List<int> enemiesNotPlacedCount = new List<int>();
     [SerializeField] private float enemyPlaceAtY = 0;
@@ -42,24 +44,34 @@ public class RoomManager : MonoBehaviourPun
 
         boxHolder = GetComponentInChildren<EnemySpawnBoxHolder>();
         enemyGenerator = FindObjectOfType<EnemyGenerator>();
+    }
 
-        switch (roomMode)
+    public void SetRoomMode(RoomModes aRoomMode)
+    {
+        foreach (GameObject puzzle in puzzleObjects)
         {
-            case RoomModes.NONE:
-                break;
-            case RoomModes.BATTLEONLY:
-                for (int i = 0; i < doorsToThisRoom.Length; i++)
-                {
-                    doorsToThisRoom[i].OnOpenedDoor += PlaceEnemies;
-                }
-                puzzlesCompleted = true;
-                break;
-            case RoomModes.PUZZLEEAT:
-                //doorsToThisRoom[0].OnOpenedDoor += GetComponent<PuzzleEat>().StartPuzzle;
-                break;
-            default:
-                break;
-        }     
+            puzzle.SetActive(false);
+        }
+
+        roomMode = aRoomMode;
+
+        if (roomMode != RoomModes.PUZZLEEAT)
+        {
+            for (int i = 0; i < doorsToThisRoom.Length; i++)
+            {
+                doorsToThisRoom[i].OnOpenedDoor += PlaceEnemies;
+            }
+        }
+
+        if (roomMode == RoomModes.BATTLEONLY)
+        {
+            puzzlesCompleted = true;
+        }
+        else if (roomMode != RoomModes.NONE && roomMode != RoomModes.PUZZLEEAT)
+        {
+            puzzleObjects[(int)roomMode - 3].SetActive(true);
+            puzzlesCompleted = false;
+        }
     }
 
     private void PlaceEnemies()
@@ -111,8 +123,13 @@ public class RoomManager : MonoBehaviourPun
             {
                 EnemyStats enemyStats = enemy.GetComponent<EnemyStats>();
                 enemyStats.ListIndex = i;
-                enemyStats.OnEnemyDied = CountEnemyDeath;
-                enemyStats.OnEnemyDied += PlaceNotYetSpawnedEnemy;
+
+                enemyStats.OnEnemyDied = PlaceNotYetSpawnedEnemy;
+
+                if (roomMode == RoomModes.BATTLEONLY)
+                {
+                    enemyStats.OnEnemyDied += CountEnemyDeath;
+                }               
             }
 
             foreach (GameObject enemy in enemyInfo.availableEnemiesList)
@@ -147,12 +164,13 @@ public class RoomManager : MonoBehaviourPun
 
     private void ClearRoom()
     {
-        difficultyManager.IncreaseDifficulty();
-
-        if (puzzlesCompleted)
+        if (!puzzlesCompleted)
         {
-            OpenAllDoors();
+            return;
         }
+
+        difficultyManager.IncreaseDifficulty();
+        OpenAllDoors();
 
         if (enemiesInRoom != null)
         {
@@ -206,35 +224,63 @@ public class RoomManager : MonoBehaviourPun
             generatedEnemyInfo.availableEnemiesList.Add(enemyDied);
             generatedEnemyInfo.enemiesList.Remove(enemyDied);
         }
-       
+
         //enemyDied.SetActive(false);
 
-        if ((currentNotPlacedIndex < 0 || currentNotPlacedIndex > enemiesNotPlacedCount.Count - 1) || enemiesInRoom.Count == 0)
+        if (roomMode != RoomModes.BATTLEONLY && puzzlesCompleted)
         {
             return;
         }
 
-        if (enemiesNotPlacedCount[currentNotPlacedIndex] <= 0 && currentNotPlacedIndex >= enemiesNotPlacedCount.Count - 1)
-        {
-            return;
-        }
+        EnemyGenerator.GeneratedEnemyInfo chosenEnemyType = enemiesInRoom[currentNotPlacedIndex];
 
-        while (enemiesNotPlacedCount[currentNotPlacedIndex] <= 0)
+        if (roomMode == RoomModes.BATTLEONLY)
         {
-            currentNotPlacedIndex++;
-
-            if (currentNotPlacedIndex < 0 || currentNotPlacedIndex > enemiesNotPlacedCount.Count - 1)
+            if ((currentNotPlacedIndex < 0 || currentNotPlacedIndex > enemiesNotPlacedCount.Count - 1) || enemiesInRoom.Count == 0)
             {
-                Debug.Log("Too far");
                 return;
             }
-        }
 
-        GameObject enemy = enemiesInRoom[currentNotPlacedIndex].availableEnemiesList[0];
+            if (enemiesNotPlacedCount[currentNotPlacedIndex] <= 0 && currentNotPlacedIndex >= enemiesNotPlacedCount.Count - 1)
+            {
+                return;
+            }
+
+            while (enemiesNotPlacedCount[currentNotPlacedIndex] <= 0)
+            {
+                currentNotPlacedIndex++;
+
+                if (currentNotPlacedIndex < 0 || currentNotPlacedIndex > enemiesNotPlacedCount.Count - 1)
+                {
+                    Debug.Log("Too far");
+                    return;
+                }
+            }
+
+            enemiesNotPlacedCount[currentNotPlacedIndex]--;
+        }
+        else
+        {
+            float rand = Random.value;
+            float percent = 0;
+
+            for (int i = 0; i < enemiesInRoom.Count; i++)
+            {
+                percent += enemiesInRoom[i].spawnPercent;
+
+                if (rand < percent)
+                {
+                    chosenEnemyType = enemiesInRoom[i];
+                    currentNotPlacedIndex = i;
+                    break;
+                }
+            }            
+        } 
+
+        GameObject enemy = chosenEnemyType.availableEnemiesList[0];
         PlaceEnemy(enemy);
         enemiesInRoom[currentNotPlacedIndex].enemiesList.Add(enemy);
         enemiesInRoom[currentNotPlacedIndex].availableEnemiesList.RemoveAt(0);
-        enemiesNotPlacedCount[currentNotPlacedIndex]--;
     }
 
     private void PlaceEnemy(GameObject enemy)

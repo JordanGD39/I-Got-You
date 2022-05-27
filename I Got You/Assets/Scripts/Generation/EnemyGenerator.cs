@@ -98,6 +98,18 @@ public class EnemyGenerator : MonoBehaviour
         
         GenerateEnemy(generatedEnemyInfos, wrummels, wrummelCount);
         GenerateEnemy(generatedEnemyInfos, wraptors, wraptorCount);
+        float combinedPercentages = 0;
+
+        for (int i = 1; i < generatedEnemyInfos.Count; i++)
+        {
+            GeneratedEnemyInfo generatedEnemyInfo = generatedEnemyInfos[i];
+
+            float basePercent = 1 / generatedEnemyInfos.Count;
+            generatedEnemyInfo.spawnPercent = generatedEnemyInfo.enemyCount / generatedEnemyInfos[0].enemyCount * basePercent;
+            combinedPercentages += generatedEnemyInfo.spawnPercent;
+        }
+
+        generatedEnemyInfos[0].spawnPercent = 1 - combinedPercentages;
 
         return generatedEnemyInfos;
     }
@@ -122,6 +134,9 @@ public class EnemyGenerator : MonoBehaviour
             enemy.enemiesList.Remove(item);
         }
 
+        enemy.startingEnemiesList = new List<GameObject>(enemy.enemiesList);
+        enemy.startingAvailableEnemiesList = new List<GameObject>(enemy.availableEnemiesList);
+        
         generatedEnemyInfos.Add(enemy);
 
         enemy.enemyCount += count;
@@ -132,7 +147,10 @@ public class EnemyGenerator : MonoBehaviour
     {
         public List<GameObject> enemiesList;
         public List<GameObject> availableEnemiesList = new List<GameObject>();
+        public List<GameObject> startingEnemiesList = new List<GameObject>();
+        public List<GameObject> startingAvailableEnemiesList = new List<GameObject>();
         public int enemyCount = 0;
         public int priority = 0;
+        public float spawnPercent = 0;
     }
 }

@@ -20,7 +20,7 @@ public class PuzzleManager : MonoBehaviourPun
     [SerializeField]
     private bool openDoor = false;
     public bool OpenDoor { get { return openDoor; } }
-    [SerializeField] private RoomDoorOpener doorOpener;
+    [SerializeField] private RoomManager roomManager;
     public int Score { get { return score; } }
 
     // Start is called before the first frame update
@@ -126,7 +126,7 @@ public class PuzzleManager : MonoBehaviourPun
 
         if (score >= randomInt.Count)
         {
-            doorOpener.CheckCompletion();
+            roomManager.OpenAllDoors();
         }
     }
 }

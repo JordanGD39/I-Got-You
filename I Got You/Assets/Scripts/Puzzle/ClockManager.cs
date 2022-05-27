@@ -7,7 +7,7 @@ public class ClockManager : MonoBehaviourPun
 {
     [SerializeField]
     private List<GameObject> clockObject;
-    [SerializeField] private RoomDoorOpener doorOpener;
+    [SerializeField] private RoomManager roomManager;
     private int finishedClocks = 0;
 
     public void CheckAllCompleted(bool localPlayer)
@@ -21,7 +21,7 @@ public class ClockManager : MonoBehaviourPun
 
         if (finishedClocks >= clockObject.Count)
         {
-            doorOpener.CheckCompletion();
+            roomManager.OpenAllDoors();
         }
     }
 

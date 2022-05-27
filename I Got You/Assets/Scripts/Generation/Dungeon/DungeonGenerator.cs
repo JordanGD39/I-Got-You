@@ -21,8 +21,9 @@ public class DungeonGenerator : MonoBehaviourPun
     //private Delaunay2D delaunay;
     [SerializeField] private List<Vertex> vertices;
     [SerializeField] private float seperationDistanceMultiplier = 1.5f;
-    [SerializeField] private float radius = 0;
-    [SerializeField] private Vector3 roomPos;
+    [SerializeField] private RoomManager.RoomModes[] roomModesChances = { RoomManager.RoomModes.BATTLEONLY, RoomManager.RoomModes.BATTLEONLY, RoomManager.RoomModes.PUZZLECLOCK, RoomManager.RoomModes.PUZZLESIMON};
+    private float radius = 0;
+    private Vector3 roomPos;
     private float padding = 5;
     private TriangleNet.Mesh mesh;
     private int currentWallToRemove = -1;
@@ -104,6 +105,13 @@ public class DungeonGenerator : MonoBehaviourPun
     {
         foreach (GenerationRoomData room in rooms)
         {
+            RoomManager roomManager = room.GetComponent<RoomManager>();
+
+            if (roomManager != null && roomManager.RoomMode == RoomManager.RoomModes.BATTLEONLY)
+            {
+                roomManager.SetRoomMode(roomModesChances[Random.Range(0, roomModesChances.Length)]);
+            }            
+
             room.transform.position = new Vector3(Mathf.RoundToInt(room.transform.position.x), 
                 0, Mathf.RoundToInt(room.transform.position.z));
 
