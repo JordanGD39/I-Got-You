@@ -15,10 +15,13 @@ public class ButtonScript : MonoBehaviourPun
     [SerializeField]
     private ClockScript clock;
     private Animator anim;
-    
+    private PlayerUI playerUI;
+    private PlayerManager playerManager;
 
     private void Start()
     {
+        playerUI = FindObjectOfType<PlayerUI>();
+        playerManager = FindObjectOfType<PlayerManager>();
         anim = GetComponent<Animator>();
     }
 
@@ -40,6 +43,7 @@ public class ButtonScript : MonoBehaviourPun
             photonView.RPC("StartClockOthers", RpcTarget.Others);
         }
 
+        playerUI.HideInteractPanel();
         isPressed = !isPressed;
         hasTime = true;
         anim.Play("Pressed");
@@ -57,6 +61,11 @@ public class ButtonScript : MonoBehaviourPun
     {
         if (other.CompareTag("PlayerCol"))
         {
+            if (playerManager.StatsOfAllPlayers[other] == playerManager.LocalPlayer)
+            {
+                playerUI.ShowInteractPanel(!isPressed ? " to start the clock" : " to pause the clock");
+            }
+                
             inRange = true;
         }
     }
@@ -65,6 +74,10 @@ public class ButtonScript : MonoBehaviourPun
     {
         if (other.CompareTag("PlayerCol"))
         {
+            if (playerManager.StatsOfAllPlayers[other] == playerManager.LocalPlayer)
+            {
+                playerUI.HideInteractPanel();
+            }
             inRange = false;
         }
     }

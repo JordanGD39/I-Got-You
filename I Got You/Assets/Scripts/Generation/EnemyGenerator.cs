@@ -57,11 +57,11 @@ public class EnemyGenerator : MonoBehaviour
         }
     }
 
-    public List<GeneratedEnemyInfo> GenerateEnemies()
+    public List<GeneratedEnemyInfo> GenerateEnemies(float countMultiplier)
     {
         List<GeneratedEnemyInfo> generatedEnemyInfos = new List<GeneratedEnemyInfo>();
 
-        int randomEnemyCount = Random.Range(enemiesToSpawnInRoomMin, enemiesToSpawnInRoomMax);
+        int randomEnemyCount = Mathf.RoundToInt(Random.Range(enemiesToSpawnInRoomMin, enemiesToSpawnInRoomMax) * countMultiplier);
 
         for (int i = 0; i < playerManager.PlayersInGame.Count - 1; i++)
         {

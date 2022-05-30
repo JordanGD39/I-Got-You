@@ -7,6 +7,7 @@ public class SpriteNoRotation : MonoBehaviour
     private Quaternion startingRot;
     private PlayerStats playerStats;
     private Vector3 oldPos;
+    [SerializeField] private bool onlyForDeath = false;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +19,10 @@ public class SpriteNoRotation : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        transform.rotation = startingRot;
+        if (!onlyForDeath || playerStats.IsDown || playerStats.IsDead)
+        {
+            transform.rotation = startingRot;
+        }        
 
         if (playerStats == null)
         {
@@ -27,7 +31,7 @@ public class SpriteNoRotation : MonoBehaviour
 
         if (playerStats.IsDown || playerStats.IsDead)
         {
-            transform.position = oldPos;
+            transform.position = playerStats.transform.position + new Vector3(0, oldPos.y, 0);
             return;
         }
 

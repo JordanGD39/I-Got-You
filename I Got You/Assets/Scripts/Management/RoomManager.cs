@@ -22,6 +22,7 @@ public class RoomManager : MonoBehaviourPun
     [SerializeField] private int healthIncreasePerLevel = 20;
     [SerializeField] private DoorOpen[] doorsToThisRoom;
     [SerializeField] private DoorOpen[] doorsToOtherRoom;
+    [SerializeField] private float puzzleEnemyCountMultiplier = 0.8f;
     private int currentNotPlacedIndex = 0;
 
     private bool puzzlesCompleted = false;
@@ -71,6 +72,14 @@ public class RoomManager : MonoBehaviourPun
         {
             puzzleObjects[(int)roomMode - 3].SetActive(true);
             puzzlesCompleted = false;
+
+            if (roomMode == RoomModes.PUZZLESIMON)
+            {
+                for (int i = 0; i < doorsToThisRoom.Length; i++)
+                {
+                    doorsToThisRoom[i].OnOpenedDoor += GetComponentInChildren<PuzzleManager>().RemoveScreensWhenEnteredRoom;
+                }
+            }
         }
     }
 
@@ -88,7 +97,7 @@ public class RoomManager : MonoBehaviourPun
         currentNotPlacedIndex = 0;
         enemyDeathsToClearRoom = 0;
         enemiesNotPlacedCount.Clear();
-        enemiesInRoom = enemyGenerator.GenerateEnemies();
+        enemiesInRoom = enemyGenerator.GenerateEnemies(roomMode == RoomModes.BATTLEONLY ? 1 : puzzleEnemyCountMultiplier);
 
         for (int i = enemiesInRoom.Count - 1; i >= 0; i--)
         {

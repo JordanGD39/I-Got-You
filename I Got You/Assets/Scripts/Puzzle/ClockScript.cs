@@ -36,8 +36,8 @@ public class ClockScript : MonoBehaviourPun
         {
             randomHour = Random.Range(1, 24);
             randomMinute = Random.Range(1, 60);
-            goalHour = randomHour + Random.Range(1, 3);
-            goalMinute = randomMinute + Random.Range(1, 60);
+            goalHour = randomHour;
+            goalMinute = randomMinute + Random.Range(1, 40);
 
             if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
             {
@@ -91,9 +91,13 @@ public class ClockScript : MonoBehaviourPun
 
     public void Clock() 
     {
+        if (clockComplete)
+        {
+            return;
+        }
+
         if (button.IsPressed)
         {
-
             if (!pressedOnce)
             {
                 if (!PhotonNetwork.IsConnected || (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient))
@@ -101,11 +105,14 @@ public class ClockScript : MonoBehaviourPun
                     StartRandomClock(-1, -1, -1, -1);
                 }
             }
-            InvokeRepeating("UpdateClock", 0, 1);
 
-            UpdateClock();
+            if (!PhotonNetwork.IsConnected || (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient))
+            {
+                InvokeRepeating("UpdateClockRepeatedly", 0, 1);
+            }
+            
+            UpdateClock(false);
         }
-
         else if (!button.IsPressed)
         {
             CancelInvoke();
@@ -124,8 +131,27 @@ public class ClockScript : MonoBehaviourPun
         }
     }
 
-    private void UpdateClock()
+    private void UpdateClockRepeatedly()
     {
+        UpdateClock(true);
+    }
+
+    [PunRPC]
+    void UpdateClockOthers(int hour, int min)
+    {
+        randomHour = hour;
+        randomMinute = min;
+
+        UpdateClock(false);
+    }
+
+    private void UpdateClock(bool masterClient)
+    {
+        if (masterClient)
+        {
+            photonView.RPC("UpdateClockOthers", RpcTarget.Others, randomHour, randomMinute);
+        }
+
         randomMinute++;
 
         if (randomMinute == 60)

@@ -12,6 +12,16 @@ public class PuzzleStartButton : MonoBehaviour
 
     [SerializeField]
     private PuzzleManager manager;
+    private PlayerUI playerUI;
+    private PlayerManager playerManager;
+    private Animator anim;
+
+    private void Start()
+    {
+        playerUI = FindObjectOfType<PlayerUI>();
+        playerManager = FindObjectOfType<PlayerManager>();
+        anim = GetComponent<Animator>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -19,6 +29,8 @@ public class PuzzleStartButton : MonoBehaviour
         if (manager.RandomInt.Count == 0 && inTrigger && Input.GetButtonDown("Interact") && !manager.OpenDoor)
         {
             manager.ScreenSequence(true);
+            playerUI.HideInteractPanel();
+            anim.SetTrigger("Press");
             // start screen sequence
             isPressed = true;
         }
@@ -26,8 +38,13 @@ public class PuzzleStartButton : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("PlayerCol"))
-        { 
+        if (other.CompareTag("PlayerCol") && !manager.ShownPuzzle)
+        {
+            if (playerManager.StatsOfAllPlayers[other] == playerManager.LocalPlayer)
+            {
+                playerUI.ShowInteractPanel(" to start Simon Says");
+            }
+            
             inTrigger = true;
         }
     }
@@ -36,6 +53,11 @@ public class PuzzleStartButton : MonoBehaviour
     {
         if (other.CompareTag("PlayerCol"))
         {
+            if (playerManager.StatsOfAllPlayers[other] == playerManager.LocalPlayer)
+            {
+                playerUI.HideInteractPanel();
+            }
+            
             inTrigger = false;
         }
     }

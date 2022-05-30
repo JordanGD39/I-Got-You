@@ -21,6 +21,7 @@ public class DungeonGenerator : MonoBehaviourPun
     //private Delaunay2D delaunay;
     [SerializeField] private List<Vertex> vertices;
     [SerializeField] private float seperationDistanceMultiplier = 1.5f;
+    [SerializeField] private float seperationMultiplier = 2f;
     [SerializeField] private RoomManager.RoomModes[] roomModesChances = { RoomManager.RoomModes.BATTLEONLY, RoomManager.RoomModes.BATTLEONLY, RoomManager.RoomModes.PUZZLECLOCK, RoomManager.RoomModes.PUZZLESIMON};
     private float radius = 0;
     private Vector3 roomPos;
@@ -365,7 +366,7 @@ public class DungeonGenerator : MonoBehaviourPun
 
     private void SeperateRooms()
     {
-        int loopCounter = 0, maxLoops = 30000; //just an example
+        int loopCounter = 0, maxLoops = 9999; //just an example
 
         while (RoomsOverlap())
         {
@@ -400,7 +401,7 @@ public class DungeonGenerator : MonoBehaviourPun
 
                         roomPos = room.transform.position;
 
-                        room.transform.position += dirToOtherRoom;
+                        room.transform.position += dirToOtherRoom.normalized * seperationMultiplier;
 
                         float clampedX = Mathf.Clamp(room.transform.position.x, room.RoomScaleObject.localScale.x * padding,
                             dungeonGrid.GridSize.x - room.RoomScaleObject.localScale.x * padding);
@@ -408,33 +409,33 @@ public class DungeonGenerator : MonoBehaviourPun
                         float clampedZ = Mathf.Clamp(room.transform.position.z, room.RoomScaleObject.localScale.z * padding,
                             dungeonGrid.GridSize.y - room.RoomScaleObject.localScale.z * padding);
 
-                        if (Vector3.Distance(room.oldPos, room.transform.position) < 2)
-                        {
-                            room.StuckTimes++;
+                        //if (Vector3.Distance(room.oldPos, room.transform.position) < 2)
+                        //{
+                        //    room.StuckTimes++;
 
-                            if (room.StuckTimes > 2)
-                            {
-                                int roundedX = Mathf.RoundToInt(room.RoomScaleObject.localScale.x * padding);
-                                int roundedZ = Mathf.RoundToInt(room.RoomScaleObject.localScale.z * padding);
+                        //    if (room.StuckTimes > 2)
+                        //    {
+                        //        int roundedX = Mathf.RoundToInt(room.RoomScaleObject.localScale.x * padding);
+                        //        int roundedZ = Mathf.RoundToInt(room.RoomScaleObject.localScale.z * padding);
 
-                                int randX = Random.Range(roundedX, dungeonGrid.GridSize.x - roundedX);
-                                int randZ = Random.Range(roundedZ, dungeonGrid.GridSize.y - roundedZ);
+                        //        int randX = Random.Range(roundedX, dungeonGrid.GridSize.x - roundedX);
+                        //        int randZ = Random.Range(roundedZ, dungeonGrid.GridSize.y - roundedZ);
 
-                                room.transform.position = new Vector3(randX, 0, randZ);
-                                room.oldPos = room.transform.position;
+                        //        room.transform.position = new Vector3(randX, 0, randZ);
+                        //        room.oldPos = room.transform.position;
 
-                                room.StuckTimes = 0;
-                                continue;
-                            }
-                        }
-                        else
-                        {
-                            room.StuckTimes = 0;
-                        }
+                        //        room.StuckTimes = 0;
+                        //        continue;
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    room.StuckTimes = 0;
+                        //}
 
                         room.transform.position = new Vector3(clampedX, 0, clampedZ);
 
-                        room.oldPos = room.transform.position;
+                        //room.oldPos = room.transform.position;
                         Debug.Log(room.transform.position);
                     }
                 }

@@ -6,8 +6,7 @@ using UnityEngine.AI;
 public class EnemyPlayerSpotter : MonoBehaviour
 {
     [SerializeField] private Transform eyes;
-    [SerializeField] private Transform target;
-    public Transform Target { get { return target; } }
+    public Transform Target { get { return chaseAI.TargetPlayer; } }
     [SerializeField] private float viewDistance = 3;
     [SerializeField] private float fov = 105;
     [SerializeField] private float forgetPlayerTime = 3;
@@ -59,6 +58,8 @@ public class EnemyPlayerSpotter : MonoBehaviour
 
                 if (Physics.Raycast(eyes.position, dirToPlayer, out hit, viewDistance, layerDetectPlayer))
                 {
+                    Debug.Log(hit.collider.gameObject.tag);
+
                     if (hit.collider.gameObject.CompareTag("PlayerCol"))
                     {
                         playerSpottedNow = true;
@@ -71,13 +72,11 @@ public class EnemyPlayerSpotter : MonoBehaviour
         {
             if (!lookingAtTarget)
             {
+                playerSpotted = true;
+
                 if (standStillTime > 0)
                 {
                     lookingAtTarget = true;
-                    playerSpotted = true;
-
-                    agent.speed = 0;
-
                     Invoke(nameof(ChangeAgentSpeed), standStillTime);
                 }
                 else

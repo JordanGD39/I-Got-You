@@ -23,7 +23,7 @@ public class ColorInput : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-        if (!manager.OpenDoor && inRange && Input.GetButtonDown("Interact"))
+        if (!manager.OpenDoor && inRange && Input.GetButtonDown("Interact") && manager.ShownPuzzle)
         {
             AddInput(true);
         }
@@ -68,7 +68,7 @@ public class ColorInput : MonoBehaviourPun
 
     IEnumerator WaitTime()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
         render.material.color = Color.black;
     }
 

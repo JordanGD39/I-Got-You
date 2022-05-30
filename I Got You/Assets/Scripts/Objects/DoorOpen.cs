@@ -19,8 +19,11 @@ public class DoorOpen : MonoBehaviourPun
     [SerializeField] private bool playerOpen = true;
     public bool PlayerOpen { get { return playerOpen; } set { playerOpen = value; } }
     [SerializeField] private bool allPlayersRequired = true;
+    [SerializeField] private bool canOpen = true;
     [SerializeField] private Animator openingDoorAnim;
     [SerializeField] private Animator closingDoorAnim;
+    [SerializeField] private GenerationRoomData generationRoomData;
+    [SerializeField] private int openingIndex = -1;
 
     public delegate void OpenedDoor();
     public OpenedDoor OnOpenedDoor;
@@ -30,6 +33,17 @@ public class DoorOpen : MonoBehaviourPun
     {
         playerManager = FindObjectOfType<PlayerManager>();
         playerUI = FindObjectOfType<PlayerUI>();
+
+        DungeonGenerator dungeonGenerator = FindObjectOfType<DungeonGenerator>();
+
+        if (dungeonGenerator == null)
+        {
+            dungeonGenerator.OnGenerationDone += CheckIfDoorLeadsToHallway;
+        }
+        else
+        {
+            CheckIfDoorLeadsToHallway();
+        }
 
         if (beginOpened)
         {
@@ -48,6 +62,16 @@ public class DoorOpen : MonoBehaviourPun
 
         playersInRange.Clear();
         Invoke(nameof(OpenResetDelay), 0.5f);
+    }
+
+    private void CheckIfDoorLeadsToHallway()
+    {
+        if (generationRoomData == null || openingIndex < 0)
+        {
+            return;
+        }
+
+        canOpen = generationRoomData.ChosenOpenings.Contains(generationRoomData.Openings[openingIndex]);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -88,6 +112,11 @@ public class DoorOpen : MonoBehaviourPun
 
     public void OpenDoor()
     {
+        if (!canOpen)
+        {
+            return;
+        }
+
         if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
         {
             photonView.RPC("OpenDoorOthers", RpcTarget.Others);
@@ -112,6 +141,11 @@ public class DoorOpen : MonoBehaviourPun
 
     public void OpenClosedDoor()
     {
+        if (!canOpen)
+        {
+            return;
+        }
+
         if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
         {
             photonView.RPC("OpenClosedDoorOthers", RpcTarget.Others);
@@ -161,6 +195,11 @@ public class DoorOpen : MonoBehaviourPun
 
     public void CloseOpeningDoor()
     {
+        if (!canOpen)
+        {
+            return;
+        }
+
         model.SetActive(false);
         model.SetActive(true);
 

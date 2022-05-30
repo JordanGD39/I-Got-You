@@ -7,6 +7,7 @@ public class PuzzleManager : MonoBehaviourPun
 {
     [SerializeField]
     private List<GameObject> screens;
+    [SerializeField] private GameObject monitor;
     [SerializeField]
     private List<int> playerInput;
     public List<int> PlayerInput { get { return playerInput; } }
@@ -22,18 +23,81 @@ public class PuzzleManager : MonoBehaviourPun
     public bool OpenDoor { get { return openDoor; } }
     [SerializeField] private RoomManager roomManager;
     public int Score { get { return score; } }
+    public bool ShownPuzzle { get; set; } = false;
+    [SerializeField] private Texture checkTexture;
+    [SerializeField] private Texture crossTexture;
+
+    private PlayerManager playerManager;
 
     // Start is called before the first frame update
     void Start()
     {
+        playerManager = FindObjectOfType<PlayerManager>();
+
         foreach (int randomInt in randomInt)
         {
             Debug.Log(randomInt.ToString());
         }
     }
 
+    public void RemoveScreensWhenEnteredRoom()
+    {
+        RemoveScreensBasedOnPlayerCount(true);
+    }
+
+    private void RemoveScreensBasedOnPlayerCount(bool roomEntered)
+    {
+        if (openDoor)
+        {
+            return;
+        }
+
+        int screensToRemove = 4 - (roomEntered ? playerManager.PlayersInGame.Count : playerManager.Players.Count);
+        screensToRemove = Mathf.Clamp(screensToRemove, 0, 3);
+
+        switch (screensToRemove)
+        {
+            case 1:
+                if (roomEntered)
+                {
+                    screens[2].SetActive(false);
+                }
+                
+                screens[2] = null;
+                break;
+            case 2:
+                if (roomEntered)
+                {
+                    screens[1].SetActive(false);
+                    screens[2].SetActive(false);
+                }
+
+                screens[1] = null;
+                screens[2] = null;
+                break;
+            case 3:
+                if (roomEntered)
+                {
+                    screens[0].SetActive(false);
+                    screens[1].SetActive(false);
+                    screens[2].SetActive(false);
+                }
+
+                screens[0] = monitor;
+                screens[1] = null;
+                screens[2] = null;
+                break;
+        }
+    }
+
     public void ScreenSequence(bool localPlayer)
     {
+        RemoveScreensBasedOnPlayerCount(false);
+        MeshRenderer meshRenderer = monitor.GetComponent<MeshRenderer>();
+        meshRenderer.material.color = Color.white;
+        meshRenderer.material.mainTexture = null;
+        ShownPuzzle = false;
+
         randomInt.Clear();    
 
         while (randomInt.Count < maxSequence)
@@ -66,22 +130,59 @@ public class PuzzleManager : MonoBehaviourPun
         {
          //   screens[0].ColourInt = randomInt[i];
 
-            if (randomInt[i] == screens[0].GetComponent<PuzzleScreen>().ColourInt)
+            if (randomInt[i] == 1)
             {
                 screenIndex = 0;
-                screens[0].GetComponent<PuzzleScreen>().MatColour.material.color = Color.red;
-            }
 
-            if (randomInt[i] == screens[1].GetComponent<PuzzleScreen>().ColourInt)
+                if (screens[0].GetComponent<PuzzleScreen>() != null)
+                {
+                    screens[0].GetComponent<PuzzleScreen>().MatColour.material.color = Color.red;
+                }
+                else
+                {
+                    screens[0].GetComponent<MeshRenderer>().material.color = Color.red;
+                }
+            }
+            else if (randomInt[i] == 2)
             {
                 screenIndex = 1;
-                screens[1].GetComponent<PuzzleScreen>().MatColour.material.color = Color.green;
-            }
 
-            if (randomInt[i] == screens[2].GetComponent<PuzzleScreen>().ColourInt)
+                if (screens[1] == null)
+                {
+                    screenIndex = 0;
+                }
+
+                if (screens[screenIndex].GetComponent<PuzzleScreen>() != null)
+                {
+                    screens[screenIndex].GetComponent<PuzzleScreen>().MatColour.material.color = Color.green;
+                }
+                else
+                {
+                    screens[screenIndex].GetComponent<MeshRenderer>().material.color = Color.green;
+                }
+            }
+            else if (randomInt[i] == 3)
             {
                 screenIndex = 2;
-                screens[2].GetComponent<PuzzleScreen>().MatColour.material.color = Color.blue;
+
+                if (screens[2] == null)
+                {
+                    screenIndex = 1;
+
+                    if (screens[1] == null)
+                    {
+                        screenIndex = 0;
+                    }
+                }
+
+                if (screens[screenIndex].GetComponent<PuzzleScreen>() != null)
+                {
+                    screens[screenIndex].GetComponent<PuzzleScreen>().MatColour.material.color = Color.blue;
+                }
+                else
+                {
+                    screens[screenIndex].GetComponent<MeshRenderer>().material.color = Color.blue;
+                }
             }
             /*   switch (screens[0].ColourInt)
                {
@@ -99,10 +200,19 @@ public class PuzzleManager : MonoBehaviourPun
                    default:
                        break;
                } */
-            yield return new WaitForSeconds(2f);
-            screens[screenIndex].GetComponent<PuzzleScreen>().MatColour.material.color = Color.black;
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(0.5f);
+            if (screens[screenIndex].GetComponent<PuzzleScreen>() != null)
+            {
+                screens[screenIndex].GetComponent<PuzzleScreen>().MatColour.material.color = Color.black;
+            }
+            else
+            {
+                screens[screenIndex].GetComponent<MeshRenderer>().material.color = Color.black;
+            }
+            yield return new WaitForSeconds(0.5f);
         }
+
+        ShownPuzzle = true;
     }
 
     public void CheckCorrectStep()
@@ -118,6 +228,10 @@ public class PuzzleManager : MonoBehaviourPun
         }
         else
         {
+            MeshRenderer meshRenderer = monitor.GetComponent<MeshRenderer>();
+            meshRenderer.material.color = Color.white;
+            meshRenderer.material.mainTexture = crossTexture;
+            ShownPuzzle = false;
             score = 0;
             randomInt.Clear();
             StopCoroutine(ShowSequence());
@@ -126,7 +240,16 @@ public class PuzzleManager : MonoBehaviourPun
 
         if (score >= randomInt.Count)
         {
+            Invoke(nameof(ShowCheck), 1);
+            openDoor = true;
             roomManager.OpenAllDoors();
         }
+    }
+
+    private void ShowCheck()
+    {
+        MeshRenderer meshRenderer = monitor.GetComponent<MeshRenderer>();
+        meshRenderer.material.color = Color.white;
+        meshRenderer.material.mainTexture = checkTexture;
     }
 }
