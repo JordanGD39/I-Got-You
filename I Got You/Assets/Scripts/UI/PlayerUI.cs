@@ -155,10 +155,10 @@ public class PlayerUI : MonoBehaviour
         hitMarker.gameObject.SetActive(true);
     }
 
-    public void UpdateRoundText(int round)
-    {
-        roundText.text = (round + 1).ToString();
-    }
+    //public void UpdateRoundText(int round)
+    //{
+    //    roundText.text = (round + 1).ToString();
+    //}
 
     public void ShowBloodScreen()
     {

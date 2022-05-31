@@ -63,7 +63,9 @@ public class SpawnPlayerOnNetwork : MonoBehaviourPun
 
     private void PlaceOfflinePlayer()
     {
-        playerOffline.transform.position = dungeonGenerator.StartingRoom.transform.position + Vector3.up * 1;
+        Vector3 randomPos = new Vector3(Random.Range(minPos.x, maxPos.x), 1, Random.Range(minPos.z, maxPos.z));
+
+        playerOffline.transform.position = dungeonGenerator.StartingRoom.transform.position + randomPos;
 
         playerOffline.SetActive(true);
 

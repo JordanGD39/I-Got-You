@@ -54,6 +54,8 @@ public class DungeonGenerator : MonoBehaviourPun
                 PlaceRoom();                
             }
 
+            PlaceEnd();
+
             SeperateRooms();
 
             if (PhotonNetwork.IsConnected)
@@ -280,12 +282,17 @@ public class DungeonGenerator : MonoBehaviourPun
         {
             float distance = Vector3.Distance(generationRoomData.Openings[i].GetChild(0).position, targetPos);
 
-            if (distance < lowestDistance)
+            if (distance < lowestDistance && i != generationRoomData.ChosenEndingOpening)
             {
                 lowestDistance = distance;
                 chosenDoor = generationRoomData.Openings[i].GetChild(0);
                 chosenIndex = i;
             }
+        }
+
+        if (chosenIndex < 0)
+        {
+            chosenIndex = 0;
         }
 
         currentWallToRemove = generationRoomData.WallToRemove[chosenIndex];
@@ -364,9 +371,31 @@ public class DungeonGenerator : MonoBehaviourPun
         roomPrefabs.RemoveAt(randRoom);
     }
 
+    private void PlaceEnd()
+    {
+        List<GenerationRoomData> roomsThatCanHaveEnds = new List<GenerationRoomData>();
+
+        foreach (GenerationRoomData room in rooms)
+        {
+            RoomManager roomManager = room.GetComponent<RoomManager>();
+
+            if (roomManager != null && roomManager.RoomMode != RoomManager.RoomModes.NONE)
+            {
+                roomsThatCanHaveEnds.Add(room);
+            }
+        }
+
+        int rand = Random.Range(0, roomsThatCanHaveEnds.Count);
+
+        GenerationRoomData chosenRoom = roomsThatCanHaveEnds[rand];
+        chosenRoom.ChosenEndingOpening = Random.Range(0, chosenRoom.ChosenOpenings.Count);
+        chosenRoom.EndOpenings[chosenRoom.ChosenEndingOpening].transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+        chosenRoom.RoomScaleObject.localScale += new Vector3(0, 0, 1);
+    }
+
     private void SeperateRooms()
     {
-        int loopCounter = 0, maxLoops = 9999; //just an example
+        int loopCounter = 0, maxLoops = 20000; //just an example
 
         while (RoomsOverlap())
         {
@@ -409,7 +438,7 @@ public class DungeonGenerator : MonoBehaviourPun
                         float clampedZ = Mathf.Clamp(room.transform.position.z, room.RoomScaleObject.localScale.z * padding,
                             dungeonGrid.GridSize.y - room.RoomScaleObject.localScale.z * padding);
 
-                        //if (Vector3.Distance(room.oldPos, room.transform.position) < 2)
+                        //if (room.oldPos == room.transform.position)
                         //{
                         //    room.StuckTimes++;
 

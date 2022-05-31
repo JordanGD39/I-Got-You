@@ -147,7 +147,7 @@ public class ClockScript : MonoBehaviourPun
 
     private void UpdateClock(bool masterClient)
     {
-        if (masterClient)
+        if (masterClient && PhotonNetwork.IsConnected)
         {
             photonView.RPC("UpdateClockOthers", RpcTarget.Others, randomHour, randomMinute);
         }

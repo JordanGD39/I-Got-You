@@ -19,6 +19,11 @@ public class GenerationRoomData : MonoBehaviour
     [SerializeField] private List<Transform> chosenOpenings = new List<Transform>();
     public List<Transform> ChosenOpenings { get { return chosenOpenings; } }
 
-    public Vector3 oldPos { get; set; } = Vector3.zero;
-    public int StuckTimes { get; set; } = 0;
+    [SerializeField] private List<Transform> endOpenings = new List<Transform>();
+    public List<Transform> EndOpenings { get { return endOpenings; } }
+
+    public int ChosenEndingOpening { get; set; } = -1;
+
+    //public Vector3 oldPos { get; set; } = Vector3.zero;
+    //public int StuckTimes { get; set; } = 0;
 }

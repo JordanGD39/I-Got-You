@@ -33,9 +33,12 @@ public class RoomManager : MonoBehaviourPun
     {
         difficultyManager = FindObjectOfType<DifficultyManager>();
 
-        for (int i = 0; i < doorsToOtherRoom.Length; i++)
+        if (roomMode != RoomModes.PUZZLEEAT)
         {
-            doorsToOtherRoom[i].OnOpenedDoor += PlaceDoorToThisRoom;
+            for (int i = 0; i < doorsToOtherRoom.Length; i++)
+            {
+                doorsToOtherRoom[i].OnOpenedDoor += PlaceDoorToThisRoom;
+            }
         }
 
         if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
