@@ -2390,6 +2390,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 3720274555548216084, guid: c55d6d61653a2b6469892b929382f22e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3720274555548216084, guid: c55d6d61653a2b6469892b929382f22e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7948446436669303116, guid: c55d6d61653a2b6469892b929382f22e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 290
+      objectReference: {fileID: 0}
+    - target: {fileID: 7948446436669303116, guid: c55d6d61653a2b6469892b929382f22e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -149
+      objectReference: {fileID: 0}
+    - target: {fileID: 8140944260039521923, guid: c55d6d61653a2b6469892b929382f22e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c55d6d61653a2b6469892b929382f22e, type: 3}
 --- !u!4 &1776464272 stripped

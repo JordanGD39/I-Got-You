@@ -29,6 +29,9 @@ public class DungeonGenerator : MonoBehaviourPun
     private TriangleNet.Mesh mesh;
     private int currentWallToRemove = -1;
 
+    private GenerationRoomData randomChosenEndingRoom;
+    private int randomChosenOpeningIndex = -1;
+
     public delegate void GenerationDone();
     public GenerationDone OnGenerationDone;
     public GenerationRoomData StartingRoom { get; private set; }
@@ -65,6 +68,8 @@ public class DungeonGenerator : MonoBehaviourPun
                     photonView.RPC("PlaceRoomOthers", RpcTarget.OthersBuffered, 
                         room.gameObject.GetPhotonView().ViewID, new Vector2(room.transform.position.x, room.transform.position.z));
                 }
+
+                photonView.RPC("PlaceEndOthers", RpcTarget.OthersBuffered, rooms.IndexOf(randomChosenEndingRoom), randomChosenOpeningIndex);
             }
 
             int ticks = (int)System.DateTime.Now.Ticks;
@@ -77,21 +82,6 @@ public class DungeonGenerator : MonoBehaviourPun
 
             StartGeneration();
         }        
-    }
-
-    [PunRPC]
-    void PlaceRoomOthers(int viewId, Vector2 pos)
-    {
-        GameObject room = PhotonNetwork.GetPhotonView(viewId).gameObject;
-        room.transform.position = new Vector3(pos.x, 0, pos.y);
-        GenerationRoomData generationRoomData = room.GetComponent<GenerationRoomData>();
-
-        if (room.CompareTag("StartingRoom"))
-        {
-            StartingRoom = generationRoomData;
-        }
-
-        rooms.Add(generationRoomData);
     }
 
     [PunRPC]
@@ -374,6 +364,21 @@ public class DungeonGenerator : MonoBehaviourPun
         roomPrefabs.RemoveAt(randRoom);
     }
 
+    [PunRPC]
+    void PlaceRoomOthers(int viewId, Vector2 pos)
+    {
+        GameObject room = PhotonNetwork.GetPhotonView(viewId).gameObject;
+        room.transform.position = new Vector3(pos.x, 0, pos.y);
+        GenerationRoomData generationRoomData = room.GetComponent<GenerationRoomData>();
+
+        if (room.CompareTag("StartingRoom"))
+        {
+            StartingRoom = generationRoomData;
+        }
+
+        rooms.Add(generationRoomData);
+    }
+
     private void PlaceEnd()
     {
         List<GenerationRoomData> roomsThatCanHaveEnds = new List<GenerationRoomData>();
@@ -389,9 +394,24 @@ public class DungeonGenerator : MonoBehaviourPun
         }
 
         int rand = Random.Range(0, roomsThatCanHaveEnds.Count);
-
         GenerationRoomData chosenRoom = roomsThatCanHaveEnds[rand];
-        chosenRoom.ChosenEndingOpening = chosenRoom.EndOpenings[Random.Range(0, chosenRoom.ChosenOpenings.Count)];
+
+        int randOpening = Random.Range(0, chosenRoom.ChosenOpenings.Count);
+        chosenRoom.ChosenEndingOpening = chosenRoom.EndOpenings[randOpening];
+
+        chosenRoom.ChosenEndingOpening.GetChild(0).GetChild(0).gameObject.SetActive(true);
+        chosenRoom.RoomScaleObject.localScale += new Vector3(0, 0, 1);
+
+        randomChosenEndingRoom = chosenRoom;
+        randomChosenOpeningIndex = randOpening;
+    }
+
+    [PunRPC]
+    void PlaceEndOthers(int roomIndex, int openingIndex)
+    {
+        GenerationRoomData chosenRoom = rooms[roomIndex];
+        chosenRoom.ChosenEndingOpening = chosenRoom.EndOpenings[openingIndex];
+
         chosenRoom.ChosenEndingOpening.GetChild(0).GetChild(0).gameObject.SetActive(true);
         chosenRoom.RoomScaleObject.localScale += new Vector3(0, 0, 1);
     }

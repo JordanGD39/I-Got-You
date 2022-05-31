@@ -131,16 +131,19 @@ public class ClassInfoUI : MonoBehaviourPun
 
     public void SendMasterClientLoadLevelRPC()
     {
-        photonView.RPC("MasterClientLoadLevel", RpcTarget.Others);
+        photonView.RPC("StartMasterClientLoadLevel", RpcTarget.MasterClient);
     }
 
     [PunRPC]
-    void MasterClientLoadLevel()
+    void StartMasterClientLoadLevel()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonNetwork.CurrentRoom.IsOpen = false;
-            PhotonFunctionHandler.LoadSceneAsync("Protoscene");
-        }
+        selectUI.FadeIn.SetActive(true);
+        Invoke(nameof(MasterClientLoadLevel), 1);
+    }
+
+    private void MasterClientLoadLevel()
+    {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+        PhotonFunctionHandler.LoadSceneAsync("GameScene");
     }
 }

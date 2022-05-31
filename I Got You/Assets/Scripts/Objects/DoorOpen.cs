@@ -121,7 +121,7 @@ public class DoorOpen : MonoBehaviourPun
 
         if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC("OpenDoorOthers", RpcTarget.Others);
+            photonView.RPC("OpenDoorOthers", RpcTarget.Others, canOpen);
         }
 
         doorSfx.Play();
@@ -152,7 +152,7 @@ public class DoorOpen : MonoBehaviourPun
 
         if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC("OpenClosedDoorOthers", RpcTarget.Others);
+            photonView.RPC("OpenClosedDoorOthers", RpcTarget.Others, canOpen);
         }
 
         opened = false;
@@ -162,14 +162,16 @@ public class DoorOpen : MonoBehaviourPun
     }
 
     [PunRPC]
-    void OpenDoorOthers()
+    void OpenDoorOthers(bool openingPossible)
     {
+        canOpen = openingPossible;
         OpenDoor();
     }
 
     [PunRPC]
-    void OpenClosedDoorOthers()
+    void OpenClosedDoorOthers(bool openingPossible)
     {
+        canOpen = openingPossible;
         OpenClosedDoor();
     }
 
@@ -214,8 +216,9 @@ public class DoorOpen : MonoBehaviourPun
     }
 
     [PunRPC]
-    void CloseOpeningDoorOthers()
+    void CloseOpeningDoorOthers(bool openingPossible)
     {
+        canOpen = openingPossible;
         CloseOpeningDoor();
     }
 

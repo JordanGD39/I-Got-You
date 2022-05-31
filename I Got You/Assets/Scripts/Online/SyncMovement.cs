@@ -69,6 +69,7 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
         {
             model.SetActive(false);
             transform.position = Vector3.zero;
+            IsSyncing = true;
             StartCoroutine(nameof(TeleportToSync));
         }
     }
@@ -108,9 +109,7 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
         {
             yield return null;
         }
-
-        IsSyncing = true;
-
+        
         transform.position = syncPos;
         transform.rotation = Quaternion.Euler(syncRot);
         model.SetActive(true);

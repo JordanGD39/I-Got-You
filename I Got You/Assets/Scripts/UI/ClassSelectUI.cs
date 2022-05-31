@@ -8,6 +8,8 @@ public class ClassSelectUI : MonoBehaviour
 {
     [SerializeField] private Transform classInfoParent;
     [SerializeField] private GameObject waitText;
+    [SerializeField] private GameObject fadeIn;
+    public GameObject FadeIn { get { return fadeIn; } }
     private ClassInfoUI infoUI;
     
     private PlayerStats.ClassNames currentClass = PlayerStats.ClassNames.SCOUT;
@@ -19,6 +21,8 @@ public class ClassSelectUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        fadeIn.SetActive(false);
+
         string playerName = "YOU";
 
         if (PhotonFunctionHandler.IsPlayerOnline())
@@ -64,11 +68,9 @@ public class ClassSelectUI : MonoBehaviour
             return;
         }
 
-        //hier classes locken als ze zijn gekozen??
-
         infoUI.UpdateClassName(currentClass);
 
-        if (PhotonFunctionHandler.IsPlayerOnline())
+        if (PhotonNetwork.IsConnected)
         {
             if (NumberOfPlayersChosen == PhotonNetwork.CurrentRoom.PlayerCount)
             {
@@ -79,7 +81,9 @@ public class ClassSelectUI : MonoBehaviour
                 else
                 {
                     Invoke("LoadGameScene", 1);
-                }                
+                }
+
+                fadeIn.SetActive(true);
             }
             else
             {
@@ -88,13 +92,14 @@ public class ClassSelectUI : MonoBehaviour
         }
         else
         {
+            fadeIn.SetActive(true);
             Invoke("LoadGameScene", 1);
         }
     }
 
     private void LoadGameScene()
     {
-        if (PhotonFunctionHandler.IsPlayerOnline())
+        if (PhotonNetwork.IsConnected)
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
         }

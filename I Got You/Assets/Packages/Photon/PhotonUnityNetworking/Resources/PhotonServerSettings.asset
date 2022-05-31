@@ -81,6 +81,8 @@ MonoBehaviour:
   - PlaceRoomOthers
   - TurnOffGameObjectOthers
   - UpdateClockOthers
+  - PlaceEndOthers
+  - StartMasterClientLoadLevel
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

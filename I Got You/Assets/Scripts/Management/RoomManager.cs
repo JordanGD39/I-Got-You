@@ -59,7 +59,7 @@ public class RoomManager : MonoBehaviourPun
 
         roomMode = aRoomMode;
 
-        if (roomMode != RoomModes.PUZZLEEAT)
+        if (roomMode != RoomModes.PUZZLEEAT && (!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient))
         {
             for (int i = 0; i < doorsToThisRoom.Length; i++)
             {
@@ -161,7 +161,7 @@ public class RoomManager : MonoBehaviourPun
             ClearRoom();
             enemyDeathsInRoom = 0;
 
-            if (PhotonNetwork.IsConnected)
+            if (PhotonNetwork.IsConnected && puzzlesCompleted)
             {
                 photonView.RPC("ClearRoomForOthers", RpcTarget.Others);
             }
@@ -171,18 +171,30 @@ public class RoomManager : MonoBehaviourPun
     [PunRPC]
     void ClearRoomForOthers()
     {
+        puzzlesCompleted = true;
+        foreach (DoorOpen door in doorsToThisRoom)
+        {
+            door.OpenOnly = true;
+        }
+
         ClearRoom();
     }
 
     private void ClearRoom()
     {
+        Debug.Log("Clearing room! " + puzzlesCompleted);
+
         if (!puzzlesCompleted)
         {
             return;
         }
 
         difficultyManager.IncreaseDifficulty();
-        OpenAllDoors();
+        
+        if (!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient)
+        {
+            OpenAllDoors();
+        }
 
         if (enemiesInRoom != null)
         {
@@ -331,7 +343,6 @@ public class RoomManager : MonoBehaviourPun
     void PlaceEnemyForOthersRPC(int viewId)
     {
         GameObject enemy = PhotonNetwork.GetPhotonView(viewId).gameObject;
-        enemy.GetComponent<EnemyStats>().CallDisableRagdoll();
         enemy.SetActive(true);
     }
 }
