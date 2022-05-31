@@ -172,10 +172,6 @@ public class RoomManager : MonoBehaviourPun
     void ClearRoomForOthers()
     {
         puzzlesCompleted = true;
-        foreach (DoorOpen door in doorsToThisRoom)
-        {
-            door.OpenOnly = true;
-        }
 
         ClearRoom();
     }
