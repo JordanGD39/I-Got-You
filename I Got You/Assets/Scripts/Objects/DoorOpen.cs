@@ -7,6 +7,7 @@ public class DoorOpen : MonoBehaviourPun
 {
     private PlayerManager playerManager;
     private PlayerUI playerUI;
+    private AudioSource doorSfx;
     [SerializeField] private List<GameObject> playersInRange = new List<GameObject>();
     public List<GameObject> PlayersInRange { get { return playersInRange; } }
     [SerializeField] private GameObject doorToClose;
@@ -31,6 +32,7 @@ public class DoorOpen : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
+        doorSfx = GetComponent<AudioSource>();
         playerManager = FindObjectOfType<PlayerManager>();
         playerUI = FindObjectOfType<PlayerUI>();
 
@@ -121,6 +123,8 @@ public class DoorOpen : MonoBehaviourPun
         {
             photonView.RPC("OpenDoorOthers", RpcTarget.Others);
         }
+
+        doorSfx.Play();
 
         playerUI.HideInteractPanel();
 

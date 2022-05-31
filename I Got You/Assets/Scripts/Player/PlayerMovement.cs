@@ -62,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
         {
             speed = downSpeed;
         }
+
         movement = transform.TransformDirection(movement);
         movement.y = 0;
 

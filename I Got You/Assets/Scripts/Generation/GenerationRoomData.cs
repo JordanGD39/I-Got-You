@@ -22,7 +22,7 @@ public class GenerationRoomData : MonoBehaviour
     [SerializeField] private List<Transform> endOpenings = new List<Transform>();
     public List<Transform> EndOpenings { get { return endOpenings; } }
 
-    public int ChosenEndingOpening { get; set; } = -1;
+    public Transform ChosenEndingOpening { get; set; } = null;
 
     //public Vector3 oldPos { get; set; } = Vector3.zero;
     //public int StuckTimes { get; set; } = 0;

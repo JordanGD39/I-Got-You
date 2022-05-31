@@ -366,7 +366,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-57328
+  m_Name: pb_Mesh-1586052
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -824,7 +824,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-52054
+  m_Name: pb_Mesh-1580778
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1213,8 +1213,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 6712501813913824978, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
   playerOffline: {fileID: 529045191}
-  minPos: {x: -1, y: 0, z: -10}
-  maxPos: {x: 1, y: 0, z: -7}
+  minPos: {x: -1, y: 0, z: -8.5}
+  maxPos: {x: 1, y: 0, z: -5.5}
 --- !u!114 &623612094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2045,12 +2045,12 @@ MonoBehaviour:
   voiceDetectionThreshold: 0.01
   voiceDetectionDelayMs: 500
   unityMicrophoneDevice: 
-  photonMicrophoneDeviceId: 0
+  photonMicrophoneDeviceId: -1
   interestGroup: 0
   debugEchoMode: 0
   reliableMode: 0
   encrypt: 0
-  transmitEnabled: 0
+  transmitEnabled: 1
   samplingRate: 24000
   frameDuration: 20000
   bitrate: 30000
@@ -2132,7 +2132,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-54858
+  m_Name: pb_Mesh-1583582
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2479,7 +2479,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-52044
+  m_Name: pb_Mesh-1580768
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2709,13 +2709,9 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7162548949459417633, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
-      propertyPath: roomPrefabs.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7162548949459417633, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
       propertyPath: roomPrefabs.Array.data[5]
       value: 
-      objectReference: {fileID: 7855538103156852665, guid: 41679d3500a487c4b85a43c08a1de731, type: 3}
+      objectReference: {fileID: 4121920812478566373, guid: 15fc69f2ddc37a44da5083e5c10a65c7, type: 3}
     - target: {fileID: 7162548949459417633, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
       propertyPath: roomModesChances.Array.size
       value: 4
@@ -2746,11 +2742,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7162548949459417662, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
       propertyPath: gridSize.x
-      value: 200
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 7162548949459417662, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
       propertyPath: gridSize.y
-      value: 200
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 7162548949459417663, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
       propertyPath: m_RootOrder

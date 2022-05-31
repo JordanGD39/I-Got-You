@@ -485,7 +485,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyes: {fileID: 1555873178574283486}
-  target: {fileID: 0}
   viewDistance: 50
   fov: 105
   forgetPlayerTime: 3

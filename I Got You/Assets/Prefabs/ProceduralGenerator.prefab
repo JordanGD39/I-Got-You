@@ -66,14 +66,14 @@ MonoBehaviour:
   - {fileID: 4049260677296841894, guid: e4973f7fafb4af747aba3a83d9862a82, type: 3}
   - {fileID: 7855538103156852665, guid: 41679d3500a487c4b85a43c08a1de731, type: 3}
   - {fileID: 7855538103156852665, guid: 41679d3500a487c4b85a43c08a1de731, type: 3}
-  - {fileID: 4121920812478566373, guid: 15fc69f2ddc37a44da5083e5c10a65c7, type: 3}
+  - {fileID: 7855538103156852665, guid: 41679d3500a487c4b85a43c08a1de731, type: 3}
   rooms: []
   hallwayPrefab: {fileID: 7838144655838495395, guid: d76b097fc7830fa4d9cc0f41539272a9, type: 3}
   placedHallwaysPos: []
   extraHallways: []
   seperationDistanceMultiplier: 1.8
-  radius: 0
-  roomPos: {x: 0, y: 0, z: 0}
+  seperationMultiplier: 2
+  roomModesChances: 01000000010000000300000004000000
 --- !u!114 &7162548949459417632
 MonoBehaviour:
   m_ObjectHideFlags: 0

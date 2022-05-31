@@ -282,7 +282,7 @@ public class DungeonGenerator : MonoBehaviourPun
         {
             float distance = Vector3.Distance(generationRoomData.Openings[i].GetChild(0).position, targetPos);
 
-            if (distance < lowestDistance && i != generationRoomData.ChosenEndingOpening)
+            if (distance < lowestDistance && generationRoomData.Openings[i] != generationRoomData.ChosenEndingOpening)
             {
                 lowestDistance = distance;
                 chosenDoor = generationRoomData.Openings[i].GetChild(0);
@@ -292,10 +292,13 @@ public class DungeonGenerator : MonoBehaviourPun
 
         if (chosenIndex < 0)
         {
-            chosenIndex = 0;
+            return null;
         }
 
-        currentWallToRemove = generationRoomData.WallToRemove[chosenIndex];
+        if (generationRoomData.WallToRemove.Length > 0)
+        {
+            currentWallToRemove = generationRoomData.WallToRemove[chosenIndex];
+        }        
 
         Vector2Int flooredPos = new Vector2Int(Mathf.FloorToInt(chosenDoor.position.x), Mathf.FloorToInt(chosenDoor.position.z));
         generationRoomData.ChosenOpenings.Add(generationRoomData.Openings[chosenIndex]);
@@ -388,8 +391,8 @@ public class DungeonGenerator : MonoBehaviourPun
         int rand = Random.Range(0, roomsThatCanHaveEnds.Count);
 
         GenerationRoomData chosenRoom = roomsThatCanHaveEnds[rand];
-        chosenRoom.ChosenEndingOpening = Random.Range(0, chosenRoom.ChosenOpenings.Count);
-        chosenRoom.EndOpenings[chosenRoom.ChosenEndingOpening].transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+        chosenRoom.ChosenEndingOpening = chosenRoom.EndOpenings[Random.Range(0, chosenRoom.ChosenOpenings.Count)];
+        chosenRoom.ChosenEndingOpening.GetChild(0).GetChild(0).gameObject.SetActive(true);
         chosenRoom.RoomScaleObject.localScale += new Vector3(0, 0, 1);
     }
 
