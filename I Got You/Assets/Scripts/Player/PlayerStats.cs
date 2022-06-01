@@ -51,7 +51,23 @@ public class PlayerStats : MonoBehaviourPun
     private void Start()
     {
         shieldHealth = startingShieldHealth;
-        health = maxHealth;
+
+        SavedPlayerStats savedStats = null;
+
+        if (PlayersStatsHolder.instance.PlayerStatsSaved.Length > 0)
+        {
+            savedStats = PlayersStatsHolder.instance.PlayerStatsSaved[PhotonNetwork.IsConnected ? (photonView.OwnerActorNr - 1) : 0];
+        }        
+
+        if (savedStats == null)
+        {
+            health = maxHealth;
+        }
+        else
+        {
+            health = savedStats.health;
+        }
+
         currentMaxHealth = maxHealth;
         anim = GetComponentInChildren<Animator>();
         PlayerShootScript = GetComponent<PlayerShoot>();
@@ -205,5 +221,19 @@ public class PlayerStats : MonoBehaviourPun
         currentMaxHealth = Mathf.RoundToInt(maxHealth * (1 + (0.25f * (float)healthIncreaseCounter)));
 
         //playerUI.UpdateMaxHealth(currentMaxHealth);
+    }
+
+    public void SavePlayerStats()
+    {
+        SavedPlayerStats savedStats = new SavedPlayerStats();
+        savedStats.health = health;
+        savedStats.guns[0] = PlayerShootScript.CurrentGun;
+        savedStats.guns[1] = PlayerShootScript.SecondaryGun;
+        savedStats.ammo[0] = PlayerShootScript.CurrentAmmo;
+        savedStats.ammo[1] = PlayerShootScript.CurrentSecondaryAmmo;
+
+        PlayersStatsHolder playersStatsHolder = PlayersStatsHolder.instance;
+
+        playersStatsHolder.PlayerStatsSaved[PhotonNetwork.IsConnected ? (photonView.OwnerActorNr - 1) : 0] = savedStats;
     }
 }

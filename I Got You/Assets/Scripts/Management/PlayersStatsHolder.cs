@@ -1,0 +1,39 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Photon.Pun;
+
+public class PlayersStatsHolder : MonoBehaviour
+{
+    public static PlayersStatsHolder instance;
+
+    [SerializeField] private SavedPlayerStats[] savedPlayerStats;
+    public SavedPlayerStats[] PlayerStatsSaved { get { return savedPlayerStats; } }
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+        savedPlayerStats = new SavedPlayerStats[PhotonNetwork.IsConnected ? PhotonNetwork.CurrentRoom.PlayerCount : 1];
+    }
+}
+
+[System.Serializable]
+public class SavedPlayerStats
+{
+    public GunObject[] guns = new GunObject[2];
+    public int[] ammo = new int[2];
+    public int health = 100;
+}

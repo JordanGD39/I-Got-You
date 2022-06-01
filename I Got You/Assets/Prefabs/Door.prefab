@@ -110,7 +110,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 659093169665532768}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 1
   m_Extents: {x: 1.01, y: 2, z: 0.15}
@@ -224,7 +224,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8297538027667897654}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DoorParts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -256,7 +256,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3045308397117042517}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DoorParts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -322,7 +322,7 @@ GameObject:
   - component: {fileID: 382028317162156998}
   - component: {fileID: 2544862180563434211}
   - component: {fileID: 2198004069772336039}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Low_part_door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 7951982992896109639}
   - component: {fileID: 2540861960648739737}
   - component: {fileID: 4604622002405582391}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Top_part_door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -498,7 +498,7 @@ GameObject:
   - component: {fileID: 8101361818729913285}
   - component: {fileID: 6228979351679341280}
   - component: {fileID: 7755211830074323876}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Low_part_door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -580,7 +580,7 @@ GameObject:
   - component: {fileID: 1980444169950004292}
   - component: {fileID: 6224565543594976154}
   - component: {fileID: 7934966402927408210}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Top_part_door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -915,7 +915,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8802004519156722822}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 1
   m_Extents: {x: 1.01, y: 2, z: 0.15}

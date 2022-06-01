@@ -400,7 +400,7 @@ public class DungeonGenerator : MonoBehaviourPun
         chosenRoom.ChosenEndingOpening = chosenRoom.EndOpenings[randOpening];
 
         chosenRoom.ChosenEndingOpening.GetChild(0).GetChild(0).gameObject.SetActive(true);
-        chosenRoom.RoomScaleObject.localScale += new Vector3(0, 0, 1);
+        chosenRoom.RoomScaleObject.localScale += new Vector3(0, 0, 0.4f);
 
         randomChosenEndingRoom = chosenRoom;
         randomChosenOpeningIndex = randOpening;
@@ -413,7 +413,7 @@ public class DungeonGenerator : MonoBehaviourPun
         chosenRoom.ChosenEndingOpening = chosenRoom.EndOpenings[openingIndex];
 
         chosenRoom.ChosenEndingOpening.GetChild(0).GetChild(0).gameObject.SetActive(true);
-        chosenRoom.RoomScaleObject.localScale += new Vector3(0, 0, 1);
+        chosenRoom.RoomScaleObject.localScale += new Vector3(0, 0, 0.4f);
     }
 
     private void SeperateRooms()

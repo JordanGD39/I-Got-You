@@ -11,8 +11,10 @@ public class PlayerShoot : MonoBehaviourPun
     public GunObject SecondaryGun { get { return secondaryGun; } }
     [SerializeField] private GunHolder currentGunHolder;
     [SerializeField] private int currentAmmo = 0;
+    public int CurrentAmmo { get { return currentAmmo; } }
     [SerializeField] private int currentMaxAmmo = 0;
     [SerializeField] private int secondaryGunAmmo = 0;
+    public int CurrentSecondaryAmmo { get { return secondaryGunAmmo; } }
     [SerializeField] private int secondaryGunMaxAmmo = 0;
     [SerializeField] private bool canShoot = true;
     [SerializeField] private bool switching = false;
@@ -45,6 +47,27 @@ public class PlayerShoot : MonoBehaviourPun
         {
             audioSource = GetComponent<AudioSource>();
         }
+        SavedPlayerStats savedStats = null;
+
+        if (PlayersStatsHolder.instance.PlayerStatsSaved.Length > 0)
+        {
+            savedStats = PlayersStatsHolder.instance.PlayerStatsSaved[PhotonNetwork.IsConnected ? (photonView.OwnerActorNr - 1) : 0];
+
+            if (savedStats != null)
+            {
+                currentGun = savedStats.guns[0];
+                secondaryGun = savedStats.guns[1];
+                currentAmmo = savedStats.ammo[0];
+                secondaryGunAmmo = savedStats.ammo[1];
+
+                currentMaxAmmo = currentGun.MaxAmmoCount;
+
+                if (secondaryGun != null)
+                {
+                    secondaryGunMaxAmmo = secondaryGun.MaxAmmoCount;
+                }
+            }
+        }
 
         if (PhotonNetwork.IsConnected && !photonView.IsMine)
         {
@@ -59,7 +82,11 @@ public class PlayerShoot : MonoBehaviourPun
         playerStats = GetComponent<PlayerStats>();
         playerUI = FindObjectOfType<PlayerUI>();
 
-        GiveFullAmmo(true);
+        if (savedStats == null)
+        {
+            GiveFullAmmo(true);
+        }
+        
         switching = true;
         StartChangingCurrentGun();
     }

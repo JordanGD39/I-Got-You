@@ -146,4 +146,15 @@ public class ClassInfoUI : MonoBehaviourPun
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonFunctionHandler.LoadSceneAsync("GameScene");
     }
+
+    public void CallFadeOutOthers()
+    {
+        photonView.RPC("FadeOutOthers", RpcTarget.Others);
+    }
+
+    [PunRPC]
+    void FadeOutOthers()
+    {
+        selectUI.FadeIn.SetActive(true);
+    }
 }

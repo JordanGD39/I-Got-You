@@ -73,7 +73,8 @@ public class DoorOpen : MonoBehaviourPun
             return;
         }
 
-        canOpen = generationRoomData.ChosenOpenings.Contains(generationRoomData.Openings[openingIndex]);
+        canOpen = generationRoomData.ChosenOpenings.Contains(generationRoomData.Openings[openingIndex]) || 
+            generationRoomData.ChosenEndingOpening == generationRoomData.Openings[openingIndex];
     }
 
     private void OnTriggerEnter(Collider other)

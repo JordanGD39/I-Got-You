@@ -9,7 +9,9 @@ public class ColorInput : MonoBehaviourPun
     private int codeInput;
     [SerializeField]
     private GameObject monitor;
+    private PlayerUI playerUI;
     private MeshRenderer render;
+    private PlayerManager playerManager;
     private bool inRange;
     [SerializeField]
     private PuzzleManager manager;
@@ -17,7 +19,9 @@ public class ColorInput : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
+        playerUI = FindObjectOfType<PlayerUI>();
         render = monitor.GetComponent<MeshRenderer>();
+        playerManager = FindObjectOfType<PlayerManager>();
     }
 
     // Update is called once per frame
@@ -76,6 +80,11 @@ public class ColorInput : MonoBehaviourPun
     {
         if (other.CompareTag("PlayerCol"))
         {
+            if (playerManager.StatsOfAllPlayers[other] == playerManager.LocalPlayer)
+            {
+                playerUI.ShowInteractPanel(" to input color");
+            }
+
             inRange = true;
         }
     }
@@ -84,6 +93,11 @@ public class ColorInput : MonoBehaviourPun
     {
         if (other.CompareTag("PlayerCol"))
         {
+            if (playerManager.StatsOfAllPlayers[other] == playerManager.LocalPlayer)
+            {
+                playerUI.HideInteractPanel();
+            }
+
             inRange = false;
         }
     }

@@ -80,6 +80,7 @@ public class ClassSelectUI : MonoBehaviour
                 }
                 else
                 {
+                    infoUI.CallFadeOutOthers();
                     Invoke("LoadGameScene", 1);
                 }
 

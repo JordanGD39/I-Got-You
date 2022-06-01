@@ -35,9 +35,14 @@ public class ClockScript : MonoBehaviourPun
         if (randHour < 0)
         {
             randomHour = Random.Range(1, 24);
-            randomMinute = Random.Range(1, 60);
+            randomMinute = Random.Range(10, 60);
             goalHour = randomHour;
             goalMinute = randomMinute + Random.Range(1, 40);
+
+            if (goalMinute >= 60)
+            {
+                goalHour++;
+            }
 
             if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
             {
