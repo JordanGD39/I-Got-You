@@ -53,7 +53,7 @@ public class PlayerShoot : MonoBehaviourPun
         {
             savedStats = PlayersStatsHolder.instance.PlayerStatsSaved[PhotonNetwork.IsConnected ? (photonView.OwnerActorNr - 1) : 0];
 
-            if (savedStats != null)
+            if (savedStats != null && savedStats.guns[0] != null)
             {
                 currentGun = savedStats.guns[0];
                 secondaryGun = savedStats.guns[1];

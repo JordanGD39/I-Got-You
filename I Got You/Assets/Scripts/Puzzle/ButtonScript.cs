@@ -57,7 +57,7 @@ public class ButtonScript : MonoBehaviourPun
         StartClock(false);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("PlayerCol"))
         {

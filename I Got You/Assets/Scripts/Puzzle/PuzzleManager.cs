@@ -53,7 +53,7 @@ public class PuzzleManager : MonoBehaviourPun
         }
 
         int screensToRemove = 4 - (roomEntered ? playerManager.PlayersInGame.Count : playerManager.Players.Count);
-        screensToRemove = Mathf.Clamp(screensToRemove, 0, 3);
+        screensToRemove = Mathf.Clamp(screensToRemove, 0, 2);
 
         switch (screensToRemove)
         {
