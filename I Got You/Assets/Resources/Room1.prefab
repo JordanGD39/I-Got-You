@@ -3924,7 +3924,7 @@ MonoBehaviour:
   - {fileID: 7855538103285471153}
   - {fileID: 1667310639375853011}
   doorsToOtherRoom: []
-  puzzleEnemyCountMultiplier: 0.8
+  puzzleEnemyCountMultiplier: 0.5
 --- !u!114 &7855538103156852668
 MonoBehaviour:
   m_ObjectHideFlags: 0
