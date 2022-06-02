@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
+
 
 public class PlayerHealing : MonoBehaviour
 {
@@ -17,6 +19,7 @@ public class PlayerHealing : MonoBehaviour
     private PlayerStats playerStats;
     private PlayerUI playerUI;
     private Animator anim;
+    [SerializeField] private VisualEffect drinkEffect;
 
     private bool buffed = false;
 
@@ -52,11 +55,6 @@ public class PlayerHealing : MonoBehaviour
         buffed = true;
         healthGain = Mathf.RoundToInt(healthGain * multiplier);
         maxHealthItems = Mathf.RoundToInt(maxHealthItems * multiplier);
-
-        if (playerUI == null)
-        {
-            playerUI = FindObjectOfType<PlayerUI>();
-        }
 
         playerUI.UpdateMaxHealthItemCount(maxHealthItems);
     }
@@ -103,6 +101,8 @@ public class PlayerHealing : MonoBehaviour
         playerUI.UpdateChickenSoupBar(healthGain, startingHealthGain);
 
         yield return new WaitForSeconds(healDelay + healthGainInterval);
+        drinkEffect.gameObject.SetActive(true);
+        drinkEffect.Play();
 
         while (healthGain > 0 && healing)
         {
@@ -136,5 +136,6 @@ public class PlayerHealing : MonoBehaviour
         anim.SetBool("Healing", false);
         healing = false;
         playerShoot.PutWeaponBack();
+        drinkEffect.Stop();
     }
 }
