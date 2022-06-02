@@ -7187,7 +7187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e573335886e7b54981d33a4a14cb647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healingItems: 0
+  healingItems: 2
   maxHealthItems: 2
   healDelay: 1.25
   startingHealthGain: 30
