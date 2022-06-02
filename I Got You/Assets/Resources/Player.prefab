@@ -7081,6 +7081,7 @@ MonoBehaviour:
   jumpHeight: 0.8
   anim: {fileID: 0}
   dampTime: 0.05
+  outOfBoundsY: 0
 --- !u!114 &6712501813913824982
 MonoBehaviour:
   m_ObjectHideFlags: 0
