@@ -2889,8 +2889,8 @@ MonoBehaviour:
   enemiesToSpawnInRoomMax: 6
   extraEnemiesPerPlayerMin: 1
   extraEnemiesPerPlayerMax: 3
-  wraptorSpawnChance: 100
-  wraptorSpawnChanceLimit: 100
+  wraptorSpawnChance: 3
+  wraptorSpawnChanceLimit: 15
   wraptorSpawnChanceModifier: 0.5
   eatSpawnChance: 0
   eatSpawnChanceModifier: 2
