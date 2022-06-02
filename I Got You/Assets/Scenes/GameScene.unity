@@ -997,6 +997,10 @@ PrefabInstance:
       propertyPath: observableSearch
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1513892015714671857, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
+      propertyPath: healingItems
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2519430257003086912, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: m_IsActive
       value: 1

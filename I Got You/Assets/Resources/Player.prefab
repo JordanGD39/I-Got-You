@@ -7196,7 +7196,7 @@ MonoBehaviour:
   healthGainInterval: 0.5
   afterHealthGainInterval: 0.1
   healing: 0
-  drinkEffect: {fileID: 0}
+  drinkEffect: {fileID: 3033835327620228722}
 --- !u!114 &508557286151977996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10116,6 +10116,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58498921ecbf1ea419a8deb78e310787, type: 3}
+--- !u!4 &5363701128369651983 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4742257883730072347, guid: 58498921ecbf1ea419a8deb78e310787, type: 3}
+  m_PrefabInstance: {fileID: 837761517697045012}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5363701128369651981 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4742257883730072345, guid: 58498921ecbf1ea419a8deb78e310787, type: 3}
@@ -10127,11 +10132,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd7fea91fe63f4e1b884ef1e16a975c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &5363701128369651983 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4742257883730072347, guid: 58498921ecbf1ea419a8deb78e310787, type: 3}
-  m_PrefabInstance: {fileID: 837761517697045012}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &902957057778960045
 PrefabInstance:
   m_ObjectHideFlags: 0

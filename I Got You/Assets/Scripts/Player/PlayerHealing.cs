@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
+using Photon.Pun;
 
-
-public class PlayerHealing : MonoBehaviour
+public class PlayerHealing : MonoBehaviourPun
 {
     [SerializeField] private int healingItems = 0;
     [SerializeField] private int maxHealthItems = 2;
@@ -26,6 +26,10 @@ public class PlayerHealing : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (PhotonNetwork.IsConnected && !photonView.IsMine)
+        {
+            return;
+        }
         anim = GetComponentInChildren<Animator>();
         playerStats = GetComponent<PlayerStats>();
         playerShoot = GetComponent<PlayerShoot>();
@@ -33,12 +37,12 @@ public class PlayerHealing : MonoBehaviour
         if (playerUI == null)
         {
             playerUI = FindObjectOfType<PlayerUI>();
-        }        
+        }
 
         if (!buffed)
         {
             healthGain = startingHealthGain;
-        }        
+        }
 
         playerUI.HideChickenSoupBar();
         playerUI.UpdateHealthItemCount(healingItems);
@@ -56,12 +60,21 @@ public class PlayerHealing : MonoBehaviour
         healthGain = Mathf.RoundToInt(healthGain * multiplier);
         maxHealthItems = Mathf.RoundToInt(maxHealthItems * multiplier);
 
+        if (playerUI == null)
+        {
+            playerUI = FindObjectOfType<PlayerUI>();
+        }
+
         playerUI.UpdateMaxHealthItemCount(maxHealthItems);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (PhotonNetwork.IsConnected && !photonView.IsMine)
+        {
+            return;
+        }
         CheckHealing();
     }
 
@@ -104,6 +117,11 @@ public class PlayerHealing : MonoBehaviour
         drinkEffect.gameObject.SetActive(true);
         drinkEffect.Play();
 
+        if (PhotonNetwork.IsConnected && photonView.IsMine)
+        {
+            photonView.RPC("ShowEffectOthers", RpcTarget.Others);
+        }
+
         while (healthGain > 0 && healing)
         {
             healthGain -= healthGainPerSip;
@@ -116,7 +134,7 @@ public class PlayerHealing : MonoBehaviour
         if (healing)
         {
             StopHealing();
-        }        
+        }
     }
 
     public void CheckEmpty()
@@ -126,7 +144,20 @@ public class PlayerHealing : MonoBehaviour
             healingItems--;
             healthGain = startingHealthGain;
             playerUI.UpdateHealthItemCount(healingItems);
-        }        
+        }
+    }
+
+    [PunRPC]
+    void ShowEffectOthers()
+    {
+        drinkEffect.gameObject.SetActive(true);
+        drinkEffect.Play();
+    }
+
+    [PunRPC]
+    void StopEffectOthers()
+    {
+        drinkEffect.Stop();
     }
 
     public void StopHealing()
@@ -137,5 +168,10 @@ public class PlayerHealing : MonoBehaviour
         healing = false;
         playerShoot.PutWeaponBack();
         drinkEffect.Stop();
+
+        if (PhotonNetwork.IsConnected && photonView.IsMine)
+        {
+            photonView.RPC("StopEffectOthers", RpcTarget.Others);
+        }
     }
 }
