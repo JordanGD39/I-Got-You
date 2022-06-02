@@ -824,7 +824,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-18168122
+  m_Name: pb_Mesh-17073776
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1381,6 +1381,7 @@ MonoBehaviour:
   primaryGuns:
   - {fileID: 11400000, guid: a758b336a4bc89244bcb7f9809f062da, type: 2}
   - {fileID: 11400000, guid: 8f2aa4b22a8b78549afede7d68a68ba3, type: 2}
+  - {fileID: 11400000, guid: 5cdda578b401bc54bb74e386a393bd79, type: 2}
   secondaryGuns:
   - {fileID: 11400000, guid: 2f27949e543c9874d966f280879f8d1c, type: 2}
   - {fileID: 11400000, guid: c6c907180c1c4794f80ffb59bfeedc81, type: 2}
@@ -2261,7 +2262,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-18171464
+  m_Name: pb_Mesh-17077338
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2680,7 +2681,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-18168112
+  m_Name: pb_Mesh-17073766
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
