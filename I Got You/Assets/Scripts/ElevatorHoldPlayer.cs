@@ -10,6 +10,7 @@ public class ElevatorHoldPlayer : MonoBehaviour
     private CharacterController localCharacterController;
 
     [SerializeField] private float maxDistance = 2;
+    [SerializeField] private float yPos = 1.33f;
 
     // Start is called before the first frame update
     void Start()
@@ -51,6 +52,12 @@ public class ElevatorHoldPlayer : MonoBehaviour
 
             float dist = Vector3.Distance(playerPos, transform.position);
             Debug.Log(dist);
+
+            if (playerPos.y < yPos)
+            {
+                playerPos.y = yPos;
+                localPlayer.position = playerPos;
+            }
 
             if (dist > maxDistance)
             {

@@ -645,6 +645,7 @@ GameObject:
   - component: {fileID: 2957311314683584404}
   - component: {fileID: 5504407579596765084}
   - component: {fileID: 5508498766959415602}
+  - component: {fileID: 7879785792332007830}
   m_Layer: 0
   m_Name: Screen
   m_TagString: Untagged
@@ -745,6 +746,28 @@ MonoBehaviour:
   time: {fileID: 2982620731343411217}
   goalTime: {fileID: 2163570977391974291}
   button: {fileID: 7524657235422787391}
+--- !u!114 &7879785792332007830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3377429246631985693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &3491110880519953451
 GameObject:
   m_ObjectHideFlags: 0
@@ -760,6 +783,7 @@ GameObject:
   - component: {fileID: 1756247286194092272}
   - component: {fileID: 5385635949156357115}
   - component: {fileID: 7077945112015187389}
+  - component: {fileID: 6950793053488998948}
   m_Layer: 0
   m_Name: Cylinder (1)
   m_TagString: Untagged
@@ -840,10 +864,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 2.46
-  m_Height: 43.70608
-  m_Direction: 1
-  m_Center: {x: -0.4148238, y: 2.8419771, z: 7.1761055e-16}
+  m_Radius: 3.2933168
+  m_Height: 7.501002
+  m_Direction: 0
+  m_Center: {x: -0.019323012, y: 5.447617, z: -4.174794e-15}
 --- !u!114 &1756247286194092272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -894,6 +918,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6950793053488998948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491110880519953451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &3815213075928672691
 GameObject:
   m_ObjectHideFlags: 0
@@ -907,6 +953,7 @@ GameObject:
   - component: {fileID: 5990001216710530461}
   - component: {fileID: 3257493718375054920}
   - component: {fileID: 8514303758305017195}
+  - component: {fileID: 903215823999244978}
   m_Layer: 0
   m_Name: Screen
   m_TagString: Untagged
@@ -1007,6 +1054,28 @@ MonoBehaviour:
   time: {fileID: 3485509599303694492}
   goalTime: {fileID: 6856063921324837515}
   button: {fileID: 1756247286194092272}
+--- !u!114 &903215823999244978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3815213075928672691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &4259039372878742955
 GameObject:
   m_ObjectHideFlags: 0
@@ -1022,6 +1091,7 @@ GameObject:
   - component: {fileID: 7524657235422787391}
   - component: {fileID: 8674519672699213503}
   - component: {fileID: 4693752506757637115}
+  - component: {fileID: 2581010758933576444}
   m_Layer: 0
   m_Name: Cylinder (1)
   m_TagString: Untagged
@@ -1102,10 +1172,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 2.46
-  m_Height: 43.70608
-  m_Direction: 1
-  m_Center: {x: -0.4148238, y: 2.8419771, z: 7.1761055e-16}
+  m_Radius: 3.201323
+  m_Height: 6.972823
+  m_Direction: 0
+  m_Center: {x: 0.024374466, y: 4.6304035, z: -2.640377e-15}
 --- !u!114 &7524657235422787391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1156,6 +1226,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2581010758933576444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4259039372878742955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &4531869044192547055
 GameObject:
   m_ObjectHideFlags: 0

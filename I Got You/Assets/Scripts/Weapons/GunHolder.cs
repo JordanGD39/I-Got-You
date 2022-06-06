@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class GunHolder : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class GunHolder : MonoBehaviour
     public GunObject OwningGun { get { return owningGun; } }
 
     public Animator GunAnim { get; private set; }
-    public ParticleSystem MuzzleFlash { get; private set; }
+    public VisualEffect MuzzleFlash { get; private set; }
 
     public delegate void GunPutAway();
     public GunPutAway OnGunPutAway;
@@ -21,7 +22,7 @@ public class GunHolder : MonoBehaviour
         if (GunAnim == null)
         {
             GunAnim = GetComponent<Animator>();
-            MuzzleFlash = GetComponentInChildren<ParticleSystem>();
+            MuzzleFlash = GetComponentInChildren<VisualEffect>();
         }
     }
 

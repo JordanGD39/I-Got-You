@@ -85,6 +85,8 @@ MonoBehaviour:
   - StartMasterClientLoadLevel
   - FadeOutOthers
   - ShutElevatorDoorsOthers
+  - ShowEffectOthers
+  - StopEffectOthers
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

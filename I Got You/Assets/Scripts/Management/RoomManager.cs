@@ -252,7 +252,7 @@ public class RoomManager : MonoBehaviourPun
             return;
         }
 
-        EnemyGenerator.GeneratedEnemyInfo chosenEnemyType = enemiesInRoom[currentNotPlacedIndex];
+        EnemyGenerator.GeneratedEnemyInfo chosenEnemyType = enemiesInRoom[0];
 
         if (roomMode == RoomModes.BATTLEONLY)
         {
@@ -278,6 +278,7 @@ public class RoomManager : MonoBehaviourPun
             }
 
             enemiesNotPlacedCount[currentNotPlacedIndex]--;
+            chosenEnemyType = enemiesInRoom[currentNotPlacedIndex];
         }
         else
         {

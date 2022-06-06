@@ -14,9 +14,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpHeight = 10;
     [SerializeField] private Animator anim;
     [SerializeField] private float dampTime = 0.05f;
+    [SerializeField] private float outOfBoundsY = 0;
     private float stepOffset = 0.5f;
 
     private Vector3 velocity = Vector3.zero;
+    private Vector3 lastGroundedPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +47,8 @@ public class PlayerMovement : MonoBehaviour
         {
             JumpCheck();
         }
+
+        CheckPlayerOutOfBounds();
     }
 
     private void UpdateMovement()
@@ -75,10 +79,15 @@ public class PlayerMovement : MonoBehaviour
     {
         characterController.Move(velocity * Time.deltaTime);
 
-        if (characterController.isGrounded && velocity.y < 0)
+        if (characterController.isGrounded)
         {
-            velocity.y = -2;
-            characterController.stepOffset = stepOffset;
+            lastGroundedPosition = transform.position;
+
+            if (velocity.y < 0)
+            {
+                velocity.y = -2;
+                characterController.stepOffset = stepOffset;
+            }
         }
         else
         {
@@ -86,6 +95,14 @@ public class PlayerMovement : MonoBehaviour
         }
 
         velocity.y += gravity * Time.deltaTime;
+    }
+
+    private void CheckPlayerOutOfBounds()
+    {
+        if (transform.position.y < outOfBoundsY)
+        {
+            transform.position = lastGroundedPosition;
+        }
     }
 
     private void JumpCheck()

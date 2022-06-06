@@ -83,7 +83,9 @@ public class ChasePlayerAI : MonoBehaviour
 
         float distance = Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(target.position.x, 0, target.position.z));
 
-        if (distance <= agent.stoppingDistance)
+        agent.updateRotation = distance > distanceToAttack;
+
+        if (distance <= distanceToAttack)
         {
             FaceTarget();
         }

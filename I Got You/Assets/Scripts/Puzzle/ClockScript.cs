@@ -35,9 +35,9 @@ public class ClockScript : MonoBehaviourPun
         if (randHour < 0)
         {
             randomHour = Random.Range(1, 24);
-            randomMinute = Random.Range(10, 60);
+            randomMinute = Random.Range(1, 60);
             goalHour = randomHour;
-            goalMinute = randomMinute + Random.Range(1, 40);
+            goalMinute = randomMinute + Random.Range(10, 40);
 
             if (goalMinute >= 60)
             {
