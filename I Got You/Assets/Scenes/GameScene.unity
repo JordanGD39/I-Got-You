@@ -3322,6 +3322,10 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 6159909859084215245, guid: e4973f7fafb4af747aba3a83d9862a82, type: 3}
+      propertyPath: sceneViewId
+      value: 44
+      objectReference: {fileID: 0}
     - target: {fileID: 7140597385152536975, guid: e4973f7fafb4af747aba3a83d9862a82, type: 3}
       propertyPath: sceneViewId
       value: 11
@@ -3351,6 +3355,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1800977004}
     m_Modifications:
+    - target: {fileID: 1659892752826136348, guid: 15fc69f2ddc37a44da5083e5c10a65c7, type: 3}
+      propertyPath: sceneViewId
+      value: 43
+      objectReference: {fileID: 0}
     - target: {fileID: 2225313701937259497, guid: 15fc69f2ddc37a44da5083e5c10a65c7, type: 3}
       propertyPath: sceneViewId
       value: 30
@@ -3548,6 +3556,10 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 1546862164269594439, guid: 41679d3500a487c4b85a43c08a1de731, type: 3}
+      propertyPath: sceneViewId
+      value: 41
+      objectReference: {fileID: 0}
     - target: {fileID: 1557417438514714931, guid: 41679d3500a487c4b85a43c08a1de731, type: 3}
       propertyPath: sceneViewId
       value: 40
@@ -3600,6 +3612,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 972984286}
+    - target: {fileID: 7165050533517779824, guid: 41679d3500a487c4b85a43c08a1de731, type: 3}
+      propertyPath: sceneViewId
+      value: 42
+      objectReference: {fileID: 0}
     - target: {fileID: 7855538103156852665, guid: 41679d3500a487c4b85a43c08a1de731, type: 3}
       propertyPath: m_Name
       value: Room1

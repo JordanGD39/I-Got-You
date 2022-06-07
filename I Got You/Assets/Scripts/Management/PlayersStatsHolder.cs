@@ -28,6 +28,11 @@ public class PlayersStatsHolder : MonoBehaviour
     {
         savedPlayerStats = new SavedPlayerStats[PhotonNetwork.IsConnected ? PhotonNetwork.CurrentRoom.PlayerCount : 1];
     }
+
+    public void ClearSavedStats()
+    {
+        savedPlayerStats = new SavedPlayerStats[0];
+    }
 }
 
 [System.Serializable]

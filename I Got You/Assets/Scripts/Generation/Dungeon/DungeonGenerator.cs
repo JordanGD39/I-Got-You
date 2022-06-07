@@ -4,6 +4,8 @@ using System.Linq;
 using TriangleNet.Geometry;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
+using Photon.Realtime;
 
 public class DungeonGenerator : MonoBehaviourPun
 {
@@ -36,6 +38,13 @@ public class DungeonGenerator : MonoBehaviourPun
     public GenerationDone OnGenerationDone;
     public GenerationRoomData StartingRoom { get; private set; }
 
+    public delegate void SeedChosen();
+    public SeedChosen OnSeedChosen;
+    private int seed = 0;
+    private bool seedChosen = false;
+
+    private List<Player> playersToSendDataTo = new List<Player>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,37 +68,75 @@ public class DungeonGenerator : MonoBehaviourPun
 
             PlaceEnd();
 
-            SeperateRooms();
-
-            if (PhotonNetwork.IsConnected)
-            {
-                foreach (GenerationRoomData room in rooms)
-                {
-                    photonView.RPC("PlaceRoomOthers", RpcTarget.OthersBuffered, 
-                        room.gameObject.GetPhotonView().ViewID, new Vector2(room.transform.position.x, room.transform.position.z));
-                }
-
-                photonView.RPC("PlaceEndOthers", RpcTarget.OthersBuffered, rooms.IndexOf(randomChosenEndingRoom), randomChosenOpeningIndex);
-            }
+            SeperateRooms();            
 
             int ticks = (int)System.DateTime.Now.Ticks;
             Random.InitState(ticks);
+            seed = ticks;
+            Debug.LogError("Seed: " + ticks);
+            seedChosen = true;
+
+            OnSeedChosen?.Invoke();            
+
+            StartGeneration();
+        }
+
+        if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("RequestGenerationData", RpcTarget.MasterClient, (byte)PhotonNetwork.LocalPlayer.ActorNumber);
+        }
+    }
+
+    [PunRPC]
+    void RequestGenerationData(byte playerIndex)
+    {
+        playersToSendDataTo.Add(PhotonNetwork.PlayerList[playerIndex - 1]);
+
+        if (seedChosen)
+        {
+            SendGenerationDataToOthers();
+        }
+        else
+        {
+            OnSeedChosen += SendGenerationDataToOthers;
+        }
+    }
+
+    private void SendGenerationDataToOthers()
+    {
+        foreach (Player player in playersToSendDataTo)
+        {
+            foreach (GenerationRoomData room in rooms)
+            {
+                photonView.RPC("PlaceRoomOthers", player,
+                    room.gameObject.GetPhotonView().ViewID, new Vector2(room.transform.position.x, room.transform.position.z));
+            }
+
+            photonView.RPC("PlaceEndOthers", player, rooms.IndexOf(randomChosenEndingRoom), randomChosenOpeningIndex);
 
             if (PhotonNetwork.IsConnected)
             {
-                photonView.RPC("StartGenerationForOthers", RpcTarget.OthersBuffered, ticks);
-            }            
+                photonView.RPC("StartGenerationForOthers", player, seed);
+            }
+        }
 
-            StartGeneration();
-        }        
+        playersToSendDataTo.Clear();
     }
 
     [PunRPC]
     void StartGenerationForOthers(int seed)
     {
+        if (seedChosen)
+        {
+            return;
+        }
+
+        Debug.Log("Seed: " + seed + " scene: " + SceneManager.GetActiveScene().name);
+
         dungeonGrid.GenerateGrid();
 
         Random.InitState(seed);
+        seedChosen = true;
 
         StartGeneration();
     }
@@ -367,6 +414,13 @@ public class DungeonGenerator : MonoBehaviourPun
     [PunRPC]
     void PlaceRoomOthers(int viewId, Vector2 pos)
     {
+        if (seedChosen)
+        {
+            return;
+        }
+
+        Debug.Log("Room " + viewId + " placed!");
+
         GameObject room = PhotonNetwork.GetPhotonView(viewId).gameObject;
         room.transform.position = new Vector3(pos.x, 0, pos.y);
         GenerationRoomData generationRoomData = room.GetComponent<GenerationRoomData>();
@@ -409,6 +463,12 @@ public class DungeonGenerator : MonoBehaviourPun
     [PunRPC]
     void PlaceEndOthers(int roomIndex, int openingIndex)
     {
+        if (seedChosen)
+        {
+            return;
+        }
+
+        Debug.Log("End placed at " + roomIndex + " and opening chosen was: " + openingIndex);
         GenerationRoomData chosenRoom = rooms[roomIndex];
         chosenRoom.ChosenEndingOpening = chosenRoom.EndOpenings[openingIndex];
 

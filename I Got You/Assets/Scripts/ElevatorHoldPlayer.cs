@@ -43,7 +43,7 @@ public class ElevatorHoldPlayer : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        if (holdLocalPlayer)
+        if (holdLocalPlayer && localCharacterController != null)
         {
             Transform localPlayer = localCharacterController.transform;
 
@@ -51,7 +51,7 @@ public class ElevatorHoldPlayer : MonoBehaviour
             playerPos.y = transform.position.y;
 
             float dist = Vector3.Distance(playerPos, transform.position);
-            Debug.Log(dist);
+            //Debug.Log(dist);
 
             if (playerPos.y < yPos)
             {
