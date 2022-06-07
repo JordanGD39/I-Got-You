@@ -137,7 +137,7 @@ public class PlayerRevive : MonoBehaviourPun
 
         if (deathTimer > 0)
         {
-            if (!StopTimer)
+            if (!stopTimer)
             {
                 deathTimer -= currentMultiplier * Time.deltaTime;
             }
