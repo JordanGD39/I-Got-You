@@ -477,6 +477,9 @@ public class DungeonGenerator : MonoBehaviourPun
 
         chosenRoom.ChosenEndingOpening.GetChild(0).GetChild(0).gameObject.SetActive(true);
         chosenRoom.RoomScaleObject.localScale += new Vector3(0, 0, 0.4f);
+
+        randomChosenEndingRoom = chosenRoom;
+        randomChosenOpeningIndex = openingIndex;
     }
 
     private void SeperateRooms()

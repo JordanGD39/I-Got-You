@@ -20,6 +20,7 @@ public class TurnCanvasToCamera : MonoBehaviour
         {
             cam = Camera.main;
             canvas.worldCamera = cam;
+            return;
         }
 
         transform.LookAt(2 * transform.position - cam.transform.position);
