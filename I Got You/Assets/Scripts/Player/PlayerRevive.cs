@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
 
-public class PlayerRevive : MonoBehaviourPun
+public class PlayerRevive : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] private float deathTimer = 0;
     [SerializeField] private float timeToDie = 15;
@@ -88,8 +88,7 @@ public class PlayerRevive : MonoBehaviourPun
     {
         if (!photonView.IsMine)
         {
-            reviveCircle.fillAmount = syncTimer / timeToDie;
-            //Mathf.Lerp(reviveCircle.fillAmount, syncTimer / timeToDie, lerpSpeedSync * Time.deltaTime)
+            reviveCircle.fillAmount = Mathf.Lerp(reviveCircle.fillAmount, syncTimer / timeToDie, lerpSpeedSync * Time.deltaTime);
             return;
         }
 
