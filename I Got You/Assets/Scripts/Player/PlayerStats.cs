@@ -199,6 +199,12 @@ public class PlayerStats : MonoBehaviourPun
             health = 0;
             isDown = true;
             anim.SetBool("Down", true);
+
+            if (PhotonNetwork.IsConnected)
+            {
+                photonView.RPC("ShowDownOthers", RpcTarget.Others);
+            }
+
             playerRevive.StartTimer();
             StopCoroutine(nameof(StartShieldRegeneration));
             playerUI.UpdateShieldHealth(0, startingShieldHealth);
@@ -207,15 +213,21 @@ public class PlayerStats : MonoBehaviourPun
         playerUI.UpdateHealth(health, maxHealth);
     }
 
+    [PunRPC]
+    void ShowDownOthers()
+    {
+        anim.SetBool("Down", true);
+    }
+
     public void Revived()
     {
         health = maxHealth;
         shieldHealth = startingShieldHealth;
         isDown = false;
+        anim.SetBool("Down", false);
 
         if (photonView.IsMine)
         {
-            anim.SetBool("Down", false);
             invincible = true;
             Invoke(nameof(RemoveInvincibility), invincibilityTime);
 
