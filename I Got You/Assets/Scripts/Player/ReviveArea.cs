@@ -20,7 +20,7 @@ public class ReviveArea : InteractableObject
 
     protected override void PlayerTriggerEntered(PlayerStats stats)
     {
-        if (playerStats == stats && playerStats.IsDead)
+        if (playerStats == stats || playerStats.IsDead || stats.IsDown)
         {
             return;
         }

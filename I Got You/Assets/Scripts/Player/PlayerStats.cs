@@ -208,6 +208,7 @@ public class PlayerStats : MonoBehaviourPun
             playerRevive.StartTimer();
             StopCoroutine(nameof(StartShieldRegeneration));
             playerUI.UpdateShieldHealth(0, startingShieldHealth);
+            OnInteractHoldStop?.Invoke(this);
         }
 
         playerUI.UpdateHealth(health, maxHealth);
