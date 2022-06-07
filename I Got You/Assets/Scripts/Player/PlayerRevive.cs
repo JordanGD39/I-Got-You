@@ -4,14 +4,15 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
 
-public class PlayerRevive : MonoBehaviourPun, IPunObservable
+public class PlayerRevive : MonoBehaviourPun
 {
     [SerializeField] private float deathTimer = 0;
+    public float DeathTimer { get { return deathTimer; } }
     [SerializeField] private float timeToDie = 15;
     [SerializeField] private float damageMultiplier = 1.5f;
     [SerializeField] private float resetDamageTime = 1;
     [SerializeField] private float damageTimer = 0;
-    [SerializeField] private float syncTimer = 0;
+    public float SyncTimer { get; set; } = 0;
     [SerializeField] private float lerpSpeedSync = 2;
     [SerializeField] private Camera deathCam;
     [SerializeField] private GameObject revivePanel;
@@ -27,18 +28,6 @@ public class PlayerRevive : MonoBehaviourPun, IPunObservable
 
     private bool timerStarted = false;
     private float currentMultiplier = 1;
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(deathTimer);
-        }
-        else if (stream.IsReading)
-        {
-            syncTimer = (float)stream.ReceiveNext();
-        }
-    }
 
     // Start is called before the first frame update
     void Start()
@@ -88,7 +77,7 @@ public class PlayerRevive : MonoBehaviourPun, IPunObservable
     {
         if (!photonView.IsMine)
         {
-            reviveCircle.fillAmount = Mathf.Lerp(reviveCircle.fillAmount, syncTimer / timeToDie, lerpSpeedSync * Time.deltaTime);
+            reviveCircle.fillAmount = Mathf.Lerp(reviveCircle.fillAmount, SyncTimer / timeToDie, lerpSpeedSync * Time.deltaTime);
             return;
         }
 
