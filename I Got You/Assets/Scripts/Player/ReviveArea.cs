@@ -13,8 +13,8 @@ public class ReviveArea : InteractableObject
     {
         base.AfterStart();
 
-        playerRevive = GetComponent<PlayerRevive>();
-        playerStats = GetComponent<PlayerStats>();
+        playerRevive = GetComponentInParent<PlayerRevive>();
+        playerStats = GetComponentInParent<PlayerStats>();
         interactText = " to revive Player";
     }
 
