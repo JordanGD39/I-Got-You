@@ -6,6 +6,7 @@ public class ReviveArea : InteractableObject
 {
     private PlayerRevive playerRevive;
     private PlayerStats playerStats;
+    private PlayerStats currentRevivingPlayer;
     private bool reviving = false;
     [SerializeField] private float reviveTime = 7;
 
@@ -26,6 +27,7 @@ public class ReviveArea : InteractableObject
         }
 
         base.PlayerTriggerEntered(stats);
+        currentRevivingPlayer = stats;
 
         if (reviving)
         {
@@ -40,11 +42,11 @@ public class ReviveArea : InteractableObject
     {
         if (playerStats.IsDead && reviving)
         {
-            StopRevive(playerStats);
+            StopRevive(currentRevivingPlayer);
         }
     }
 
-    private void StartRevive(PlayerStats playerStats)
+    private void StartRevive(PlayerStats stats)
     {
         playerRevive.SetTimer(true, true);
         reviving = true;
@@ -57,11 +59,15 @@ public class ReviveArea : InteractableObject
     private void ReviveDone()
     {
         playerRevive.Revived(true);
+        currentRevivingPlayer.OnInteract = null;
+        currentRevivingPlayer.OnInteractHoldStop = null;
         reviving = false;
     }
 
-    private void StopRevive(PlayerStats playerStats)
+    private void StopRevive(PlayerStats stats)
     {
+        stats.OnInteract = null;
+        stats.OnInteractHoldStop = null;
         playerRevive.SetTimer(false, true);
         playerUI.StopReviveTimer();
         reviving = false;
