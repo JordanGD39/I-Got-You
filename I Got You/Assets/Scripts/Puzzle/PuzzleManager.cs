@@ -26,6 +26,7 @@ public class PuzzleManager : MonoBehaviourPun
     public bool ShownPuzzle { get; set; } = false;
     [SerializeField] private Texture checkTexture;
     [SerializeField] private Texture crossTexture;
+    [SerializeField] private Texture showingTexture;
 
     private PlayerManager playerManager;
 
@@ -95,7 +96,7 @@ public class PuzzleManager : MonoBehaviourPun
         RemoveScreensBasedOnPlayerCount(false);
         MeshRenderer meshRenderer = monitor.GetComponent<MeshRenderer>();
         meshRenderer.material.color = Color.white;
-        meshRenderer.material.mainTexture = null;
+        meshRenderer.material.mainTexture = showingTexture;
         ShownPuzzle = false;
 
         randomInt.Clear();    
@@ -184,22 +185,7 @@ public class PuzzleManager : MonoBehaviourPun
                     screens[screenIndex].GetComponent<MeshRenderer>().material.color = Color.blue;
                 }
             }
-            /*   switch (screens[0].ColourInt)
-               {
-                   case 1:
-                       screens[0].MatColour.material.color = Color.red;
-                       break;
 
-                   case 2:
-                       screens[1].MatColour.material.color = Color.green;
-                       break;
-
-                   case 3:
-                       screens[2].MatColour.material.color = Color.blue;
-                       break;
-                   default:
-                       break;
-               } */
             yield return new WaitForSeconds(0.5f);
             if (screens[screenIndex].GetComponent<PuzzleScreen>() != null)
             {

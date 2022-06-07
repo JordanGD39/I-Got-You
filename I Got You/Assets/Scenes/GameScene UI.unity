@@ -366,7 +366,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-9893320
+  m_Name: pb_Mesh-66004
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -824,7 +824,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-17580098
+  m_Name: pb_Mesh-58718
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1713,6 +1713,17 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &1160121755 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3668264147190295885, guid: c55d6d61653a2b6469892b929382f22e, type: 3}
+  m_PrefabInstance: {fileID: 1772682038}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ad5e97f085fc9c4f97cb1fba99b32fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1176222678
 GameObject:
   m_ObjectHideFlags: 0
@@ -2262,7 +2273,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-17583748
+  m_Name: pb_Mesh-62368
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2476,6 +2487,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2470999219959697188, guid: c55d6d61653a2b6469892b929382f22e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1160121755}
+    - target: {fileID: 2470999219959697188, guid: c55d6d61653a2b6469892b929382f22e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Disconnect
+      objectReference: {fileID: 0}
+    - target: {fileID: 2470999219959697188, guid: c55d6d61653a2b6469892b929382f22e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2470999219959697188, guid: c55d6d61653a2b6469892b929382f22e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3668264145327899028, guid: c55d6d61653a2b6469892b929382f22e, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2709,7 +2736,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-17580088
+  m_Name: pb_Mesh-58708
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2918,8 +2945,8 @@ MonoBehaviour:
   enemiesToSpawnInRoomMax: 6
   extraEnemiesPerPlayerMin: 1
   extraEnemiesPerPlayerMax: 3
-  wraptorSpawnChance: 100
-  wraptorSpawnChanceLimit: 100
+  wraptorSpawnChance: 3
+  wraptorSpawnChanceLimit: 15
   wraptorSpawnChanceModifier: 0.5
   eatSpawnChance: 0
   eatSpawnChanceModifier: 2
@@ -3350,10 +3377,6 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 11
       objectReference: {fileID: 0}
-    - target: {fileID: 6159909859084215245, guid: e4973f7fafb4af747aba3a83d9862a82, type: 3}
-      propertyPath: sceneViewId
-      value: 44
-      objectReference: {fileID: 0}
     - target: {fileID: 7140597385152536975, guid: e4973f7fafb4af747aba3a83d9862a82, type: 3}
       propertyPath: sceneViewId
       value: 11
@@ -3383,10 +3406,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1800977004}
     m_Modifications:
-    - target: {fileID: 1659892752826136348, guid: 15fc69f2ddc37a44da5083e5c10a65c7, type: 3}
-      propertyPath: sceneViewId
-      value: 43
-      objectReference: {fileID: 0}
     - target: {fileID: 2225313701937259497, guid: 15fc69f2ddc37a44da5083e5c10a65c7, type: 3}
       propertyPath: sceneViewId
       value: 30
@@ -3584,10 +3603,6 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 10
       objectReference: {fileID: 0}
-    - target: {fileID: 1546862164269594439, guid: 41679d3500a487c4b85a43c08a1de731, type: 3}
-      propertyPath: sceneViewId
-      value: 41
-      objectReference: {fileID: 0}
     - target: {fileID: 1557417438514714931, guid: 41679d3500a487c4b85a43c08a1de731, type: 3}
       propertyPath: sceneViewId
       value: 40
@@ -3640,10 +3655,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 972984286}
-    - target: {fileID: 7165050533517779824, guid: 41679d3500a487c4b85a43c08a1de731, type: 3}
-      propertyPath: sceneViewId
-      value: 42
-      objectReference: {fileID: 0}
     - target: {fileID: 7855538103156852665, guid: 41679d3500a487c4b85a43c08a1de731, type: 3}
       propertyPath: m_Name
       value: Room1
