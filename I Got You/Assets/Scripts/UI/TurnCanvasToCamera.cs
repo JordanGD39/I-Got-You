@@ -22,6 +22,6 @@ public class TurnCanvasToCamera : MonoBehaviour
             canvas.worldCamera = cam;
         }
 
-        transform.LookAt(cam.transform.position);
+        transform.LookAt(2 * transform.position - cam.transform.position);
     }
 }

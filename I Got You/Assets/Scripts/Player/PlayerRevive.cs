@@ -88,7 +88,8 @@ public class PlayerRevive : MonoBehaviourPun
     {
         if (!photonView.IsMine)
         {
-            reviveCircle.fillAmount = Mathf.Lerp(reviveCircle.fillAmount, syncTimer / timeToDie, lerpSpeedSync * Time.deltaTime);
+            reviveCircle.fillAmount = syncTimer / timeToDie;
+            //Mathf.Lerp(reviveCircle.fillAmount, syncTimer / timeToDie, lerpSpeedSync * Time.deltaTime)
             return;
         }
 
