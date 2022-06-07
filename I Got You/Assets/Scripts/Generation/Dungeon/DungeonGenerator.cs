@@ -24,6 +24,7 @@ public class DungeonGenerator : MonoBehaviourPun
     [SerializeField] private List<Vertex> vertices;
     [SerializeField] private float seperationDistanceMultiplier = 1.5f;
     [SerializeField] private float seperationMultiplier = 2f;
+    [SerializeField] private float distanceBetweenElevator = 5;
     [SerializeField] private RoomManager.RoomModes[] roomModesChances = { RoomManager.RoomModes.BATTLEONLY, RoomManager.RoomModes.BATTLEONLY, RoomManager.RoomModes.PUZZLECLOCK, RoomManager.RoomModes.PUZZLESIMON};
     private float radius = 0;
     private Vector3 roomPos;
@@ -175,12 +176,14 @@ public class DungeonGenerator : MonoBehaviourPun
                 }
             }
 
+            Vector3 elevatorPos = randomChosenEndingRoom.ChosenEndingOpening.GetChild(0).GetChild(0).position;
+
             foreach (Transform cell in room.CellsToMakeRoomForOpening)
             {
                 Vector3 pos = cell.transform.position;
                 DungeonCell val = null;
 
-                if (dungeonGrid.Grid.TryGetValue(new Vector2Int(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.z)), out val))
+                if (Vector3.Distance(elevatorPos, pos) > distanceBetweenElevator && dungeonGrid.Grid.TryGetValue(new Vector2Int(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.z)), out val))
                 {
                     val.cellType = DungeonCell.CellTypes.NONE;
                 }               
