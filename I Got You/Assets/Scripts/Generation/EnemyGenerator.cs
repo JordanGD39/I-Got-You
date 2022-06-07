@@ -63,12 +63,20 @@ public class EnemyGenerator : MonoBehaviour
 
         int randomEnemyCount = Mathf.RoundToInt(Random.Range(enemiesToSpawnInRoomMin, enemiesToSpawnInRoomMax) * countMultiplier);
 
-        for (int i = 0; i < playerManager.PlayersInGame.Count - 1; i++)
+        if (countMultiplier >= 1)
         {
-            randomEnemyCount += Random.Range(extraEnemiesPerPlayerMin, extraEnemiesPerPlayerMax);
+            for (int i = 0; i < playerManager.PlayersInGame.Count - 1; i++)
+            {
+                randomEnemyCount += Random.Range(extraEnemiesPerPlayerMin, extraEnemiesPerPlayerMax);
+            }
         }
 
-        randomEnemyCount += difficultyManager.DifficultyLevel;
+        randomEnemyCount += Mathf.RoundToInt(difficultyManager.DifficultyLevel * countMultiplier);
+
+        if (randomEnemyCount == 0)
+        {
+            randomEnemyCount = 1;
+        }
 
         int wrummelCount = 0;
         int wraptorCount = 0;
