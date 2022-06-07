@@ -30,7 +30,7 @@ public class PlayerRevive : MonoBehaviourPun
     private bool timerStarted = false;
     private float currentMultiplier = 1;
 
-    public bool StopTimer { get; set; } = false;
+    private bool stopTimer = false;
 
     // Start is called before the first frame update
     void Start()
@@ -75,6 +75,22 @@ public class PlayerRevive : MonoBehaviourPun
         playerHealing.StopHealing();
         reviveArea.gameObject.SetActive(true);
         playerHealing.enabled = false;
+    }
+
+    public void SetTimer(bool isTrue, bool local)
+    {
+        if (PhotonNetwork.IsConnected && local)
+        {
+            photonView.RPC("SetTimerOthers", RpcTarget.Others, isTrue);
+        }
+
+        stopTimer = isTrue;
+    }
+
+    [PunRPC]
+    void SetTimerOthers(bool isTrue)
+    {
+        SetTimer(isTrue, false);
     }
 
     public void Revived(bool local)

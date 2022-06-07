@@ -20,7 +20,7 @@ public class ReviveArea : InteractableObject
 
     protected override void PlayerTriggerEntered(PlayerStats stats)
     {
-        if (playerStats == stats)
+        if (playerStats == stats && playerStats.IsDead)
         {
             return;
         }
@@ -46,7 +46,7 @@ public class ReviveArea : InteractableObject
 
     private void StartRevive(PlayerStats playerStats)
     {
-        playerRevive.StopTimer = true;
+        playerRevive.SetTimer(true, true);
         reviving = true;
         playerUI.HideInteractPanel();
         playerUI.StartReviveTimer(reviveTime);
@@ -62,7 +62,7 @@ public class ReviveArea : InteractableObject
 
     private void StopRevive(PlayerStats playerStats)
     {
-        playerRevive.StopTimer = false;
+        playerRevive.SetTimer(false, true);
         playerUI.StopReviveTimer();
         reviving = false;
         CancelInvoke();
