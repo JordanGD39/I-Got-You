@@ -88,6 +88,7 @@ public class PlayerRevive : MonoBehaviourPun
         playerHealing.enabled = true;
         timerStarted = false;
         reviveArea.gameObject.SetActive(false);
+        revivePanel.SetActive(false);
     }
 
     [PunRPC]

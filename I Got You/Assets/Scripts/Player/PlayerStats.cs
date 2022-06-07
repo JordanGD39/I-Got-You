@@ -16,6 +16,7 @@ public class PlayerStats : MonoBehaviourPun
     [SerializeField] private int startingShieldHealth = 50;
     [SerializeField] private float regenDelay = 1;
     [SerializeField] private float regenSpeed = 0.25f;
+    [SerializeField] private float invincibilityTime = 1;
     [SerializeField] private Transform classModels;
     public Transform ClassModels { get { return classModels; } }
     public bool HasShieldHealth { get; set; } = false;
@@ -29,6 +30,7 @@ public class PlayerStats : MonoBehaviourPun
     private bool isDown = false;
     public bool IsDown { get { return isDown; } }
     public bool IsDead { get; set; } = false;
+    private bool invincible = false;
 
     public delegate void Interact(PlayerStats playerStats);
     public Interact OnInteract;
@@ -151,7 +153,7 @@ public class PlayerStats : MonoBehaviourPun
 
     public void Damage(int dmg)
     {
-        if (!photonView.IsMine)
+        if (!photonView.IsMine || invincible)
         {
             return;
         }
@@ -210,13 +212,24 @@ public class PlayerStats : MonoBehaviourPun
         health = maxHealth;
         shieldHealth = startingShieldHealth;
         isDown = false;
-        anim.SetBool("Down", false);
 
-        if (playerUI != null)
+        if (photonView.IsMine)
         {
-            playerUI.UpdateHealth(health, maxHealth);
-            playerUI.UpdateShieldHealth(shieldHealth, startingShieldHealth);
-        }        
+            anim.SetBool("Down", false);
+            invincible = true;
+            Invoke(nameof(RemoveInvincibility), invincibilityTime);
+
+            if (playerUI != null)
+            {
+                playerUI.UpdateHealth(health, maxHealth);
+                playerUI.UpdateShieldHealth(shieldHealth, startingShieldHealth);
+            }
+        }    
+    }
+
+    private void RemoveInvincibility()
+    {
+        invincible = false;
     }
 
     private IEnumerator StartShieldRegeneration()
