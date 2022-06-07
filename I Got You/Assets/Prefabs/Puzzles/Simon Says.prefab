@@ -56,6 +56,7 @@ MonoBehaviour:
   roomManager: {fileID: 0}
   checkTexture: {fileID: 2800000, guid: 4aac1acacdc8b64468c81092544e5607, type: 3}
   crossTexture: {fileID: 2800000, guid: 1cb53c15edd61b94ebf8e5364e8af306, type: 3}
+  showingTexture: {fileID: 2800000, guid: f1cdb30e2ed2234409b39944bd3b00b6, type: 3}
 --- !u!114 &4507793911868141352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -757,21 +758,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.0000002, y: 1, z: 1.0000002}
   m_Center: {x: -0.00000047683716, y: 0.000000044703484, z: 0}
---- !u!114 &7279741425337930746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4072465815570153587}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98f9862c56ca6f347b78830bae74d8bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  codeInput: 1
-  monitor: {fileID: 240950898986638755}
-  manager: {fileID: 3347431499061971722}
 --- !u!114 &4847917627483028456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -794,6 +780,21 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &7279741425337930746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4072465815570153587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98f9862c56ca6f347b78830bae74d8bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  codeInput: 1
+  monitor: {fileID: 240950898986638755}
+  manager: {fileID: 3347431499061971722}
 --- !u!54 &4405507364037914569
 Rigidbody:
   m_ObjectHideFlags: 0
