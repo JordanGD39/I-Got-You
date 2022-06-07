@@ -18,6 +18,9 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
 
     [SerializeField] private Animator animator;
 
+    public float DeathTimer { get; set; } = 0;
+    public float SyncTimer { get; private set; } = 0;
+
     public bool IsSyncing { get; set; } = true;
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -26,13 +29,13 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
         {
             stream.SendNext(new Vector3(ReturnSingleDecimalFloat(transform.position.x), ReturnSingleDecimalFloat(transform.position.y), ReturnSingleDecimalFloat(transform.position.z)));
             stream.SendNext(ReturnSingleDecimalFloat(transform.localEulerAngles.y));
-            stream.SendNext(ReturnSingleDecimalFloat(playerRevive.DeathTimer));
+            stream.SendNext(ReturnSingleDecimalFloat(DeathTimer));
         }
         else if(stream.IsReading)
         {
             syncPos = (Vector3)stream.ReceiveNext();
             syncRot = new Vector3(transform.localEulerAngles.x, (float)stream.ReceiveNext(), transform.localEulerAngles.z);
-            playerRevive.SyncTimer = (float)stream.ReceiveNext();
+            SyncTimer = (float)stream.ReceiveNext();
         }
     }
 

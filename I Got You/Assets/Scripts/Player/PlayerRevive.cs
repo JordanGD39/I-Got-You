@@ -12,7 +12,6 @@ public class PlayerRevive : MonoBehaviourPun
     [SerializeField] private float damageMultiplier = 1.5f;
     [SerializeField] private float resetDamageTime = 1;
     [SerializeField] private float damageTimer = 0;
-    public float SyncTimer { get; set; } = 0;
     [SerializeField] private float lerpSpeedSync = 2;
     [SerializeField] private Camera deathCam;
     [SerializeField] private GameObject revivePanel;
@@ -24,6 +23,7 @@ public class PlayerRevive : MonoBehaviourPun
     private PlayerShoot playerShoot;
     private PlayerHealing playerHealing;
     private PlayerManager playerManager;
+    private SyncMovement syncMovement;
     private Camera cam;
 
     private bool timerStarted = false;
@@ -34,6 +34,7 @@ public class PlayerRevive : MonoBehaviourPun
     {
         revivePanel.SetActive(false);
 
+        syncMovement = GetComponent<SyncMovement>();
         playerManager = FindObjectOfType<PlayerManager>();
         playerStats = GetComponent<PlayerStats>();
         playerMovement = GetComponent<PlayerMovement>();
@@ -57,6 +58,11 @@ public class PlayerRevive : MonoBehaviourPun
         }
 
         deathTimer = timeToDie;
+        if (syncMovement != null)
+        {
+            syncMovement.DeathTimer = deathTimer;
+        }
+        
         damageTimer = 0;
         timerStarted = true;
         playerRotation.StartLerpToResetPos();
@@ -75,9 +81,9 @@ public class PlayerRevive : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-        if (!photonView.IsMine)
+        if (!photonView.IsMine && syncMovement != null)
         {
-            reviveCircle.fillAmount = Mathf.Lerp(reviveCircle.fillAmount, SyncTimer / timeToDie, lerpSpeedSync * Time.deltaTime);
+            reviveCircle.fillAmount = Mathf.Lerp(reviveCircle.fillAmount, syncMovement.SyncTimer / timeToDie, lerpSpeedSync * Time.deltaTime);
             return;
         }
 
@@ -89,6 +95,11 @@ public class PlayerRevive : MonoBehaviourPun
         if (deathTimer > 0)
         {
             deathTimer -= currentMultiplier * Time.deltaTime;
+
+            if (syncMovement != null)
+            {
+                syncMovement.DeathTimer = deathTimer;
+            }
         }
         else
         {
