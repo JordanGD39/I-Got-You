@@ -12,6 +12,7 @@ public class ScoutAnalyze : MonoBehaviour
     {
         analyzeVolume = GameObject.FindGameObjectWithTag("ScoutVolume").transform.GetChild(0).gameObject;
         analyzeVolume.SetActive(false);
+        enemyManager = FindObjectOfType<EnemyManager>();
     }
 
     // Update is called once per frame

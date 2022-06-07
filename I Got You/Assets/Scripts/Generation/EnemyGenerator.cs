@@ -119,6 +119,25 @@ public class EnemyGenerator : MonoBehaviour
 
         generatedEnemyInfos[0].spawnPercent = 1 - combinedPercentages;
 
+        foreach (GeneratedEnemyInfo item in generatedEnemyInfos)
+        {
+            int rand = Random.Range(0, item.availableEnemiesList[0].GetComponent<EnemyStats>().Weaknesses.Count);
+
+            foreach (GameObject enemy in item.enemiesList)
+            {
+                EnemyStats stats = enemy.GetComponent<EnemyStats>();
+                stats.WeaknessIndex = rand;
+                Debug.Log("rand: " + rand);
+            }
+
+            foreach (GameObject enemy in item.availableEnemiesList)
+            {
+                EnemyStats stats = enemy.GetComponent<EnemyStats>();
+                stats.WeaknessIndex = rand;
+                Debug.Log("rand: " + rand);
+            }
+        }
+
         return generatedEnemyInfos;
     }
 

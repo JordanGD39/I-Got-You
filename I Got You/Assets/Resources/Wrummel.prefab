@@ -27,8 +27,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 373772887087560544}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.00002, y: 0.00357, z: 0.00065}
-  m_LocalScale: {x: -0.0077751447, y: -0.0077751447, z: -0.0077751447}
+  m_LocalPosition: {x: -0.00002, y: 0.00126, z: 0.00157}
+  m_LocalScale: {x: -0.0073541985, y: -0.0073541985, z: -0.0073541985}
   m_Children: []
   m_Father: {fileID: 1504108673223332559}
   m_RootOrder: 2
@@ -919,6 +919,14 @@ MonoBehaviour:
   health: 100
   damage: 20
   invincible: 0
+  weaknesses:
+  - {fileID: 3586625448113992401}
+  - {fileID: 863442453580086591}
+  - {fileID: 4418547880774227978}
+  weaknessesRenderers:
+  - {fileID: 195439490332538765}
+  - {fileID: 2812013741486148881}
+  - {fileID: 2907750276043421475}
 --- !u!195 &5385682122100596854
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -237,7 +237,7 @@ public class RoomManager : MonoBehaviourPun
 
     private void PlaceNotYetSpawnedEnemy(GameObject enemyDied, int listIndex)
     {
-        if (listIndex >= 0 && listIndex < enemiesInRoom.Count)
+        if (listIndex >= 0 && listIndex < enemiesInRoom.Count && enemiesInRoom.Count > 0)
         {
             EnemyGenerator.GeneratedEnemyInfo generatedEnemyInfo = enemiesInRoom[listIndex];
 
