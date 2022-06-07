@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.UI;
 
 public class PlayerRevive : MonoBehaviourPun
 {
@@ -10,7 +11,11 @@ public class PlayerRevive : MonoBehaviourPun
     [SerializeField] private float damageMultiplier = 1.5f;
     [SerializeField] private float resetDamageTime = 1;
     [SerializeField] private float damageTimer = 0;
+    [SerializeField] private float syncTimer = 0;
+    [SerializeField] private float lerpSpeedSync = 2;
     [SerializeField] private Camera deathCam;
+    [SerializeField] private GameObject revivePanel;
+    [SerializeField] private Image reviveCircle;
 
     private PlayerStats playerStats;
     private PlayerMovement playerMovement;
@@ -23,9 +28,23 @@ public class PlayerRevive : MonoBehaviourPun
     private bool timerStarted = false;
     private float currentMultiplier = 1;
 
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(deathTimer);
+        }
+        else if (stream.IsReading)
+        {
+            syncTimer = (float)stream.ReceiveNext();
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        revivePanel.SetActive(false);
+
         playerManager = FindObjectOfType<PlayerManager>();
         playerStats = GetComponent<PlayerStats>();
         playerMovement = GetComponent<PlayerMovement>();
@@ -37,11 +56,17 @@ public class PlayerRevive : MonoBehaviourPun
         if (!PhotonNetwork.IsConnected || photonView.IsMine)
         {
             cam = Camera.main;
+            revivePanel.transform.parent.gameObject.SetActive(false);
         }
     }
 
     public void StartTimer()
     {
+        if (PhotonNetwork.IsConnected && photonView.IsMine)
+        {
+            photonView.RPC("ShowReviveOthers", RpcTarget.Others);
+        }
+
         deathTimer = timeToDie;
         damageTimer = 0;
         timerStarted = true;
@@ -51,9 +76,22 @@ public class PlayerRevive : MonoBehaviourPun
         playerHealing.enabled = false;
     }
 
+    [PunRPC]
+    void ShowReviveOthers()
+    {
+        revivePanel.SetActive(true);
+        reviveCircle.fillAmount = 1;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (!photonView.IsMine)
+        {
+            reviveCircle.fillAmount = Mathf.Lerp(reviveCircle.fillAmount, syncTimer / timeToDie, lerpSpeedSync * Time.deltaTime);
+            return;
+        }
+
         if (!timerStarted)
         {
             return;
