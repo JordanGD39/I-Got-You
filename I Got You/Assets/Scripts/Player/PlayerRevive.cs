@@ -15,6 +15,7 @@ public class PlayerRevive : MonoBehaviourPun
     [SerializeField] private float lerpSpeedSync = 2;
     [SerializeField] private Camera deathCam;
     [SerializeField] private GameObject revivePanel;
+    private ReviveArea reviveArea;
     [SerializeField] private Image reviveCircle;
 
     private PlayerStats playerStats;
@@ -29,10 +30,14 @@ public class PlayerRevive : MonoBehaviourPun
     private bool timerStarted = false;
     private float currentMultiplier = 1;
 
+    public bool StopTimer { get; set; } = false;
+
     // Start is called before the first frame update
     void Start()
     {
         revivePanel.SetActive(false);
+        reviveArea = GetComponentInChildren<ReviveArea>(true);
+        reviveArea.gameObject.SetActive(false);
 
         syncMovement = GetComponent<SyncMovement>();
         playerManager = FindObjectOfType<PlayerManager>();
@@ -68,7 +73,27 @@ public class PlayerRevive : MonoBehaviourPun
         playerRotation.StartLerpToResetPos();
         playerHealing.StopAllCoroutines();
         playerHealing.StopHealing();
+        reviveArea.gameObject.SetActive(true);
         playerHealing.enabled = false;
+    }
+
+    public void Revived(bool local)
+    {
+        if (PhotonNetwork.IsConnected && local)
+        {
+            photonView.RPC("RevivedOthers", RpcTarget.Others);
+        }
+
+        playerStats.Revived();
+        playerHealing.enabled = true;
+        timerStarted = false;
+        reviveArea.gameObject.SetActive(false);
+    }
+
+    [PunRPC]
+    void RevivedOthers()
+    {
+        Revived(false);
     }
 
     [PunRPC]
@@ -76,6 +101,7 @@ public class PlayerRevive : MonoBehaviourPun
     {
         revivePanel.SetActive(true);
         reviveCircle.fillAmount = 1;
+        reviveArea.gameObject.SetActive(true);
     }
 
     // Update is called once per frame
@@ -94,12 +120,15 @@ public class PlayerRevive : MonoBehaviourPun
 
         if (deathTimer > 0)
         {
-            deathTimer -= currentMultiplier * Time.deltaTime;
-
-            if (syncMovement != null)
+            if (!StopTimer)
             {
-                syncMovement.DeathTimer = deathTimer;
-            }
+                deathTimer -= currentMultiplier * Time.deltaTime;
+
+                if (syncMovement != null)
+                {
+                    syncMovement.DeathTimer = deathTimer;
+                }
+            }            
         }
         else
         {

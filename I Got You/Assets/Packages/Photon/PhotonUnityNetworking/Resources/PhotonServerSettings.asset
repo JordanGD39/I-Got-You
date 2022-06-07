@@ -90,6 +90,7 @@ MonoBehaviour:
   - RequestGenerationData
   - ReloadSceneOthers
   - ShowReviveOthers
+  - RevivedOthers
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

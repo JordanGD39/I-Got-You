@@ -25,6 +25,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private float[] healthArray = {0, 0.081f, 0.157f, 0.233f, 0.312f, 0.391f, 0.469f, 0.546f, 0.625f, 0.703f, 0.779f, 0.858f, 0.939f, 1f };
     [SerializeField] private GameObject interactPanel;
     [SerializeField] private TextMeshProUGUI interactText;
+    [SerializeField] private Image circleRevive;
     //private Vector2 uiOffset;
 
     private int itemCount = 0;
@@ -36,6 +37,7 @@ public class PlayerUI : MonoBehaviour
         bloodScreen.SetActive(false);
         errorPopup.SetActive(false);
         interactPanel.SetActive(false);
+        circleRevive.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -197,5 +199,34 @@ public class PlayerUI : MonoBehaviour
     {
         chickenSoupBarPanel.SetActive(false);
         healthItemPanel.SetActive(itemCount > 0);
+    }
+
+    public void StartReviveTimer(float reviveTime)
+    {
+        circleRevive.gameObject.SetActive(true);
+        StartCoroutine(CountDownRevive(reviveTime));
+    }
+
+    private IEnumerator CountDownRevive(float reviveTime)
+    {
+        float startTime = Time.time;
+        Vector3 startPos = transform.position;
+
+        float frac = 0;
+
+        while (frac < 1)
+        {
+            frac = (Time.time - startTime) / reviveTime;
+
+            circleRevive.fillAmount = Mathf.Lerp(1, 0, frac);
+
+            yield return null;
+        }
+    }
+
+    public void StopReviveTimer()
+    {
+        StopCoroutine(CountDownRevive(0));
+        circleRevive.gameObject.SetActive(false);
     }
 }

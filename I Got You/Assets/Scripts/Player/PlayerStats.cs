@@ -32,6 +32,8 @@ public class PlayerStats : MonoBehaviourPun
 
     public delegate void Interact(PlayerStats playerStats);
     public Interact OnInteract;
+    public delegate void InteractHoldStop(PlayerStats playerStats);
+    public InteractHoldStop OnInteractHoldStop;
     [SerializeField] private List<InteractableObject> inventoryOfInteractables = new List<InteractableObject>();
     public List<InteractableObject> InventoryOfInteractables { get { return inventoryOfInteractables; } }
 
@@ -91,6 +93,14 @@ public class PlayerStats : MonoBehaviourPun
             playerUI.UpdateShieldHealth(shieldHealth, startingShieldHealth);
             playerRevive = GetComponent<PlayerRevive>();
         }      
+    }
+
+    private void Update()
+    {
+        if (photonView.IsMine && Input.GetButtonUp("Interact"))
+        {
+            OnInteractHoldStop?.Invoke(this);
+        }
     }
 
     public void PickUpInteractable(InteractableObject interactable)
@@ -193,6 +203,16 @@ public class PlayerStats : MonoBehaviourPun
         }
 
         playerUI.UpdateHealth(health, maxHealth);
+    }
+
+    public void Revived()
+    {
+        health = maxHealth;
+        playerUI.UpdateHealth(health, maxHealth);
+        shieldHealth = startingShieldHealth;
+        playerUI.UpdateShieldHealth(shieldHealth, startingShieldHealth);
+        isDown = false;
+        anim.SetBool("Down", false);
     }
 
     private IEnumerator StartShieldRegeneration()
