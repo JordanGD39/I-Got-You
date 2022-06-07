@@ -19,10 +19,14 @@ public class SpriteNoRotation : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        if (!onlyForDeath || playerStats.IsDown || playerStats.IsDead)
+        if (!onlyForDeath)
         {
             transform.rotation = startingRot;
         }        
+        else
+        {
+            transform.rotation = new Quaternion(startingRot.x, transform.rotation.y, startingRot.z, transform.rotation.w);
+        }
 
         if (playerStats == null)
         {
