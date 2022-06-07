@@ -36,6 +36,14 @@ public class ReviveArea : InteractableObject
         stats.OnInteractHoldStop = StopRevive;
     }
 
+    private void Update()
+    {
+        if (playerStats.IsDead && reviving)
+        {
+            StopRevive(playerStats);
+        }
+    }
+
     private void StartRevive(PlayerStats playerStats)
     {
         playerRevive.StopTimer = true;
@@ -49,12 +57,14 @@ public class ReviveArea : InteractableObject
     private void ReviveDone()
     {
         playerRevive.Revived(true);
+        reviving = false;
     }
 
     private void StopRevive(PlayerStats playerStats)
     {
         playerRevive.StopTimer = false;
         playerUI.StopReviveTimer();
+        reviving = false;
         CancelInvoke();
     }
 }
