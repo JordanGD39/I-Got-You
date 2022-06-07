@@ -40,6 +40,7 @@ public class ReviveArea : InteractableObject
     {
         playerRevive.StopTimer = true;
         reviving = true;
+        playerUI.HideInteractPanel();
         playerUI.StartReviveTimer(reviveTime);
 
         Invoke(nameof(ReviveDone), reviveTime);
