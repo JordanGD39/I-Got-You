@@ -18,6 +18,7 @@ public class PlayerShoot : MonoBehaviourPun
     [SerializeField] private int secondaryGunMaxAmmo = 0;
     [SerializeField] private bool canShoot = true;
     [SerializeField] private bool switching = false;
+    private bool weaponGone = false;
     [SerializeField] private Transform shootPoint;
     [SerializeField] private LayerMask hitLayer;
     [SerializeField] private AudioClip emptyAmmo;
@@ -152,14 +153,14 @@ public class PlayerShoot : MonoBehaviourPun
             return;
         }
 
-        if (canShoot && !switching)
+        if (canShoot && !switching && !weaponGone)
         {
             CheckShoot();
         }
         
         CheckInteract();
 
-        if (playerStats.OnInteract == null)
+        if (playerStats.OnInteract == null && !weaponGone)
         {
             CheckReload();
 
@@ -423,6 +424,7 @@ public class PlayerShoot : MonoBehaviourPun
             currentGunHolder.GunAnim.speed = 1;
             currentGunHolder.GunAnim.ResetTrigger("Reload");
             PutWeaponAway();
+            weaponGone = false;
             currentGunHolder.OnGunPutAway = ChangeWeaponAndAmmo;
 
             StartChangingCurrentGun();
@@ -518,7 +520,10 @@ public class PlayerShoot : MonoBehaviourPun
 
         audioSource.PlayOneShot(currentGun.SwitchSFX);
 
-        currentGunHolder.gameObject.SetActive(true);
+        if (!weaponGone)
+        {
+            currentGunHolder.gameObject.SetActive(true);
+        }
 
         if (currentGunHolder.GunAnim != null)
         {
@@ -554,15 +559,23 @@ public class PlayerShoot : MonoBehaviourPun
 
     public void PutWeaponAway()
     {
-        switching = true;
+        if (switching)
+        {
+            currentGunHolder.gameObject.SetActive(false);
+            return;
+        }
+
         currentGunHolder.GunAnim.SetTrigger("PutAwayGun");
+        switching = true;
+        weaponGone = true;  
     }
 
     public void PutWeaponBack()
     {
-        switching = false;
         currentGunHolder.gameObject.SetActive(false);
         currentGunHolder.gameObject.SetActive(true);
+        switching = false;
+        weaponGone = false;        
     }
 }
 

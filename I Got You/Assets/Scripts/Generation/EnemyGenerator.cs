@@ -63,12 +63,9 @@ public class EnemyGenerator : MonoBehaviour
 
         int randomEnemyCount = Mathf.RoundToInt(Random.Range(enemiesToSpawnInRoomMin, enemiesToSpawnInRoomMax) * countMultiplier);
 
-        if (countMultiplier >= 1)
+        for (int i = 0; i < playerManager.PlayersInGame.Count - 1; i++)
         {
-            for (int i = 0; i < playerManager.PlayersInGame.Count - 1; i++)
-            {
-                randomEnemyCount += Random.Range(extraEnemiesPerPlayerMin, extraEnemiesPerPlayerMax);
-            }
+            randomEnemyCount += Mathf.RoundToInt(Random.Range(extraEnemiesPerPlayerMin, extraEnemiesPerPlayerMax) * countMultiplier);
         }
 
         randomEnemyCount += Mathf.RoundToInt(difficultyManager.DifficultyLevel * countMultiplier);
