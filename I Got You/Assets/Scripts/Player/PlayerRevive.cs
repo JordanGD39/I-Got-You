@@ -124,12 +124,12 @@ public class PlayerRevive : MonoBehaviourPun
             if (!StopTimer)
             {
                 deathTimer -= currentMultiplier * Time.deltaTime;
+            }
 
-                if (syncMovement != null)
-                {
-                    syncMovement.DeathTimer = deathTimer;
-                }
-            }            
+            if (syncMovement != null)
+            {
+                syncMovement.DeathTimer = deathTimer;
+            }
         }
         else
         {
