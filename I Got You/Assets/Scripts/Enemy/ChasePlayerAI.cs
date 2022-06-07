@@ -9,6 +9,7 @@ public class ChasePlayerAI : MonoBehaviour
     private AttackAnimationHandler attackAnimationHandler;
     private EnemyRoam enemyRoam;
     private PlayerManager playerManager;
+    private EnemyManager enemyManager;
     private NavMeshAgent agent;
     private NavMeshObstacle navMeshObstacle;
     private GameObject navMeshObstacleObject;
@@ -33,6 +34,7 @@ public class ChasePlayerAI : MonoBehaviour
         }
 
         enemyRoam = GetComponentInChildren<EnemyRoam>();
+        enemyManager = FindObjectOfType<EnemyManager>();
         anim = GetComponentInChildren<Animator>();
         playerManager = FindObjectOfType<PlayerManager>();
         
@@ -53,22 +55,29 @@ public class ChasePlayerAI : MonoBehaviour
             return;
         }
 
-        float closestDist = Mathf.Infinity;        
-
-        foreach (PlayerStats player in playerManager.Players)
+        if (enemyManager.EnemiesTarget == null)
         {
-            if (player == null)
-            {
-                continue;
-            }
+            float closestDist = Mathf.Infinity;
 
-            float dist = Vector3.Distance(player.transform.position, transform.position);
-
-            if (dist < closestDist)
+            foreach (PlayerStats player in playerManager.Players)
             {
-                closestDist = dist;
-                target = player.transform;
+                if (player == null)
+                {
+                    continue;
+                }
+
+                float dist = Vector3.Distance(player.transform.position, transform.position);
+
+                if (dist < closestDist)
+                {
+                    closestDist = dist;
+                    target = player.transform;
+                }
             }
+        }
+        else
+        {
+            target = enemyManager.EnemiesTarget;
         }
 
         if (target != null && agent.enabled && enemyRoam == null)

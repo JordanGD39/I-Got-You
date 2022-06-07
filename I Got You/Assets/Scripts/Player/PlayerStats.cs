@@ -39,6 +39,8 @@ public class PlayerStats : MonoBehaviourPun
     [SerializeField] private List<InteractableObject> inventoryOfInteractables = new List<InteractableObject>();
     public List<InteractableObject> InventoryOfInteractables { get { return inventoryOfInteractables; } }
 
+    public TankTaunt TankTauntScript { get; set; } = null;
+
     private void Awake()
     {
         if (PlayerChoiceManager.instance != null)
@@ -159,6 +161,11 @@ public class PlayerStats : MonoBehaviourPun
         }
 
         playerUI.ShowBloodScreen();
+
+        if (TankTauntScript != null && TankTauntScript.Taunting)
+        {
+            dmg = Mathf.RoundToInt((float)dmg * TankTauntScript.DamageMultiplier);
+        }
 
         if (isDown)
         {

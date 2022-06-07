@@ -1122,6 +1122,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 2f27949e543c9874d966f280879f8d1c, type: 2}
     - target: {fileID: 6712501813913824981, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
+      propertyPath: secondaryGun
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6712501813913824981, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: hitLayer.m_Bits
       value: 16961
       objectReference: {fileID: 0}

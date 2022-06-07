@@ -74,7 +74,7 @@ public class DungeonGenerator : MonoBehaviourPun
             int ticks = (int)System.DateTime.Now.Ticks;
             Random.InitState(ticks);
             seed = ticks;
-            Debug.LogError("Seed: " + ticks);
+            //Debug.LogError("Seed: " + ticks);
             seedChosen = true;
 
             OnSeedChosen?.Invoke();            
@@ -132,7 +132,7 @@ public class DungeonGenerator : MonoBehaviourPun
             return;
         }
 
-        Debug.Log("Seed: " + seed + " scene: " + SceneManager.GetActiveScene().name);
+        //Debug.Log("Seed: " + seed + " scene: " + SceneManager.GetActiveScene().name);
 
         dungeonGrid.GenerateGrid();
 
