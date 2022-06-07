@@ -5,6 +5,7 @@ using UnityEngine;
 public class ReviveArea : InteractableObject
 {
     private PlayerRevive playerRevive;
+    private PlayerStats playerStats;
     private bool reviving = false;
     [SerializeField] private float reviveTime = 7;
 
@@ -13,20 +14,26 @@ public class ReviveArea : InteractableObject
         base.AfterStart();
 
         playerRevive = GetComponent<PlayerRevive>();
+        playerStats = GetComponent<PlayerStats>();
         interactText = " to revive Player";
     }
 
-    protected override void PlayerTriggerEntered(PlayerStats playerStats)
+    protected override void PlayerTriggerEntered(PlayerStats stats)
     {
-        base.PlayerTriggerEntered(playerStats);
+        if (playerStats == stats)
+        {
+            return;
+        }
+
+        base.PlayerTriggerEntered(stats);
 
         if (reviving)
         {
             return;
         }
 
-        playerStats.OnInteract += StartRevive;
-        playerStats.OnInteractHoldStop = StopRevive;
+        stats.OnInteract += StartRevive;
+        stats.OnInteractHoldStop = StopRevive;
     }
 
     private void StartRevive(PlayerStats playerStats)
