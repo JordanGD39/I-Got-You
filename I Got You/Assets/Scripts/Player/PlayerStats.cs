@@ -208,11 +208,15 @@ public class PlayerStats : MonoBehaviourPun
     public void Revived()
     {
         health = maxHealth;
-        playerUI.UpdateHealth(health, maxHealth);
         shieldHealth = startingShieldHealth;
-        playerUI.UpdateShieldHealth(shieldHealth, startingShieldHealth);
         isDown = false;
         anim.SetBool("Down", false);
+
+        if (playerUI != null)
+        {
+            playerUI.UpdateHealth(health, maxHealth);
+            playerUI.UpdateShieldHealth(shieldHealth, startingShieldHealth);
+        }        
     }
 
     private IEnumerator StartShieldRegeneration()
