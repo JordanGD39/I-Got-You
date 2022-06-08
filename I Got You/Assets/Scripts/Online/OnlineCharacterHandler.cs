@@ -37,6 +37,7 @@ public class OnlineCharacterHandler : MonoBehaviourPun
             if (item is PlayerRevive){ continue; }
             if (item is PlayerShoot){ continue; }
             if (item is PlayerHealing){ continue; }
+            if (item is AbilityAdder){ continue; }
 
             if (item != this)
             {

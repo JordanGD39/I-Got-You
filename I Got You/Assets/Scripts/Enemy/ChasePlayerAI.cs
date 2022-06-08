@@ -20,6 +20,7 @@ public class ChasePlayerAI : MonoBehaviour
     [SerializeField] private float turnSpeed = 5;
     [SerializeField] private float fadeDelay = 0.1f;
     [SerializeField] private float fadeTime = 3;
+    [SerializeField] private Material normalMat;
     [SerializeField] private Material fadeMat;
     [SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer;
     [SerializeField] private bool fadedIn = false;
@@ -45,6 +46,7 @@ public class ChasePlayerAI : MonoBehaviour
         
         agent = GetComponent<NavMeshAgent>();
         startingAvoidancePriority = agent.avoidancePriority;
+        skinnedMeshRenderer.material = normalMat;
 
         if (skinnedMeshRenderer != null)
         {
@@ -54,7 +56,6 @@ public class ChasePlayerAI : MonoBehaviour
 
     private IEnumerator FadeInEnemy()
     {
-        Material originalMat = skinnedMeshRenderer.material;
         skinnedMeshRenderer.material = fadeMat;
 
         float startingTime = Time.time;
@@ -73,7 +74,7 @@ public class ChasePlayerAI : MonoBehaviour
             yield return null;
         }
 
-        skinnedMeshRenderer.sharedMaterial = originalMat;
+        skinnedMeshRenderer.material = normalMat;
         fadedIn = true;
     }
 

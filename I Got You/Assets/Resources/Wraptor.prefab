@@ -795,6 +795,10 @@ MonoBehaviour:
   - {fileID: 382968473654028652}
   - {fileID: 2169340520470664151}
   - {fileID: 3033370045973602332}
+  lootPrefab: {fileID: 2253757421368564071, guid: 0f7d9be655dbbea4bbfb28b570741349, type: 3}
+  lootSpawnY: 0.021
+  lootSpawnChance: 10
+  healthDropChance: 30
 --- !u!195 &5385682122100596854
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -835,6 +839,7 @@ MonoBehaviour:
   turnSpeed: 5
   fadeDelay: 0.1
   fadeTime: 3
+  normalMat: {fileID: 2100000, guid: 1a9ed55bc60c1c646b47a616573aa8ed, type: 2}
   fadeMat: {fileID: 2100000, guid: 010c35b8fa0a19542ac08d62e650358a, type: 2}
   skinnedMeshRenderer: {fileID: 2555197653266533594}
   fadedIn: 0

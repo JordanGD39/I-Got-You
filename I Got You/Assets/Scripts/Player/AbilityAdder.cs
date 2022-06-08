@@ -11,11 +11,6 @@ public class AbilityAdder : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
-        if (!photonView.IsMine)
-        {
-            return;
-        }
-
         playerStats = GetComponent<PlayerStats>();
 
         AddAbility();
