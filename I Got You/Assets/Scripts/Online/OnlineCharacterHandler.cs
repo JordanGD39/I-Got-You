@@ -38,6 +38,8 @@ public class OnlineCharacterHandler : MonoBehaviourPun
             if (item is PlayerShoot){ continue; }
             if (item is PlayerHealing){ continue; }
             if (item is AbilityAdder){ continue; }
+            if (item is TankTaunt){ continue; }
+            if (item is SupportBurstHeal){ continue; }
 
             if (item != this)
             {
