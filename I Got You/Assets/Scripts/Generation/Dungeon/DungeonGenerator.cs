@@ -276,7 +276,7 @@ public class DungeonGenerator : MonoBehaviourPun
         if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
         {
             Debug.Log("Requesting hallways");
-            photonView.RPC("RequestHallwayData", RpcTarget.MasterClient, (byte)(PhotonNetwork.LocalPlayer.ActorNumber - 1));
+            photonView.RPC("RequestHallwayData", RpcTarget.MasterClient, (byte)PhotonNetwork.LocalPlayer.ActorNumber);
             return;
         }
 
