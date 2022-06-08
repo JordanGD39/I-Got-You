@@ -21,6 +21,10 @@ public class SpriteNoRotation : MonoBehaviour
     void LateUpdate()
     {
         transform.rotation = startingRot;
-        transform.position = playerStats.transform.position + new Vector3(0, startingPos.y, 0);
+
+        if (playerStats != null)
+        {
+            transform.position = playerStats.transform.position + new Vector3(0, startingPos.y, 0);
+        }        
     }
 }

@@ -37,6 +37,7 @@ public class ElevatorExit : MonoBehaviourPun
 
         anim.SetTrigger("Close");
         fadeScreen.TriggerFadeIn();
+        GameManager.instance.AddFloorLevel();
 
         foreach (PlayerStats player in playerManager.PlayersInGame)
         {

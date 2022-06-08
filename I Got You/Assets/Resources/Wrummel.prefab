@@ -965,6 +965,11 @@ MonoBehaviour:
   distanceToAttack: 2
   distanceToStop: 1.4
   turnSpeed: 5
+  fadeDelay: 0.1
+  fadeTime: 3
+  fadeMat: {fileID: 2100000, guid: dacb78bd7a5e62f469466d3898390acc, type: 2}
+  skinnedMeshRenderer: {fileID: 2823319212819227834}
+  fadedIn: 0
   animsDone: 1
 --- !u!114 &6351086882891119347
 MonoBehaviour:

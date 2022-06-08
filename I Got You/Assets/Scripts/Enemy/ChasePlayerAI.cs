@@ -18,6 +18,11 @@ public class ChasePlayerAI : MonoBehaviour
     [SerializeField] private float distanceToAttack = 2;
     [SerializeField] private float distanceToStop = 1.25f;
     [SerializeField] private float turnSpeed = 5;
+    [SerializeField] private float fadeDelay = 0.1f;
+    [SerializeField] private float fadeTime = 3;
+    [SerializeField] private Material fadeMat;
+    [SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer;
+    [SerializeField] private bool fadedIn = false;
     [SerializeField] private bool animsDone = false;
     private Animator anim;
     private Vector3 previousAttackingSpot = Vector3.zero;
@@ -40,12 +45,42 @@ public class ChasePlayerAI : MonoBehaviour
         
         agent = GetComponent<NavMeshAgent>();
         startingAvoidancePriority = agent.avoidancePriority;
+
+        if (skinnedMeshRenderer != null)
+        {
+            StartCoroutine(nameof(FadeInEnemy));
+        }        
+    }
+
+    private IEnumerator FadeInEnemy()
+    {
+        Material originalMat = skinnedMeshRenderer.material;
+        skinnedMeshRenderer.material = fadeMat;
+
+        float startingTime = Time.time;
+        float frac = 0;
+
+        while (frac < 1)
+        {
+            frac = (Time.time - startingTime) / fadeTime;
+
+            Color color = skinnedMeshRenderer.material.color;
+
+            color.a = Mathf.Lerp(0, 1, frac);
+
+            skinnedMeshRenderer.material.color = color;
+
+            yield return null;
+        }
+
+        skinnedMeshRenderer.sharedMaterial = originalMat;
+        fadedIn = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected || !agent.isOnNavMesh)
+        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected || !agent.isOnNavMesh || !fadedIn)
         {
             return;
         }

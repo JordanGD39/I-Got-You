@@ -530,7 +530,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-9893320
+  m_Name: pb_Mesh-51389278
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -988,7 +988,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-17580098
+  m_Name: pb_Mesh-51381990
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1311,7 +1311,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6712501813913824980, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: currentClass
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6712501813913824981, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: currentGun
@@ -2798,7 +2798,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-17583748
+  m_Name: pb_Mesh-51385640
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2956,6 +2956,49 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1624657022
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1624657023}
+  - component: {fileID: 1624657024}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1624657023
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624657022}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1624657024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624657022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a8ecc3bada1f64687f93843aa2f45d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &1657379921
 Mesh:
   m_ObjectHideFlags: 0
@@ -3429,7 +3472,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-17580088
+  m_Name: pb_Mesh-51381980
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3653,26 +3696,6 @@ PrefabInstance:
     - target: {fileID: 2712066558179356988, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
       propertyPath: sceneViewId
       value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 7162548949459417633, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
-      propertyPath: seperationMultiplier
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7162548949459417633, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
-      propertyPath: roomModesChances.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7162548949459417633, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
-      propertyPath: seperationDistanceMultiplier
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7162548949459417633, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
-      propertyPath: roomModesChances.Array.data[1]
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7162548949459417633, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
-      propertyPath: roomModesChances.Array.data[2]
-      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7162548949459417633, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
       propertyPath: roomModesChances.Array.data[4]

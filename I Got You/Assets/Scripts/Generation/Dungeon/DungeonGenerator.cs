@@ -13,7 +13,13 @@ public class DungeonGenerator : MonoBehaviourPun
     private PrimMinimumSpanningTree primMinimumSpanningTree;
     private AStarPathFinding aStarPathFinding;
 
-    [SerializeField] private List<GameObject> roomPrefabs = new List<GameObject>();
+    [SerializeField] private Vector2Int lootRoomRange;
+    [SerializeField] private Vector2Int arenaRange;
+    [SerializeField] private List<GameObject> safeRoomPrefabs = new List<GameObject>();
+    [SerializeField] private List<GameObject> arenaPrefabs = new List<GameObject>();
+    [SerializeField] private GameObject eatRoomPrefab;
+    [SerializeField] private float eatGenChance = 25;
+    [SerializeField] private List<GameObject> chosenRoomPrefabs = new List<GameObject>();
     [SerializeField] private List<GenerationRoomData> rooms = new List<GenerationRoomData>();
     [SerializeField] private GameObject hallwayPrefab;
     [SerializeField] private Dictionary<Vector3, GameObject> roomsDictionary = new Dictionary<Vector3, GameObject>();
@@ -58,9 +64,11 @@ public class DungeonGenerator : MonoBehaviourPun
 
         if (!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient)
         {
+            ChooseLayout();
+
             dungeonGrid.GenerateGrid();
 
-            int roomCount = roomPrefabs.Count;
+            int roomCount = chosenRoomPrefabs.Count;
 
             for (int i = 0; i < roomCount; i++)
             {
@@ -86,6 +94,42 @@ public class DungeonGenerator : MonoBehaviourPun
         {
             photonView.RPC("RequestGenerationData", RpcTarget.MasterClient, (byte)PhotonNetwork.LocalPlayer.ActorNumber);
         }
+    }
+
+    private void ChooseLayout()
+    {
+        int grid = 100;
+
+        chosenRoomPrefabs.Add(safeRoomPrefabs[0]);
+
+        float randEat = Random.Range(0, 100);
+
+        if (randEat < eatGenChance)
+        {
+            chosenRoomPrefabs.Add(safeRoomPrefabs[1]);
+            chosenRoomPrefabs.Add(eatRoomPrefab);
+            //dungeonGrid.GridSize = new Vector2Int(grid, grid);
+            return;
+        }
+
+        int rand = Random.Range(lootRoomRange.x, lootRoomRange.y);
+
+        for (int i = 0; i < rand; i++)
+        {
+            chosenRoomPrefabs.Add(safeRoomPrefabs[1]);
+            grid += 10;
+        }
+
+        rand = Random.Range(arenaRange.x, arenaRange.y);
+
+        for (int i = 0; i < rand; i++)
+        {
+            chosenRoomPrefabs.Add(arenaPrefabs[Random.Range(0, arenaPrefabs.Count)]);
+            grid += 30;
+        }
+
+        GameManager.instance.TotalArenaRooms += rand;
+        dungeonGrid.GridSize = new Vector2Int(grid, grid);
     }
 
     [PunRPC]
@@ -117,7 +161,7 @@ public class DungeonGenerator : MonoBehaviourPun
 
             if (PhotonNetwork.IsConnected)
             {
-                photonView.RPC("StartGenerationForOthers", player, seed);
+                photonView.RPC("StartGenerationForOthers", player, seed, dungeonGrid.GridSize.x);
             }
         }
 
@@ -125,7 +169,7 @@ public class DungeonGenerator : MonoBehaviourPun
     }
 
     [PunRPC]
-    void StartGenerationForOthers(int seed)
+    void StartGenerationForOthers(int seed, int gridSize)
     {
         if (seedChosen)
         {
@@ -133,6 +177,8 @@ public class DungeonGenerator : MonoBehaviourPun
         }
 
         //Debug.Log("Seed: " + seed + " scene: " + SceneManager.GetActiveScene().name);
+
+        dungeonGrid.GridSize = new Vector2Int(gridSize, gridSize);
 
         dungeonGrid.GenerateGrid();
 
@@ -379,8 +425,8 @@ public class DungeonGenerator : MonoBehaviourPun
 
     private void PlaceRoom()
     {
-        int randRoom = Random.Range(0, roomPrefabs.Count);
-        GameObject roomPrefab = roomPrefabs[randRoom];
+        int randRoom = Random.Range(0, chosenRoomPrefabs.Count);
+        GameObject roomPrefab = chosenRoomPrefabs[randRoom];
         Transform scaleObject = roomPrefab.GetComponent<GenerationRoomData>().RoomScaleObject;
 
         int roundedX = Mathf.RoundToInt(scaleObject.localScale.x * padding);
@@ -411,7 +457,7 @@ public class DungeonGenerator : MonoBehaviourPun
 
         rooms.Add(generationRoomData);
 
-        roomPrefabs.RemoveAt(randRoom);
+        chosenRoomPrefabs.RemoveAt(randRoom);
     }
 
     [PunRPC]

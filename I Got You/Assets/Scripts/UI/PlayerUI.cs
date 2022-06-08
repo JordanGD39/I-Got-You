@@ -159,7 +159,7 @@ public class PlayerUI : MonoBehaviour
         image.transform.parent.gameObject.SetActive(true);
         image.fillAmount = currentCharge / maxCharge;
 
-        string abilityButton = usingController ? "R1" : "E";
+        string abilityButton = usingController ? "R1" : "Q";
 
         abilityText.text = abilityButton;
         abilityText.gameObject.SetActive(currentCharge >= maxCharge);

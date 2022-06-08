@@ -1546,7 +1546,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: decba88d31405c74d905ca5e4a6558c0, type: 3}
     m_FontSize: 28
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 0
     m_MaxSize: 150
     m_Alignment: 3
@@ -1556,7 +1556,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: The Tank Class uses an extra HP bar which is able to regenerate. Protect
-    your teammates!
+    your teammates with the Taunt!
 --- !u!222 &694520665
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5160,8 +5160,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: The Support Class is able to heal other teammates, but is quite vulnerable,
-    don't fight at the front lines!
+  m_Text: The Support Class is able to heal other teammates with his burst ability!
 --- !u!222 &1901065004
 CanvasRenderer:
   m_ObjectHideFlags: 0

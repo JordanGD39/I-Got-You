@@ -8,7 +8,7 @@ public class DungeonGrid : MonoBehaviour
     public Dictionary<Vector2Int, DungeonCell> Grid { get { return grid; } }
 
     [SerializeField] private Vector2Int gridSize;
-    public Vector2Int GridSize { get { return gridSize; } }
+    public Vector2Int GridSize { get { return gridSize; } set { gridSize = value; } }
     [SerializeField] private GameObject dungeonCellPrefab;
     
     public void GenerateGrid()

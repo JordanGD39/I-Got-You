@@ -212,6 +212,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1328362899375816881}
     - target: {fileID: 4387086318622851085, guid: 5e66bafbeb703604ebc0cb7252af35e3, type: 3}
+      propertyPath: dropChance
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 4387086318622851085, guid: 5e66bafbeb703604ebc0cb7252af35e3, type: 3}
       propertyPath: doorOutHere
       value: 
       objectReference: {fileID: 0}

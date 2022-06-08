@@ -61,20 +61,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4995f1ebb11b480408e4becdfe812ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomPrefabs:
+  lootRoomRange: {x: 0, y: 3}
+  arenaRange: {x: 2, y: 4}
+  safeRoomPrefabs:
   - {fileID: 4387086318622851091, guid: 5e66bafbeb703604ebc0cb7252af35e3, type: 3}
   - {fileID: 4049260677296841894, guid: e4973f7fafb4af747aba3a83d9862a82, type: 3}
+  arenaPrefabs:
   - {fileID: 7855538103156852665, guid: 41679d3500a487c4b85a43c08a1de731, type: 3}
-  - {fileID: 7855538103156852665, guid: 41679d3500a487c4b85a43c08a1de731, type: 3}
-  - {fileID: 7855538103156852665, guid: 41679d3500a487c4b85a43c08a1de731, type: 3}
-  - {fileID: 4049260677296841894, guid: e4973f7fafb4af747aba3a83d9862a82, type: 3}
+  eatRoomPrefab: {fileID: 4121920812478566373, guid: 15fc69f2ddc37a44da5083e5c10a65c7, type: 3}
+  eatGenChance: 20
+  chosenRoomPrefabs: []
   rooms: []
   hallwayPrefab: {fileID: 7838144655838495395, guid: d76b097fc7830fa4d9cc0f41539272a9, type: 3}
   placedHallwaysPos: []
   extraHallways: []
-  seperationDistanceMultiplier: 1.8
-  seperationMultiplier: 2
-  roomModesChances: 01000000010000000300000004000000
+  seperationDistanceMultiplier: 2
+  seperationMultiplier: 4
+  distanceBetweenElevator: 5
+  roomModesChances: 010000000300000004000000
 --- !u!114 &7162548949459417632
 MonoBehaviour:
   m_ObjectHideFlags: 0
