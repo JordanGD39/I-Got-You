@@ -275,6 +275,7 @@ public class DungeonGenerator : MonoBehaviourPun
 
         if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
         {
+            photonView.RPC("RequestHallwayData", RpcTarget.MasterClient, (byte)(PhotonNetwork.LocalPlayer.ActorNumber - 1));
             return;
         }
 
@@ -287,13 +288,13 @@ public class DungeonGenerator : MonoBehaviourPun
     {
         playersToSendDataToHallway.Add(PhotonNetwork.PlayerList[playerIndex - 1]);
 
-        if (seedChosen)
+        if (hallwaysMade)
         {
             SendHallwayDataToOthers();
         }
         else
         {
-            OnSeedChosen += SendHallwayDataToOthers;
+            OnHallwaysMade += SendHallwayDataToOthers;
         }
     }
 
