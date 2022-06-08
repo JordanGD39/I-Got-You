@@ -1163,7 +1163,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1513892015714671857, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: healingItems
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1901149651267627170, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: m_Mesh
