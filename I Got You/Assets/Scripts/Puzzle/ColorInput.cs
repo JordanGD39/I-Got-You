@@ -39,6 +39,7 @@ public class ColorInput : MonoBehaviourPun
         {
             photonView.RPC("AddInputOthers", RpcTarget.Others);
         }
+        render.material.mainTexture = null;
 
         switch (codeInput)
         {

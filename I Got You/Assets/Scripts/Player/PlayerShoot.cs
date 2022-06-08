@@ -18,6 +18,7 @@ public class PlayerShoot : MonoBehaviourPun
     [SerializeField] private int secondaryGunMaxAmmo = 0;
     [SerializeField] private bool canShoot = true;
     [SerializeField] private bool switching = false;
+    private bool weaponGone = false;
     [SerializeField] private Transform shootPoint;
     [SerializeField] private LayerMask hitLayer;
     [SerializeField] private AudioClip emptyAmmo;
@@ -82,9 +83,13 @@ public class PlayerShoot : MonoBehaviourPun
         playerStats = GetComponent<PlayerStats>();
         playerUI = FindObjectOfType<PlayerUI>();
 
-        if (savedStats == null)
+        if (savedStats == null || savedStats.guns[0] == null)
         {
             GiveFullAmmo(true);
+        }
+        else
+        {
+            playerUI.UpdateAmmo(currentAmmo, currentMaxAmmo);
         }
         
         switching = true;
@@ -152,14 +157,14 @@ public class PlayerShoot : MonoBehaviourPun
             return;
         }
 
-        if (canShoot && !switching)
+        if (canShoot && !switching && !weaponGone)
         {
             CheckShoot();
         }
         
         CheckInteract();
 
-        if (playerStats.OnInteract == null)
+        if (playerStats.OnInteract == null && !weaponGone)
         {
             CheckReload();
 
@@ -260,6 +265,17 @@ public class PlayerShoot : MonoBehaviourPun
         foreach (EnemyStats enemy in damageToEnemies.Keys)
         {
             DamageInfo damageInfo = damageToEnemies[enemy];
+
+            if (playerStats.TankTauntScript != null && !playerStats.TankTauntScript.Taunting)
+            {
+                playerStats.TankTauntScript.AddCharge(damageInfo.weakspot ? 0.02f : 0.01f);
+            }
+
+            if (playerStats.SupportBurstHealScript != null)
+            {
+                playerStats.SupportBurstHealScript.AddCharge(damageInfo.weakspot ? 0.06f : 0.03f);
+            }
+
             enemy.Damage(damageInfo.damage, damageInfo.direction);
         }
     }
@@ -306,7 +322,7 @@ public class PlayerShoot : MonoBehaviourPun
 
                 if (bulletCount == 0)
                 {
-                    playerUI.ShowHitMarker(hit.point);
+                    playerUI.ShowHitMarker(hit.point, false);
                 }                
             }
             else if (hit.collider.gameObject.CompareTag("HeadEnemyCol"))
@@ -315,7 +331,7 @@ public class PlayerShoot : MonoBehaviourPun
 
                 if (bulletCount == 0)
                 {
-                    playerUI.ShowHitMarker(hit.point);
+                    playerUI.ShowHitMarker(hit.point, true);
                 }
             }
         }
@@ -341,6 +357,7 @@ public class PlayerShoot : MonoBehaviourPun
         DamageInfo damageInfo = new DamageInfo();
         damageInfo.damage = Mathf.RoundToInt(currentGun.Damage * damageMultiplier * shootingDamageMultiplier);
         damageInfo.direction = dir;
+        damageInfo.weakspot = headShot;
 
         damageToEnemies.Add(enemyManager.StatsOfAllEnemies[enemyRoot], damageInfo);
     }
@@ -423,6 +440,7 @@ public class PlayerShoot : MonoBehaviourPun
             currentGunHolder.GunAnim.speed = 1;
             currentGunHolder.GunAnim.ResetTrigger("Reload");
             PutWeaponAway();
+            weaponGone = false;
             currentGunHolder.OnGunPutAway = ChangeWeaponAndAmmo;
 
             StartChangingCurrentGun();
@@ -518,7 +536,10 @@ public class PlayerShoot : MonoBehaviourPun
 
         audioSource.PlayOneShot(currentGun.SwitchSFX);
 
-        currentGunHolder.gameObject.SetActive(true);
+        if (!weaponGone)
+        {
+            currentGunHolder.gameObject.SetActive(true);
+        }
 
         if (currentGunHolder.GunAnim != null)
         {
@@ -554,15 +575,23 @@ public class PlayerShoot : MonoBehaviourPun
 
     public void PutWeaponAway()
     {
-        switching = true;
+        if (switching)
+        {
+            currentGunHolder.gameObject.SetActive(false);
+            return;
+        }
+
         currentGunHolder.GunAnim.SetTrigger("PutAwayGun");
+        switching = true;
+        weaponGone = true;  
     }
 
     public void PutWeaponBack()
     {
-        switching = false;
         currentGunHolder.gameObject.SetActive(false);
         currentGunHolder.gameObject.SetActive(true);
+        switching = false;
+        weaponGone = false;        
     }
 }
 
@@ -570,4 +599,5 @@ public class DamageInfo
 {
     public int damage = 0;
     public Vector3 direction = Vector3.zero;
+    public bool weakspot = false;
 }

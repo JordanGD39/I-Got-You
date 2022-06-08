@@ -56,6 +56,11 @@ public class PuzzleManager : MonoBehaviourPun
         int screensToRemove = 4 - (roomEntered ? playerManager.PlayersInGame.Count : playerManager.Players.Count);
         screensToRemove = Mathf.Clamp(screensToRemove, 0, 2);
 
+        if (!PhotonNetwork.IsConnected)
+        {
+            screensToRemove = 3;
+        }
+
         switch (screensToRemove)
         {
             case 1:
@@ -96,7 +101,7 @@ public class PuzzleManager : MonoBehaviourPun
         RemoveScreensBasedOnPlayerCount(false);
         MeshRenderer meshRenderer = monitor.GetComponent<MeshRenderer>();
         meshRenderer.material.color = Color.white;
-        meshRenderer.material.mainTexture = showingTexture;
+        meshRenderer.material.mainTexture = screens[0] == monitor ? null : showingTexture;
         ShownPuzzle = false;
 
         randomInt.Clear();    

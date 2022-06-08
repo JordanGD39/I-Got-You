@@ -87,6 +87,17 @@ MonoBehaviour:
   - ShutElevatorDoorsOthers
   - ShowEffectOthers
   - StopEffectOthers
+  - RequestGenerationData
+  - ReloadSceneOthers
+  - ShowReviveOthers
+  - RevivedOthers
+  - ShowDownOthers
+  - SetTimerOthers
+  - SyncWeaknessIndexOthers
+  - TurnOnWeaknessOthers
+  - SetTargetMasterClient
+  - SetActiveShieldsOthers
+  - HealPlayerWithID
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

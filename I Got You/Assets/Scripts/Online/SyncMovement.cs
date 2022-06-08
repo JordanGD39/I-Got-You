@@ -5,6 +5,7 @@ using Photon.Pun;
 
 public class SyncMovement : MonoBehaviourPun, IPunObservable
 {
+    private PlayerRevive playerRevive;
     private Vector3 syncPos;
     private Vector3 syncRot;
 
@@ -17,6 +18,9 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
 
     [SerializeField] private Animator animator;
 
+    public float DeathTimer { get; set; } = 0;
+    public float SyncTimer { get; private set; } = 0;
+
     public bool IsSyncing { get; set; } = true;
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -25,11 +29,13 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
         {
             stream.SendNext(new Vector3(ReturnSingleDecimalFloat(transform.position.x), ReturnSingleDecimalFloat(transform.position.y), ReturnSingleDecimalFloat(transform.position.z)));
             stream.SendNext(ReturnSingleDecimalFloat(transform.localEulerAngles.y));
+            stream.SendNext(ReturnSingleDecimalFloat(DeathTimer));
         }
         else if(stream.IsReading)
         {
             syncPos = (Vector3)stream.ReceiveNext();
             syncRot = new Vector3(transform.localEulerAngles.x, (float)stream.ReceiveNext(), transform.localEulerAngles.z);
+            SyncTimer = (float)stream.ReceiveNext();
         }
     }
 
@@ -40,6 +46,8 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
 
     private void Start()
     {
+        playerRevive = GetComponent<PlayerRevive>();
+
         IsSyncing = gameObject.CompareTag("Player");
 
         if (gameObject.CompareTag("Player"))
@@ -93,11 +101,6 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
 
             transform.position = Vector3.Lerp(transform.position, syncPos, lerpPosSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(syncRot), lerpRotSpeed * Time.deltaTime);
-
-            if (animator != null && !teleport)
-            {
-                animator.SetFloat("Speed", (transform.position - prevPos).magnitude / Time.deltaTime);
-            }
 
             prevPos = transform.position;
         }

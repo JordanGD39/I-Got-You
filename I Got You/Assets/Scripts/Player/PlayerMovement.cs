@@ -67,10 +67,13 @@ public class PlayerMovement : MonoBehaviour
             speed = downSpeed;
         }
 
+        anim.SetFloat("SpeedX", movement.x * speed, dampTime, Time.deltaTime);
+        anim.SetFloat("SpeedX", Mathf.Round(anim.GetFloat("SpeedX")));
+        anim.SetFloat("SpeedZ", movement.z * speed, dampTime, Time.deltaTime);
+        anim.SetFloat("SpeedZ", Mathf.Round(anim.GetFloat("SpeedZ")));
+
         movement = transform.TransformDirection(movement);
         movement.y = 0;
-
-        anim.SetFloat("Speed", movement.magnitude * speed, dampTime, Time.deltaTime);
 
         characterController.Move(movement * speed * Time.deltaTime);
     }

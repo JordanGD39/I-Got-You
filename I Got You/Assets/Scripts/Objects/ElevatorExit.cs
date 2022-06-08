@@ -6,6 +6,7 @@ using Photon.Pun;
 public class ElevatorExit : MonoBehaviourPun
 {
     private PlayerManager playerManager;
+    private DungeonGenerator dungeonGenerator;
     private PlayerUI playerUI;
     private FadeScreen fadeScreen;
     private List<GameObject> playersInRange = new List<GameObject>();
@@ -18,7 +19,15 @@ public class ElevatorExit : MonoBehaviourPun
         playerUI = FindObjectOfType<PlayerUI>();
         playerManager = FindObjectOfType<PlayerManager>();
     }
-    
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            ShutElevatorDoors();
+        }
+    }
+
     private void ShutElevatorDoors()
     {
         if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
@@ -28,6 +37,7 @@ public class ElevatorExit : MonoBehaviourPun
 
         anim.SetTrigger("Close");
         fadeScreen.TriggerFadeIn();
+        GameManager.instance.AddFloorLevel();
 
         foreach (PlayerStats player in playerManager.PlayersInGame)
         {
@@ -42,7 +52,18 @@ public class ElevatorExit : MonoBehaviourPun
 
     private void ReloadScene()
     {
+        if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("ReloadSceneOthers", RpcTarget.Others);
+        }
+
         PhotonFunctionHandler.LoadSceneAsync("GameScene");
+    }
+
+    [PunRPC]
+    void ReloadSceneOthers()
+    {
+        ReloadScene();
     }
 
     [PunRPC]

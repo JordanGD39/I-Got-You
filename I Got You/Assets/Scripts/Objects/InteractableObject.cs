@@ -77,6 +77,8 @@ public class InteractableObject : MonoBehaviourPun
                 return;
             }
 
+            playerStats.OnInteractHoldStop?.Invoke(playerStats);
+
             playerStats.OnInteract = null;
         }
     }

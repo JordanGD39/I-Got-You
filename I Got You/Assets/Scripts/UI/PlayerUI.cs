@@ -14,7 +14,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private GameObject healthItemPanel;
     [SerializeField] private TextMeshProUGUI errorText;
     [SerializeField] private TextMeshProUGUI roundText;
-    [SerializeField] private RectTransform hitMarker;
+    [SerializeField] private Image hitMarker;
     [SerializeField] private RectTransform canvas;
     [SerializeField] private GameObject bloodScreen;
     [SerializeField] private GameObject errorPopup;
@@ -25,6 +25,9 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private float[] healthArray = {0, 0.081f, 0.157f, 0.233f, 0.312f, 0.391f, 0.469f, 0.546f, 0.625f, 0.703f, 0.779f, 0.858f, 0.939f, 1f };
     [SerializeField] private GameObject interactPanel;
     [SerializeField] private TextMeshProUGUI interactText;
+    [SerializeField] private Image circleRevive;
+    [SerializeField] private Image[] abilities;
+    [SerializeField] private TextMeshProUGUI abilityText;
     //private Vector2 uiOffset;
 
     private int itemCount = 0;
@@ -36,6 +39,13 @@ public class PlayerUI : MonoBehaviour
         bloodScreen.SetActive(false);
         errorPopup.SetActive(false);
         interactPanel.SetActive(false);
+        circleRevive.gameObject.SetActive(false);
+        abilityText.gameObject.SetActive(false);
+
+        foreach (Image image in abilities)
+        {
+            image.transform.parent.gameObject.SetActive(false);
+        }
     }
 
     private void Update()
@@ -143,7 +153,19 @@ public class PlayerUI : MonoBehaviour
         interactPanel.SetActive(false);
     }
 
-    public void ShowHitMarker(Vector3 objectTransformPosition)
+    public void UpdateAbility(int abilityIndex, float currentCharge, float maxCharge)
+    {
+        Image image = abilities[abilityIndex];
+        image.transform.parent.gameObject.SetActive(true);
+        image.fillAmount = currentCharge / maxCharge;
+
+        string abilityButton = usingController ? "R1" : "Q";
+
+        abilityText.text = abilityButton;
+        abilityText.gameObject.SetActive(currentCharge >= maxCharge);
+    }
+
+    public void ShowHitMarker(Vector3 objectTransformPosition, bool weakSpot)
     {
         //// Get the position on the canvas
         //Vector2 viewportPosition = Camera.main.WorldToViewportPoint(objectTransformPosition);
@@ -153,6 +175,9 @@ public class PlayerUI : MonoBehaviour
         //hitMarker.localPosition = proportionalPosition - uiOffset;
         hitMarker.gameObject.SetActive(false);
         hitMarker.gameObject.SetActive(true);
+        Color color = weakSpot ? Color.red : Color.white;
+        color.a = hitMarker.color.a;
+        hitMarker.color = color;
     }
 
     //public void UpdateRoundText(int round)
@@ -197,5 +222,34 @@ public class PlayerUI : MonoBehaviour
     {
         chickenSoupBarPanel.SetActive(false);
         healthItemPanel.SetActive(itemCount > 0);
+    }
+
+    public void StartReviveTimer(float reviveTime)
+    {
+        circleRevive.gameObject.SetActive(true);
+        StartCoroutine(CountDownRevive(reviveTime));
+    }
+
+    private IEnumerator CountDownRevive(float reviveTime)
+    {
+        float startTime = Time.time;
+        Vector3 startPos = transform.position;
+
+        float frac = 0;
+
+        while (frac < 1)
+        {
+            frac = (Time.time - startTime) / reviveTime;
+
+            circleRevive.fillAmount = Mathf.Lerp(1, 0, frac);
+
+            yield return null;
+        }
+    }
+
+    public void StopReviveTimer()
+    {
+        StopCoroutine(CountDownRevive(0));
+        circleRevive.gameObject.SetActive(false);
     }
 }

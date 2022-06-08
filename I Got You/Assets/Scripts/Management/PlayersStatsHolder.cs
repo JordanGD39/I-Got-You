@@ -28,6 +28,11 @@ public class PlayersStatsHolder : MonoBehaviour
     {
         savedPlayerStats = new SavedPlayerStats[PhotonNetwork.IsConnected ? PhotonNetwork.CurrentRoom.PlayerCount : 1];
     }
+
+    public void ClearSavedStats()
+    {
+        savedPlayerStats = new SavedPlayerStats[0];
+    }
 }
 
 [System.Serializable]
@@ -36,4 +41,5 @@ public class SavedPlayerStats
     public GunObject[] guns = new GunObject[2];
     public int[] ammo = new int[2];
     public int health = 100;
+    public float abilityCharge = 0;
 }
