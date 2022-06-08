@@ -26,3 +26,4 @@ MonoBehaviour:
   fireSFX: {fileID: 8300000, guid: adddeaa44c7061d4e940123c8c1d86fc, type: 3}
   switchSFX: {fileID: 8300000, guid: e21d20dc0f59193458c4911fb1af23d2, type: 3}
   shootType: 0
+  hasRarity: 1

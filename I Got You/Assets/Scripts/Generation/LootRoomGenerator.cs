@@ -130,7 +130,7 @@ public class LootRoomGenerator : MonoBehaviourPun
             {
                 currentAllPlayersHealth += playerManager.Players[i].Health;
 
-                if (playerManager.Players[i].PlayerAtMaxHealth())
+                if (playerManager.Players[i].PlayerAtMaxHealth(0.6f))
                 {
                     maxHealthers++;
                 }
@@ -166,16 +166,21 @@ public class LootRoomGenerator : MonoBehaviourPun
 
                 for (int i = 0; i < floorRarityChanges.Length; i++)
                 {
-                    rarityChanceIndex = i;
-
-                    if (GameManager.instance.Floor > floorRarityChanges[i])
+                    if (( i > 0 && DifficultyManager.instance.DifficultyLevel >= floorRarityChanges[i - 1]) 
+                        && DifficultyManager.instance.DifficultyLevel < floorRarityChanges[i])
                     {
                         break;
                     }
+
+                    Debug.Log("Index: " + i);
+
+                    rarityChanceIndex = i;
                 }
 
                 //Rarity chance
                 rand = Random.Range(0, 100);
+
+                Debug.Log("Chance index: " + rarityChanceIndex + " random num: " + rand);
 
                 Rarities rarity = Rarities.COMMON;
 

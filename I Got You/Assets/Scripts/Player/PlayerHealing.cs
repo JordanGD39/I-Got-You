@@ -94,7 +94,7 @@ public class PlayerHealing : MonoBehaviourPun
 
     private void CheckHealing()
     {
-        if (!healing && !playerStats.PlayerAtMaxHealth() && healingItems > 0 && Input.GetButtonDown("Item"))
+        if (!healing && !playerStats.PlayerAtMaxHealth(1) && healingItems > 0 && Input.GetButtonDown("Item"))
         {
             healing = true;
             anim.SetBool("Healing", true);
@@ -103,7 +103,7 @@ public class PlayerHealing : MonoBehaviourPun
             StartCoroutine(nameof(HealingPlayer));
         }
 
-        if (healing && (Input.GetButtonUp("Item") || playerStats.PlayerAtMaxHealth()))
+        if (healing && (Input.GetButtonUp("Item") || playerStats.PlayerAtMaxHealth(1)))
         {
             StopHealing();
             StopCoroutine(nameof(HealingPlayer));

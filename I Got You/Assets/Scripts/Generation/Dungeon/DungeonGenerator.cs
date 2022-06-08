@@ -85,7 +85,7 @@ public class DungeonGenerator : MonoBehaviourPun
             //Debug.LogError("Seed: " + ticks);
             seedChosen = true;
 
-            OnSeedChosen?.Invoke();            
+            OnSeedChosen?.Invoke();
 
             StartGeneration();
         }
@@ -503,7 +503,15 @@ public class DungeonGenerator : MonoBehaviourPun
         chosenRoom.ChosenEndingOpening = chosenRoom.EndOpenings[randOpening];
 
         chosenRoom.ChosenEndingOpening.GetChild(0).GetChild(0).gameObject.SetActive(true);
-        chosenRoom.RoomScaleObject.localScale += new Vector3(0, 0, 0.4f);
+
+        float extraScale = 0.4f;
+
+        if (chosenRoom.RoomScaleObject.localScale.y >= 1)
+        {
+            extraScale = 0;
+        }
+
+        chosenRoom.RoomScaleObject.localScale += new Vector3(extraScale, 0, 0.4f);
 
         randomChosenEndingRoom = chosenRoom;
         randomChosenOpeningIndex = randOpening;
@@ -522,7 +530,7 @@ public class DungeonGenerator : MonoBehaviourPun
         chosenRoom.ChosenEndingOpening = chosenRoom.EndOpenings[openingIndex];
 
         chosenRoom.ChosenEndingOpening.GetChild(0).GetChild(0).gameObject.SetActive(true);
-        chosenRoom.RoomScaleObject.localScale += new Vector3(0, 0, 0.4f);
+        chosenRoom.RoomScaleObject.localScale += new Vector3(0.4f, 0, 0.4f);
 
         randomChosenEndingRoom = chosenRoom;
         randomChosenOpeningIndex = openingIndex;

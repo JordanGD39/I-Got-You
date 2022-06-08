@@ -530,7 +530,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-16147598
+  m_Name: pb_Mesh-22462
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -988,7 +988,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-16140316
+  m_Name: pb_Mesh-10920
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1161,10 +1161,6 @@ PrefabInstance:
       propertyPath: observableSearch
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1513892015714671857, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
-      propertyPath: healingItems
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1901149651267627170, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -1311,7 +1307,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6712501813913824980, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: currentClass
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6712501813913824981, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: currentGun
@@ -1322,8 +1318,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6712501813913824981, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
+      propertyPath: currentRarity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6712501813913824981, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: hitLayer.m_Bits
       value: 16961
+      objectReference: {fileID: 0}
+    - target: {fileID: 6712501813913824981, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
+      propertyPath: secondaryRarity
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6782326058524522817, guid: 2bbf29934d426c6458b0ad5a1881f49a, type: 3}
       propertyPath: m_IsActive
@@ -2420,7 +2424,7 @@ MonoBehaviour:
   voiceDetectionThreshold: 0.01
   voiceDetectionDelayMs: 500
   unityMicrophoneDevice: 
-  photonMicrophoneDeviceId: 0
+  photonMicrophoneDeviceId: -1
   interestGroup: 0
   debugEchoMode: 0
   reliableMode: 0
@@ -2798,7 +2802,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-16143966
+  m_Name: pb_Mesh-17870
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2999,6 +3003,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64a8ecc3bada1f64687f93843aa2f45d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  floor: 0
 --- !u!43 &1657379921
 Mesh:
   m_ObjectHideFlags: 0
@@ -3472,7 +3477,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-16140306
+  m_Name: pb_Mesh-10910
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3696,18 +3701,6 @@ PrefabInstance:
     - target: {fileID: 2712066558179356988, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
       propertyPath: sceneViewId
       value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 7162548949459417633, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
-      propertyPath: eatGenChance
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 7162548949459417633, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
-      propertyPath: safeRoomPrefabs.Array.data[1]
-      value: 
-      objectReference: {fileID: 4049260677296841894, guid: e4973f7fafb4af747aba3a83d9862a82, type: 3}
-    - target: {fileID: 7162548949459417633, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
-      propertyPath: roomModesChances.Array.data[4]
-      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7162548949459417660, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
       propertyPath: m_Name

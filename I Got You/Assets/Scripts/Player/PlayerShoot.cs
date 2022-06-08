@@ -13,6 +13,9 @@ public class PlayerShoot : MonoBehaviourPun
     [SerializeField] private int currentAmmo = 0;
     public int CurrentAmmo { get { return currentAmmo; } }
     [SerializeField] private int currentMaxAmmo = 0;
+    [SerializeField] private LootRoomGenerator.Rarities currentRarity;
+    public LootRoomGenerator.Rarities CurrentRarity { get { return currentRarity; } }
+    [SerializeField] private LootRoomGenerator.Rarities secondaryRarity;
     [SerializeField] private int secondaryGunAmmo = 0;
     public int CurrentSecondaryAmmo { get { return secondaryGunAmmo; } }
     [SerializeField] private int secondaryGunMaxAmmo = 0;
@@ -23,6 +26,7 @@ public class PlayerShoot : MonoBehaviourPun
     [SerializeField] private LayerMask hitLayer;
     [SerializeField] private AudioClip emptyAmmo;
     [SerializeField] private float shootingDamageMultiplier = 1;
+    [SerializeField] private float rarityModifier = 0.5f;
 
     private Dictionary<EnemyStats, DamageInfo> damageToEnemies = new Dictionary<EnemyStats, DamageInfo>();
 
@@ -130,7 +134,7 @@ public class PlayerShoot : MonoBehaviourPun
         playerUI.UpdateAmmo(currentAmmo, currentMaxAmmo);
     }
 
-    public void GiveWeapon(GunObject gun)
+    public void GiveWeapon(GunObject gun, LootRoomGenerator.Rarities rarity, int ammo)
     {
         if (secondaryGun == null)
         {
@@ -138,12 +142,26 @@ public class PlayerShoot : MonoBehaviourPun
 
             secondaryGunAmmo = secondaryGun.ClipCount;
             secondaryGunMaxAmmo = secondaryGun.MaxAmmoCount;
+            secondaryRarity = rarity;
         }
         else
         {
             currentGun = gun;
             PutWeaponAway();
-            GiveFullAmmo(false);
+            weaponGone = false;
+            currentRarity = rarity;
+
+            if (ammo >= 0)
+            {
+                currentAmmo = ammo;
+                currentMaxAmmo = currentGun.MaxAmmoCount;
+                audioSource.PlayOneShot(currentGun.SwitchSFX);
+                playerUI.UpdateAmmo(ammo, currentMaxAmmo);
+            }
+            else
+            {
+                GiveFullAmmo(false);
+            }
         }
 
         StartChangingCurrentGun();
@@ -152,19 +170,19 @@ public class PlayerShoot : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-        if (PhotonNetwork.IsConnected && !photonView.IsMine)
+        if (PhotonNetwork.IsConnected && !photonView.IsMine || weaponGone)
         {
             return;
         }
 
-        if (canShoot && !switching && !weaponGone)
+        if (canShoot && !switching)
         {
             CheckShoot();
         }
         
         CheckInteract();
 
-        if (playerStats.OnInteract == null && !weaponGone)
+        if (playerStats.OnInteract == null)
         {
             CheckReload();
 
@@ -339,6 +357,13 @@ public class PlayerShoot : MonoBehaviourPun
 
     private void AddDamage(Transform enemyRoot, Vector3 dir, bool headShot)
     {
+        float rarityMulitiplier = 1;
+
+        if (currentGun.HasRarity)
+        {
+            rarityMulitiplier += rarityModifier * (float)currentRarity;
+        }
+
         float damageMultiplier = 1;
 
         if (headShot)
@@ -349,13 +374,13 @@ public class PlayerShoot : MonoBehaviourPun
         EnemyStats enemy = enemyManager.StatsOfAllEnemies[enemyRoot];
         if (damageToEnemies.ContainsKey(enemy))
         {
-            damageToEnemies[enemy].damage += Mathf.RoundToInt(currentGun.Damage * damageMultiplier * shootingDamageMultiplier);
+            damageToEnemies[enemy].damage += Mathf.RoundToInt(currentGun.Damage * damageMultiplier * shootingDamageMultiplier * rarityMulitiplier);
             damageToEnemies[enemy].direction = dir;
             return;
         }
 
         DamageInfo damageInfo = new DamageInfo();
-        damageInfo.damage = Mathf.RoundToInt(currentGun.Damage * damageMultiplier * shootingDamageMultiplier);
+        damageInfo.damage = Mathf.RoundToInt(currentGun.Damage * damageMultiplier * shootingDamageMultiplier * rarityMulitiplier);
         damageInfo.direction = dir;
         damageInfo.weakspot = headShot;
 
@@ -462,6 +487,10 @@ public class PlayerShoot : MonoBehaviourPun
         secondaryGunMaxAmmo = currentMaxAmmo;
         currentMaxAmmo = secondaryMaxAmmo;
 
+        LootRoomGenerator.Rarities rarity = secondaryRarity;
+        secondaryRarity = currentRarity;
+        currentRarity = rarity;
+
         playerUI.UpdateAmmo(currentAmmo, currentMaxAmmo);
     }
 
@@ -469,7 +498,7 @@ public class PlayerShoot : MonoBehaviourPun
     {
         if (PhotonNetwork.IsConnected && photonView.IsMine)
         {
-            photonView.RPC("UpdateCurrentVisibleGunOthers", RpcTarget.Others, (byte)weaponsHolder.SearchWeaponIndex(currentGun.name, currentGun.Primary), currentGun.Primary);
+            photonView.RPC("UpdateCurrentVisibleGunOthers", RpcTarget.Others, (byte)weaponsHolder.SearchWeaponIndex(currentGun.name, currentGun.Primary), currentGun.Primary, (byte)currentRarity);
         }
 
         if (weaponReference.Count == 0)
@@ -541,6 +570,19 @@ public class PlayerShoot : MonoBehaviourPun
             currentGunHolder.gameObject.SetActive(true);
         }
 
+        if (currentGun.HasRarity)
+        {
+            Transform weaponParent = currentGunHolder.transform.GetChild(0)
+                .GetChild(currentGunHolder.transform.GetChild(0).childCount > 1 ? 1 : 0);
+
+            for (int i = 0; i < weaponParent.childCount; i++)
+            {
+                weaponParent.GetChild(i).gameObject.SetActive(false);
+            }
+
+            weaponParent.GetChild((int)currentRarity).gameObject.SetActive(true);
+        }
+
         if (currentGunHolder.GunAnim != null)
         {
             currentGunHolder.GunAnim.ResetTrigger("Reload");
@@ -548,7 +590,7 @@ public class PlayerShoot : MonoBehaviourPun
     }
 
     [PunRPC]
-    void UpdateCurrentVisibleGunOthers(byte weaponIndex, bool primary)
+    void UpdateCurrentVisibleGunOthers(byte weaponIndex, bool primary, byte rarityIndex)
     {
         if (weaponsHolder == null)
         {
@@ -564,6 +606,19 @@ public class PlayerShoot : MonoBehaviourPun
 
         currentGunHolder = weaponReference[currentGun.name];
         currentGunHolder.gameObject.SetActive(true);
+
+        if (currentGun.HasRarity)
+        {
+            Transform weaponParent = currentGunHolder.transform.GetChild(0)
+                .GetChild(currentGunHolder.transform.GetChild(0).childCount > 1 ? 1 : 0);
+
+            for (int i = 0; i < weaponParent.childCount; i++)
+            {
+                weaponParent.GetChild(i).gameObject.SetActive(false);
+            }
+
+            weaponParent.GetChild(rarityIndex).gameObject.SetActive(true);
+        }
     }
 
     private void CheckInteract()

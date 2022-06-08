@@ -149,9 +149,9 @@ public class PlayerStats : MonoBehaviourPun
         playerUI.UpdateHealth(health, maxHealth);
     }
 
-    public bool PlayerAtMaxHealth()
+    public bool PlayerAtMaxHealth(float multiplier)
     {
-        return health >= currentMaxHealth;
+        return health >= (float)currentMaxHealth * multiplier;
     }
 
     public void Damage(int dmg)

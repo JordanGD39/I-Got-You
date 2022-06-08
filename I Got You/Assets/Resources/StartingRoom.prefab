@@ -1882,9 +1882,9 @@ MonoBehaviour:
   healthDropChanceModifier: 0.5
   healthDropChanceIncreasePlayerHealth: 20
   minPlayerHealthForMaxChance: 20
-  weaponDropChance: 40
+  weaponDropChance: 45
   weaponDropChanceModifier: 1
-  weaponDropChanceLimit: 40
+  weaponDropChanceLimit: 55
   smallWeaponDropChance: 60
   smallWeaponDropChanceModifier: 2
   mediumAmmoDropChance: 25
@@ -1893,10 +1893,27 @@ MonoBehaviour:
   largeAmmoDropChanceModifier: 2
   startingDropChance: 40
   dropChance: 60
-  commonRarityChance: {x: 0, y: 40, z: 0, w: 0}
-  uncommonRarityChance: {x: 0, y: 0, z: 0, w: 0}
-  rareRarityChance: {x: 0, y: 0, z: 0, w: 0}
-  epicRarityChance: {x: 0, y: 0, z: 0, w: 0}
+  commonRarityChance:
+  - {x: 0, y: 60}
+  - {x: 0, y: 50}
+  - {x: 0, y: 20}
+  - {x: 0, y: 5}
+  uncommonRarityChance:
+  - {x: 0.000000010615899, y: 2.6424148e+20}
+  - {x: 0.000013601822, y: 0.00000020990485}
+  - {x: 2.1749272e+23, y: 0.0000001680033}
+  - {x: 0.00004415699, y: 0.000000043162064}
+  rareRarityChance:
+  - {x: 81, y: 98}
+  - {x: 71, y: 90}
+  - {x: 51, y: 75}
+  - {x: 31, y: 60}
+  epicRarityChance:
+  - {x: 99, y: 100}
+  - {x: 91, y: 100}
+  - {x: 76, y: 100}
+  - {x: 61, y: 100}
+  floorRarityChanges: 000000000a000000140000001e000000
   rarityModifier: 4
   allLoot:
   - {fileID: 6519836385930060719}

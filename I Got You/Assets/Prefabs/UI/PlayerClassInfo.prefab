@@ -189,6 +189,11 @@ MonoBehaviour:
   classLogo: {fileID: 2752758585780971592}
   playerName: {fileID: 2752758584423759025}
   className: {fileID: 2752758586044469770}
+  logoSprites:
+  - {fileID: 21300000, guid: 3dda6c6cd1623404397685c6f9864774, type: 3}
+  - {fileID: 21300000, guid: d895eda0b059f454c831421f300e3336, type: 3}
+  - {fileID: 21300000, guid: e7f3cf9bdd3f48b48abd1d028ef8f69e, type: 3}
+  - {fileID: 21300000, guid: cc55c8bf065cc8c4b973add9852fdfb4, type: 3}
 --- !u!114 &3179998898196275144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -276,7 +281,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2c3a1991d0f197041b64d57dc1c3b2ca, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e7f3cf9bdd3f48b48abd1d028ef8f69e, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

@@ -5,7 +5,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public int Floor { get; private set; } = 0;
+    [SerializeField] private int floor = 0;
+    public int Floor { get { return floor; } }
     public int TotalArenaRooms { get; set; } = 0;
 
     private void Awake()
@@ -24,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     public void AddFloorLevel()
     {
-        Floor++;
+        floor++;
 
         DifficultyManager difficultyManager = DifficultyManager.instance;
 
@@ -36,6 +37,6 @@ public class GameManager : MonoBehaviour
 
     public void ResetFloorLevel()
     {
-        Floor = 0;
+        floor = 0;
     }
 }

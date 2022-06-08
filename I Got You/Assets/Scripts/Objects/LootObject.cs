@@ -16,9 +16,14 @@ public class LootObject : InteractableObject
     private WeaponsHolder weaponsHolder;
 
     public GunObject currentGun { get; private set; }
+    private int ammo = -1;
+
+    private LootRoomGenerator.Rarities currentRarity = LootRoomGenerator.Rarities.COMMON;
 
     public void UpdateLootType(LootTypes type, int weaponIndex, LootRoomGenerator.Rarities rarity)
     {
+        currentRarity = rarity;
+
         if (weaponsHolder == null)
         {
             weaponsHolder = FindObjectOfType<WeaponsHolder>();
@@ -64,9 +69,22 @@ public class LootObject : InteractableObject
                 rand = weaponIndex < 0 ? Random.Range(0, weaponsHolder.PrimaryGuns.Count) : weaponIndex;
 
                 currentGun = weaponsHolder.PrimaryGuns[rand];
+
                 weaponIndex = rand;
 
-                weapons.transform.GetChild(0).GetChild(rand).gameObject.SetActive(true);
+                Transform weaponParent = weapons.transform.GetChild(0).GetChild(rand);
+
+                weaponParent.gameObject.SetActive(true);
+
+                if (currentGun.HasRarity)
+                {
+                    for (int i = 0; i < weaponParent.childCount; i++)
+                    {
+                        weaponParent.transform.GetChild(i).gameObject.SetActive(false);
+                    }
+
+                    weaponParent.transform.GetChild((int)rarity).gameObject.SetActive(true);
+                }
 
                 interactText = " to pickup weapon";
                 break;
@@ -79,7 +97,20 @@ public class LootObject : InteractableObject
 
                 currentGun = weaponsHolder.SecondaryGuns[rand];
 
-                weapons.transform.GetChild(1).GetChild(rand).gameObject.SetActive(true);
+                Transform weaponSecondaryParent = weapons.transform.GetChild(1).GetChild(rand);
+
+                weaponSecondaryParent.gameObject.SetActive(true);
+
+                if (currentGun.HasRarity)
+                {
+                    for (int i = 0; i < weaponSecondaryParent.childCount; i++)
+                    {
+                        weaponSecondaryParent.transform.GetChild(i).gameObject.SetActive(false);
+                    }
+
+                    weaponSecondaryParent.transform.GetChild((int)rarity).gameObject.SetActive(true);
+                }
+
                 interactText = " to pickup weapon";
                 break;
             case LootTypes.SMALLAMMO:
@@ -99,7 +130,7 @@ public class LootObject : InteractableObject
 
         if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC("UpdateLootForOthers", RpcTarget.Others, (byte)type, (byte)weaponIndex);
+            photonView.RPC("UpdateLootForOthers", RpcTarget.Others, (byte)type, (byte)weaponIndex, (byte)rarity);
         }
     }
 
@@ -211,9 +242,11 @@ public class LootObject : InteractableObject
     {
         GunObject gun = playerShoot.CurrentGun;
 
+        LootRoomGenerator.Rarities rarity = playerShoot.CurrentRarity;
+
         bool secondaryWasNull = playerShoot.SecondaryGun == null;
 
-        playerShoot.GiveWeapon(currentGun);
+        playerShoot.GiveWeapon(currentGun, currentRarity, ammo);
 
         if (secondaryWasNull)
         {
@@ -227,18 +260,22 @@ public class LootObject : InteractableObject
             return;
         }
 
-        UpdateCurrentGun(gun);
+        currentRarity = rarity;
+        UpdateCurrentGun(gun, currentRarity);
+        ammo = playerShoot.CurrentAmmo;
 
         if (PhotonNetwork.IsConnected)
         {
-            photonView.RPC("UpdateCurrentGunForOthers", RpcTarget.Others, (byte)weaponsHolder.SearchWeaponIndex(gun.name, gun.Primary), gun.Primary);
+            photonView.RPC("UpdateCurrentGunForOthers", RpcTarget.Others, 
+                (byte)weaponsHolder.SearchWeaponIndex(gun.name, gun.Primary), gun.Primary, (byte)rarity);
         }
     }
 
-    private void UpdateCurrentGun(GunObject gun)
+    private void UpdateCurrentGun(GunObject gun, LootRoomGenerator.Rarities rarity)
     {
         currentGun = gun;
         int weaponIndex = weaponsHolder.SearchWeaponIndex(currentGun.name, currentGun.Primary);
+        currentRarity = rarity;
 
         DeactivateAllWeapons();
 
@@ -247,18 +284,43 @@ public class LootObject : InteractableObject
             weapons.transform.GetChild(0).gameObject.SetActive(true);
             weapons.transform.GetChild(1).gameObject.SetActive(false);
             weapons.transform.GetChild(0).GetChild(weaponIndex).gameObject.SetActive(true);
+
+            Transform weaponParent = weapons.transform.GetChild(0).GetChild(weaponIndex);
+
+            if (currentGun.HasRarity)
+            {
+                for (int i = 0; i < weaponParent.childCount; i++)
+                {
+                    weaponParent.transform.GetChild(i).gameObject.SetActive(false);
+                }
+
+                weaponParent.transform.GetChild((int)rarity).gameObject.SetActive(true);
+            }
         }
         else
         {
             weapons.transform.GetChild(0).gameObject.SetActive(false);
             weapons.transform.GetChild(1).gameObject.SetActive(true);
             weapons.transform.GetChild(1).GetChild(weaponIndex).gameObject.SetActive(true);
+
+            Transform weaponParent = weapons.transform.GetChild(1).GetChild(weaponIndex);
+
+            if (currentGun.HasRarity)
+            {
+                for (int i = 0; i < weaponParent.childCount; i++)
+                {
+                    weaponParent.transform.GetChild(i).gameObject.SetActive(false);
+                }
+
+                weaponParent.transform.GetChild((int)rarity).gameObject.SetActive(true);
+            }
         }
     }
 
     [PunRPC]
-    void UpdateCurrentGunForOthers(byte weaponIndex, bool primary)
+    void UpdateCurrentGunForOthers(byte weaponIndex, bool primary, byte rarityIndex)
     {
-        UpdateCurrentGun(primary ? weaponsHolder.PrimaryGuns[weaponIndex] : weaponsHolder.SecondaryGuns[weaponIndex]);
+        UpdateCurrentGun(primary ? weaponsHolder.PrimaryGuns[weaponIndex] : 
+            weaponsHolder.SecondaryGuns[weaponIndex], (LootRoomGenerator.Rarities)rarityIndex);
     }
 }

@@ -12,6 +12,7 @@ public class ClassInfoUI : MonoBehaviourPun
     public TextMeshProUGUI PlayerName { get { return playerName; } }
     [SerializeField] private TextMeshProUGUI className;
     private bool fullOpacitySet = false;
+    [SerializeField] private Sprite[] logoSprites;
     
     private ClassSelectUI selectUI;
     private bool hasChosen = false;
@@ -62,6 +63,7 @@ public class ClassInfoUI : MonoBehaviourPun
         }
 
         className.text = editedClassName;
+        classLogo.sprite = logoSprites[(int)theClassName];
 
         if (!hasChosen)
         {
@@ -112,6 +114,7 @@ public class ClassInfoUI : MonoBehaviourPun
         string editedClassName = UpperCaseFirstLetter(System.Enum.GetName(typeof(PlayerStats.ClassNames), classIndex));
 
         className.text = editedClassName;
+        classLogo.sprite = logoSprites[classIndex];
     }
 
     public void UpdateOthersOnNetworkPlayerName()

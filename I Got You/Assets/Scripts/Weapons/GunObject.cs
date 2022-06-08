@@ -35,4 +35,7 @@ public class GunObject : ScriptableObject
     public enum ShootTypes { MANUAL, AUTO, BURST}
     [SerializeField] private ShootTypes shootType;
     public ShootTypes ShootType { get { return shootType; } }
+
+    [SerializeField] private bool hasRarity;
+    public bool HasRarity { get { return hasRarity; } }
 }

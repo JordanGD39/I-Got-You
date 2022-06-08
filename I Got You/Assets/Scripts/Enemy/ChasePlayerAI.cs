@@ -34,6 +34,16 @@ public class ChasePlayerAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (skinnedMeshRenderer != null)
+        {
+            skinnedMeshRenderer.material = normalMat;
+            StartCoroutine(nameof(FadeInEnemy));
+        }
+        else
+        {
+            fadedIn = true;
+        }
+
         if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
         {
             return;
@@ -46,16 +56,6 @@ public class ChasePlayerAI : MonoBehaviour
         
         agent = GetComponent<NavMeshAgent>();
         startingAvoidancePriority = agent.avoidancePriority;
-
-        if (skinnedMeshRenderer != null)
-        {
-            skinnedMeshRenderer.material = normalMat;
-            StartCoroutine(nameof(FadeInEnemy));
-        }        
-        else
-        {
-            fadedIn = true;
-        }
     }
 
     private IEnumerator FadeInEnemy()
