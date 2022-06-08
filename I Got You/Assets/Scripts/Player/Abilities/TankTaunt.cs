@@ -13,7 +13,7 @@ public class TankTaunt : MonoBehaviourPun
     public float DamageMultiplier { get { return damageMultiplier; } }
     public bool Taunting { get; private set; } = false;
 
-    private float charge = 0;
+    [SerializeField] private float charge = 0;
     public float Charge { get { return charge; } }
 
     // Start is called before the first frame update

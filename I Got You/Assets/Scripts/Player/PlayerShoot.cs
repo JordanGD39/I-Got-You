@@ -83,9 +83,13 @@ public class PlayerShoot : MonoBehaviourPun
         playerStats = GetComponent<PlayerStats>();
         playerUI = FindObjectOfType<PlayerUI>();
 
-        if (savedStats == null)
+        if (savedStats == null || savedStats.guns[0] == null)
         {
             GiveFullAmmo(true);
+        }
+        else
+        {
+            playerUI.UpdateAmmo(currentAmmo, currentMaxAmmo);
         }
         
         switching = true;
