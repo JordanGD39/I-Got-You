@@ -369,6 +369,8 @@ public class DungeonGenerator : MonoBehaviourPun
             Destroy(item.Value.gameObject);
         }
 
+        dungeonGrid.Grid.Clear();
+
         OnGenerationDone?.Invoke();
     }
 
@@ -465,6 +467,7 @@ public class DungeonGenerator : MonoBehaviourPun
         dungeonGrid.Grid.Clear();
 
         OnHallwaysMade?.Invoke();
+        hallwaysMade = true;
     }
 
     private DungeonCell ChooseDoor(GameObject currentRoom, Vector3 targetPos)
