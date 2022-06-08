@@ -237,7 +237,8 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
 
             rand = Random.Range(0, 100);
 
-            loot.GetComponent<LootObject>().UpdateLootType(rand < healthDropChance ? LootObject.LootTypes.HEALTH : LootObject.LootTypes.SMALLAMMO, -1);
+            loot.GetComponent<LootObject>().UpdateLootType(rand < healthDropChance ? 
+                LootObject.LootTypes.HEALTH : LootObject.LootTypes.SMALLAMMO, -1, LootRoomGenerator.Rarities.COMMON);
         }
 
         if (ragdollController == null)

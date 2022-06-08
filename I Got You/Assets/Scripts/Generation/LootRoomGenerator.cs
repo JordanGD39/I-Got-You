@@ -5,6 +5,8 @@ using Photon.Pun;
 
 public class LootRoomGenerator : MonoBehaviourPun
 {
+    public enum Rarities { COMMON, UNCOMMON, RARE, EPIC};
+
     [SerializeField] private float healthDropChance = 20;
     [SerializeField] private float healthDropMin = 5;
     [SerializeField] private float healthDropChanceModifier = 2;
@@ -24,6 +26,13 @@ public class LootRoomGenerator : MonoBehaviourPun
 
     [SerializeField] private float startingDropChance = 40;
     [SerializeField] private float dropChance = 40;
+
+    [SerializeField] private Vector2[] commonRarityChance;
+    [SerializeField] private Vector2[] uncommonRarityChance;
+    [SerializeField] private Vector2[] rareRarityChance;
+    [SerializeField] private Vector2[] epicRarityChance;
+    [SerializeField] private int[] floorRarityChanges = { 0, 5, 15, 25};
+    [SerializeField] private float rarityModifier = 2;
 
     [SerializeField] private List<LootObject> allLoot = new List<LootObject>();
     public List<LootObject> AllLoot { get { return allLoot; } }
@@ -136,7 +145,7 @@ public class LootRoomGenerator : MonoBehaviourPun
 
             if (rand <= itemChance)
             {
-                loot.UpdateLootType(LootObject.LootTypes.HEALTH, -1);
+                loot.UpdateLootType(LootObject.LootTypes.HEALTH, -1, 0);
                 continue;
             }
 
@@ -152,6 +161,37 @@ public class LootRoomGenerator : MonoBehaviourPun
             //Check to place ammo or weapon
             if (rand < chance)
             {
+                //Choose rarity index
+                int rarityChanceIndex = 0;
+
+                for (int i = 0; i < floorRarityChanges.Length; i++)
+                {
+                    rarityChanceIndex = i;
+
+                    if (GameManager.instance.Floor > floorRarityChanges[i])
+                    {
+                        break;
+                    }
+                }
+
+                //Rarity chance
+                rand = Random.Range(0, 100);
+
+                Rarities rarity = Rarities.COMMON;
+
+                if (rand >= uncommonRarityChance[rarityChanceIndex].x && rand <= uncommonRarityChance[rarityChanceIndex].y)
+                {
+                    rarity = Rarities.UNCOMMON;
+                }
+                else if (rand >= rareRarityChance[rarityChanceIndex].x && rand <= rareRarityChance[rarityChanceIndex].y)
+                {
+                    rarity = Rarities.RARE;
+                }
+                else if (rand >= epicRarityChance[rarityChanceIndex].x && rand <= epicRarityChance[rarityChanceIndex].y)
+                {
+                    rarity = Rarities.EPIC;
+                }
+
                 //Place weapon
                 rand = Random.Range(0, 100);
 
@@ -160,12 +200,12 @@ public class LootRoomGenerator : MonoBehaviourPun
                 if (rand < chance)
                 {
                     //Place small weapon
-                    loot.UpdateLootType(LootObject.LootTypes.SECONDARYWEAPON, -1);
+                    loot.UpdateLootType(LootObject.LootTypes.SECONDARYWEAPON, -1, rarity);
                 }
                 else
                 {
                     //Place large weapon
-                    loot.UpdateLootType(LootObject.LootTypes.PRIMARYWEAPON, -1);
+                    loot.UpdateLootType(LootObject.LootTypes.PRIMARYWEAPON, -1, rarity);
                 }
             }
             else
@@ -178,7 +218,7 @@ public class LootRoomGenerator : MonoBehaviourPun
                 if (rand > chance)
                 {
                     //Place small Ammo
-                    loot.UpdateLootType(LootObject.LootTypes.SMALLAMMO, -1);
+                    loot.UpdateLootType(LootObject.LootTypes.SMALLAMMO, -1, 0);
                 }
                 else
                 {
@@ -190,12 +230,12 @@ public class LootRoomGenerator : MonoBehaviourPun
                     if (rand > chance)
                     {
                         //Place medium ammo
-                        loot.UpdateLootType(LootObject.LootTypes.MEDIUMAMMO, -1);
+                        loot.UpdateLootType(LootObject.LootTypes.MEDIUMAMMO, -1, 0);
                     }
                     else
                     {
                         //Place large ammo
-                        loot.UpdateLootType(LootObject.LootTypes.LARGEAMMO, -1);
+                        loot.UpdateLootType(LootObject.LootTypes.LARGEAMMO, -1, 0);
                     }
                 }
             }

@@ -562,7 +562,8 @@ public class PlayerShoot : MonoBehaviourPun
             currentGunHolder.gameObject.SetActive(false);
         }
 
-        StartChangingCurrentGun();
+        currentGunHolder = weaponReference[currentGun.name];
+        currentGunHolder.gameObject.SetActive(true);
     }
 
     private void CheckInteract()

@@ -17,7 +17,7 @@ public class LootObject : InteractableObject
 
     public GunObject currentGun { get; private set; }
 
-    public void UpdateLootType(LootTypes type, int weaponIndex)
+    public void UpdateLootType(LootTypes type, int weaponIndex, LootRoomGenerator.Rarities rarity)
     {
         if (weaponsHolder == null)
         {
@@ -117,9 +117,9 @@ public class LootObject : InteractableObject
     }
 
     [PunRPC]
-    void UpdateLootForOthers(byte typeIndex, byte weaponIndex)
+    void UpdateLootForOthers(byte typeIndex, byte weaponIndex, byte rarityIndex)
     {
-        UpdateLootType((LootTypes)typeIndex, weaponIndex);
+        UpdateLootType((LootTypes)typeIndex, weaponIndex, (LootRoomGenerator.Rarities)rarityIndex);
     }
 
     protected override void PlayerTriggerEntered(PlayerStats playerStats)

@@ -1882,7 +1882,7 @@ MonoBehaviour:
   healthDropChanceModifier: 0.5
   healthDropChanceIncreasePlayerHealth: 20
   minPlayerHealthForMaxChance: 20
-  weaponDropChance: 30
+  weaponDropChance: 40
   weaponDropChanceModifier: 1
   weaponDropChanceLimit: 40
   smallWeaponDropChance: 60
@@ -1892,7 +1892,12 @@ MonoBehaviour:
   largeAmmoDropChance: 10
   largeAmmoDropChanceModifier: 2
   startingDropChance: 40
-  dropChance: 55
+  dropChance: 60
+  commonRarityChance: {x: 0, y: 40, z: 0, w: 0}
+  uncommonRarityChance: {x: 0, y: 0, z: 0, w: 0}
+  rareRarityChance: {x: 0, y: 0, z: 0, w: 0}
+  epicRarityChance: {x: 0, y: 0, z: 0, w: 0}
+  rarityModifier: 4
   allLoot:
   - {fileID: 6519836385930060719}
   - {fileID: 4989399912920000803}

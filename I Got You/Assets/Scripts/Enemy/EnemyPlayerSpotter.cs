@@ -58,7 +58,7 @@ public class EnemyPlayerSpotter : MonoBehaviour
 
                 if (Physics.Raycast(eyes.position, dirToPlayer, out hit, viewDistance, layerDetectPlayer))
                 {
-                    Debug.Log(hit.collider.gameObject.tag);
+                    //Debug.Log(hit.collider.gameObject.tag);
 
                     if (hit.collider.gameObject.CompareTag("PlayerCol"))
                     {

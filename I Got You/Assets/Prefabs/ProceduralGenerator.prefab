@@ -65,7 +65,7 @@ MonoBehaviour:
   arenaRange: {x: 2, y: 4}
   safeRoomPrefabs:
   - {fileID: 4387086318622851091, guid: 5e66bafbeb703604ebc0cb7252af35e3, type: 3}
-  - {fileID: -263182516019119774, guid: e4973f7fafb4af747aba3a83d9862a82, type: 3}
+  - {fileID: 4049260677296841894, guid: e4973f7fafb4af747aba3a83d9862a82, type: 3}
   arenaPrefabs:
   - {fileID: 7855538103156852665, guid: 41679d3500a487c4b85a43c08a1de731, type: 3}
   eatRoomPrefab: {fileID: 4121920812478566373, guid: 15fc69f2ddc37a44da5083e5c10a65c7, type: 3}
