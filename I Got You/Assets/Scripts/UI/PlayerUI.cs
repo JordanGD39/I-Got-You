@@ -14,7 +14,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private GameObject healthItemPanel;
     [SerializeField] private TextMeshProUGUI errorText;
     [SerializeField] private TextMeshProUGUI roundText;
-    [SerializeField] private RectTransform hitMarker;
+    [SerializeField] private Image hitMarker;
     [SerializeField] private RectTransform canvas;
     [SerializeField] private GameObject bloodScreen;
     [SerializeField] private GameObject errorPopup;
@@ -165,7 +165,7 @@ public class PlayerUI : MonoBehaviour
         abilityText.gameObject.SetActive(currentCharge >= maxCharge);
     }
 
-    public void ShowHitMarker(Vector3 objectTransformPosition)
+    public void ShowHitMarker(Vector3 objectTransformPosition, bool weakSpot)
     {
         //// Get the position on the canvas
         //Vector2 viewportPosition = Camera.main.WorldToViewportPoint(objectTransformPosition);
@@ -175,6 +175,9 @@ public class PlayerUI : MonoBehaviour
         //hitMarker.localPosition = proportionalPosition - uiOffset;
         hitMarker.gameObject.SetActive(false);
         hitMarker.gameObject.SetActive(true);
+        Color color = weakSpot ? Color.red : Color.white;
+        color.a = hitMarker.color.a;
+        hitMarker.color = color;
     }
 
     //public void UpdateRoundText(int round)

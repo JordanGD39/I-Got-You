@@ -322,7 +322,7 @@ public class PlayerShoot : MonoBehaviourPun
 
                 if (bulletCount == 0)
                 {
-                    playerUI.ShowHitMarker(hit.point);
+                    playerUI.ShowHitMarker(hit.point, false);
                 }                
             }
             else if (hit.collider.gameObject.CompareTag("HeadEnemyCol"))
@@ -331,7 +331,7 @@ public class PlayerShoot : MonoBehaviourPun
 
                 if (bulletCount == 0)
                 {
-                    playerUI.ShowHitMarker(hit.point);
+                    playerUI.ShowHitMarker(hit.point, true);
                 }
             }
         }
