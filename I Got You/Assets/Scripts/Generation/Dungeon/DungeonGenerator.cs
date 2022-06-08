@@ -364,6 +364,11 @@ public class DungeonGenerator : MonoBehaviourPun
             tile.CheckSurroundings(dungeonGrid, this, true);
         }
 
+        foreach (var item in dungeonGrid.Grid)
+        {
+            Destroy(item.Value.gameObject);
+        }
+
         OnGenerationDone?.Invoke();
     }
 
