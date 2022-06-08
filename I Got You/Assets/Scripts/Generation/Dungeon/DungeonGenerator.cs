@@ -320,6 +320,7 @@ public class DungeonGenerator : MonoBehaviourPun
             Debug.Log("Placing hallways");
             GameObject hallway = Instantiate(hallwayPrefab, new Vector3(pos.x, 0, pos.y), Quaternion.identity);
             HallwayTile tile = hallway.GetComponent<HallwayTile>();
+            tile.CheckSurroundings(dungeonGrid, this, true);
             tilesToCheck.Add(tile);
         }
 
@@ -347,6 +348,7 @@ public class DungeonGenerator : MonoBehaviourPun
 
                     GameObject hallway = Instantiate(hallwayPrefab, openingPos, Quaternion.identity);
                     HallwayTile tile = hallway.GetComponent<HallwayTile>();
+                    tile.CheckSurroundings(dungeonGrid, this, true);
                     tilesToCheck.Add(tile);
                     placedHallwaysPos.Add(openingPos);
 
