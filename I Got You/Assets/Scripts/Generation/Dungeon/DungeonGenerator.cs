@@ -50,7 +50,13 @@ public class DungeonGenerator : MonoBehaviourPun
     private int seed = 0;
     private bool seedChosen = false;
 
+    public delegate void HallwaysMade();
+    public HallwaysMade OnHallwaysMade;
+    private bool hallwaysMade = false;
+
     private List<Player> playersToSendDataTo = new List<Player>();
+    private List<Player> playersToSendDataToHallway = new List<Player>();
+    private List<Vector2Int> tilesToSend;
 
     // Start is called before the first frame update
     void Start()
@@ -239,7 +245,6 @@ public class DungeonGenerator : MonoBehaviourPun
         Triangulate();
 
         primMinimumSpanningTree.StartCreationOfMinimumSpanningTree(mesh);
-
         List<GridNode> allHallwayNodes = new List<GridNode>();
 
         foreach (PrimEdge edge in primMinimumSpanningTree.MinimumSpanningTree)
@@ -247,9 +252,15 @@ public class DungeonGenerator : MonoBehaviourPun
             Vector3 pos = primMinimumSpanningTree.AllPoints[edge.startNode];
             Vector3 targetPos = primMinimumSpanningTree.AllPoints[edge.endNode];
 
-            List<GridNode> gridNodes = 
-                aStarPathFinding.FindPath(ChooseDoor(roomsDictionary[pos], targetPos), 
-                ChooseDoor(roomsDictionary[targetPos], pos), currentWallToRemove);
+            DungeonCell startingCell = ChooseDoor(roomsDictionary[pos], targetPos);
+            DungeonCell endCell = ChooseDoor(roomsDictionary[targetPos], targetPos);
+
+            if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
+            {
+                continue;
+            }
+
+            List<GridNode> gridNodes = aStarPathFinding.FindPath(startingCell, endCell, currentWallToRemove);
 
             if (gridNodes != null)
             {
@@ -262,7 +273,89 @@ public class DungeonGenerator : MonoBehaviourPun
             }
         }
 
+        if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
+        {
+            return;
+        }
+
         CreateHallways(allHallwayNodes);
+        OnGenerationDone?.Invoke();
+    }
+
+    [PunRPC]
+    void RequestHallwayData(byte playerIndex)
+    {
+        playersToSendDataToHallway.Add(PhotonNetwork.PlayerList[playerIndex - 1]);
+
+        if (seedChosen)
+        {
+            SendHallwayDataToOthers();
+        }
+        else
+        {
+            OnSeedChosen += SendHallwayDataToOthers;
+        }
+    }
+
+    private void SendHallwayDataToOthers()
+    {
+        foreach (Player player in playersToSendDataToHallway)
+        {
+            photonView.RPC("CreateHallwayOthers", player, tilesToSend.ToArray());
+        }
+
+        playersToSendDataToHallway.Clear();
+    }
+
+    [PunRPC]
+    void CreateHallwayOthers(Vector2Int[] hallwayPos)
+    {
+        foreach (Vector2Int pos in hallwayPos)
+        {
+            GameObject hallway = Instantiate(hallwayPrefab, new Vector3(pos.x, 0, pos.y), Quaternion.identity);
+            HallwayTile tile = hallway.GetComponent<HallwayTile>();
+            tile.CheckSurroundings(dungeonGrid, this, false);
+        }
+
+        foreach (GenerationRoomData generationRoomData in rooms)
+        {
+            List<Transform> chosenOpenings = generationRoomData.ChosenOpenings.Distinct().ToList();
+
+            for (int i = 0; i < generationRoomData.Openings.Length; i++)
+            {
+                Transform opening = generationRoomData.Openings[i];
+
+                if (!generationRoomData.ChosenOpenings.Contains(opening))
+                {
+                    continue;
+                }
+
+                for (int j = 0; j < opening.childCount; j++)
+                {
+                    Vector3 openingPos = opening.GetChild(j).transform.position;
+
+                    if (placedHallwaysPos.Contains(openingPos))
+                    {
+                        continue;
+                    }
+
+                    GameObject hallway = Instantiate(hallwayPrefab, openingPos, Quaternion.identity);
+                    HallwayTile tile = hallway.GetComponent<HallwayTile>();
+                    tile.CheckSurroundings(dungeonGrid, this, true);
+                    placedHallwaysPos.Add(openingPos);
+
+                    DungeonCell cell;
+
+                    if (dungeonGrid.Grid.TryGetValue(new Vector2Int(Mathf.RoundToInt(openingPos.x), Mathf.RoundToInt(openingPos.z)), out cell))
+                    {
+                        cell.cellType = DungeonCell.CellTypes.HALLWAY;
+                        cell.extraWallRemoval = generationRoomData.WallToRemove[i];
+                        tile.RemoveWall(cell.extraWallRemoval);
+                    }
+                }
+            }
+        }
+
         OnGenerationDone?.Invoke();
     }
 
@@ -271,6 +364,7 @@ public class DungeonGenerator : MonoBehaviourPun
         allHallwayNodes = allHallwayNodes.Distinct().ToList();
 
         List<HallwayTile> tilesToRecheck = new List<HallwayTile>();
+        tilesToSend = new List<Vector2Int>();
 
         foreach (GridNode node in allHallwayNodes)
         {
@@ -284,6 +378,7 @@ public class DungeonGenerator : MonoBehaviourPun
             tile.CheckSurroundings(dungeonGrid, this, false);
 
             tilesToRecheck.Add(tile);
+            tilesToSend.Add(new Vector2Int(Mathf.RoundToInt(tile.transform.position.x), Mathf.RoundToInt(tile.transform.position.y)));
             placedHallwaysPos.Add(node.dungeonCell.transform.position);
         }
 
@@ -299,6 +394,7 @@ public class DungeonGenerator : MonoBehaviourPun
             tile.CheckSurroundings(dungeonGrid, this, true);
             placedHallwaysPos.Add(cell.transform.position);
             tilesToRecheck.Add(tile);
+            tilesToSend.Add(new Vector2Int(Mathf.RoundToInt(tile.transform.position.x), Mathf.RoundToInt(tile.transform.position.y)));
         }
 
         foreach (GenerationRoomData generationRoomData in rooms)
@@ -354,6 +450,8 @@ public class DungeonGenerator : MonoBehaviourPun
         }
 
         dungeonGrid.Grid.Clear();
+
+        OnHallwaysMade?.Invoke();
     }
 
     private DungeonCell ChooseDoor(GameObject currentRoom, Vector3 targetPos)
