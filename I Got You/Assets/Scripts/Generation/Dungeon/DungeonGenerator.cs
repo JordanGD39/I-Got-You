@@ -311,11 +311,11 @@ public class DungeonGenerator : MonoBehaviourPun
     }
 
     [PunRPC]
-    void CreateHallwayOthers(Vector2Int[] hallwayPos)
+    void CreateHallwayOthers(Vector2[] hallwayPos)
     {
         List<HallwayTile> tilesToCheck = new List<HallwayTile>();
 
-        foreach (Vector2Int pos in hallwayPos)
+        foreach (Vector2 pos in hallwayPos)
         {
             Debug.Log("Placing hallways");
             GameObject hallway = Instantiate(hallwayPrefab, new Vector3(pos.x, 0, pos.y), Quaternion.identity);
