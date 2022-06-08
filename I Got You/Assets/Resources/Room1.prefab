@@ -13881,6 +13881,14 @@ PrefabInstance:
       propertyPath: roomManager
       value: 
       objectReference: {fileID: 7855538103156852667}
+    - target: {fileID: 3491110880519953451, guid: 8f1cb908a3c750a41a334e5ae526402a, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4259039372878742955, guid: 8f1cb908a3c750a41a334e5ae526402a, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7879402130477486988, guid: 8f1cb908a3c750a41a334e5ae526402a, type: 3}
       propertyPath: m_Name
       value: Stop the clock
