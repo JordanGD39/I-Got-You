@@ -261,6 +261,17 @@ public class PlayerShoot : MonoBehaviourPun
         foreach (EnemyStats enemy in damageToEnemies.Keys)
         {
             DamageInfo damageInfo = damageToEnemies[enemy];
+
+            if (playerStats.TankTauntScript != null && !playerStats.TankTauntScript.Taunting)
+            {
+                playerStats.TankTauntScript.AddCharge(damageInfo.weakspot ? 0.02f : 0.01f);
+            }
+
+            if (playerStats.SupportBurstHealScript != null)
+            {
+                playerStats.SupportBurstHealScript.AddCharge(damageInfo.weakspot ? 0.06f : 0.03f);
+            }
+
             enemy.Damage(damageInfo.damage, damageInfo.direction);
         }
     }
@@ -342,6 +353,7 @@ public class PlayerShoot : MonoBehaviourPun
         DamageInfo damageInfo = new DamageInfo();
         damageInfo.damage = Mathf.RoundToInt(currentGun.Damage * damageMultiplier * shootingDamageMultiplier);
         damageInfo.direction = dir;
+        damageInfo.weakspot = headShot;
 
         damageToEnemies.Add(enemyManager.StatsOfAllEnemies[enemyRoot], damageInfo);
     }
@@ -583,4 +595,5 @@ public class DamageInfo
 {
     public int damage = 0;
     public Vector3 direction = Vector3.zero;
+    public bool weakspot = false;
 }

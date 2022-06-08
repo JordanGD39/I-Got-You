@@ -8,6 +8,7 @@ public class ScoutAnalyze : MonoBehaviourPun
     private GameObject analyzeVolume;
     private EnemyManager enemyManager;
     private PlayerShoot playerShoot;
+    private PlayerUI playerUI;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,8 @@ public class ScoutAnalyze : MonoBehaviourPun
         analyzeVolume.SetActive(false);
         enemyManager = FindObjectOfType<EnemyManager>();
         playerShoot = GetComponent<PlayerShoot>();
+        playerUI = FindObjectOfType<PlayerUI>();
+        playerUI.UpdateAbility(0, 1, 1);
     }
 
     // Update is called once per frame

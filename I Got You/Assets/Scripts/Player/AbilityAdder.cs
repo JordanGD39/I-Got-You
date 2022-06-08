@@ -5,6 +5,8 @@ using Photon.Pun;
 public class AbilityAdder : MonoBehaviourPun
 {
     private PlayerStats playerStats;
+    [SerializeField] private GameObject tankShields;
+    [SerializeField] private GameObject burstArea;
 
     // Start is called before the first frame update
     void Start()
@@ -32,8 +34,14 @@ public class AbilityAdder : MonoBehaviourPun
                 gameObject.AddComponent<ScoutAnalyze>();
                 break;
             case PlayerStats.ClassNames.TANK:
+                TankTaunt tankTaunt = gameObject.AddComponent<TankTaunt>();
+                tankTaunt.TankShields = tankShields;
+                tankShields.SetActive(false);
                 break;
             case PlayerStats.ClassNames.SUPPORT:
+                SupportBurstHeal supportBurstHeal = gameObject.AddComponent<SupportBurstHeal>();
+                supportBurstHeal.BurstArea = burstArea;
+                burstArea.SetActive(false);
                 break;
             case PlayerStats.ClassNames.BOMBER:
                 break;

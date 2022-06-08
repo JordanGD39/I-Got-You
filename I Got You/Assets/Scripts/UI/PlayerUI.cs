@@ -26,6 +26,8 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private GameObject interactPanel;
     [SerializeField] private TextMeshProUGUI interactText;
     [SerializeField] private Image circleRevive;
+    [SerializeField] private Image[] abilities;
+    [SerializeField] private TextMeshProUGUI abilityText;
     //private Vector2 uiOffset;
 
     private int itemCount = 0;
@@ -38,6 +40,12 @@ public class PlayerUI : MonoBehaviour
         errorPopup.SetActive(false);
         interactPanel.SetActive(false);
         circleRevive.gameObject.SetActive(false);
+        abilityText.gameObject.SetActive(false);
+
+        foreach (Image image in abilities)
+        {
+            image.transform.parent.gameObject.SetActive(false);
+        }
     }
 
     private void Update()
@@ -143,6 +151,18 @@ public class PlayerUI : MonoBehaviour
     public void HideInteractPanel()
     {
         interactPanel.SetActive(false);
+    }
+
+    public void UpdateAbility(int abilityIndex, float currentCharge, float maxCharge)
+    {
+        Image image = abilities[abilityIndex];
+        image.transform.parent.gameObject.SetActive(true);
+        image.fillAmount = currentCharge / maxCharge;
+
+        string abilityButton = usingController ? "R1" : "E";
+
+        abilityText.text = abilityButton;
+        abilityText.gameObject.SetActive(currentCharge >= maxCharge);
     }
 
     public void ShowHitMarker(Vector3 objectTransformPosition)

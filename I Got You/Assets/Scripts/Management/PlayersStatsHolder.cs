@@ -41,4 +41,5 @@ public class SavedPlayerStats
     public GunObject[] guns = new GunObject[2];
     public int[] ammo = new int[2];
     public int health = 100;
+    public float abilityCharge = 0;
 }

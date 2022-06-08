@@ -7,6 +7,7 @@ using Photon.Pun;
 public class PlayerHealing : MonoBehaviourPun
 {
     [SerializeField] private int healingItems = 0;
+    public int HealingItems { get { return healingItems; } }
     [SerializeField] private int maxHealthItems = 2;
     [SerializeField] private float healDelay = 2;
     [SerializeField] private int startingHealthGain = 60;
@@ -173,5 +174,30 @@ public class PlayerHealing : MonoBehaviourPun
         {
             photonView.RPC("StopEffectOthers", RpcTarget.Others);
         }
+    }
+
+    public void RemoveSoup(int amount)
+    {
+        healthGain -= amount;
+
+        if (healthGain <= 0)
+        {
+            healthGain = 0;
+            healingItems--;
+            playerUI.UpdateHealthItemCount(healingItems);
+        }
+    }
+
+    public void PlayDrinkEffect()
+    {
+        drinkEffect.gameObject.SetActive(true);
+        drinkEffect.Play();
+
+        Invoke(nameof(StopDrinkEffect), 0.5f);
+    }
+
+    public void StopDrinkEffect()
+    {
+        drinkEffect.Stop();
     }
 }

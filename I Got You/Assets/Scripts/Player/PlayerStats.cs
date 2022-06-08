@@ -40,6 +40,7 @@ public class PlayerStats : MonoBehaviourPun
     public List<InteractableObject> InventoryOfInteractables { get { return inventoryOfInteractables; } }
 
     public TankTaunt TankTauntScript { get; set; } = null;
+    public SupportBurstHeal SupportBurstHealScript { get; set; } = null;
 
     private void Awake()
     {
@@ -162,9 +163,21 @@ public class PlayerStats : MonoBehaviourPun
 
         playerUI.ShowBloodScreen();
 
-        if (TankTauntScript != null && TankTauntScript.Taunting)
+        if (TankTauntScript != null)
         {
-            dmg = Mathf.RoundToInt((float)dmg * TankTauntScript.DamageMultiplier);
+            if (TankTauntScript.Taunting)
+            {
+                dmg = Mathf.RoundToInt((float)dmg * TankTauntScript.DamageMultiplier);
+            }
+            else
+            {
+                TankTauntScript.AddCharge(0.005f);
+            }
+        }
+
+        if (SupportBurstHealScript != null)
+        {
+            SupportBurstHealScript.AddCharge(0.02f);
         }
 
         if (isDown)
@@ -288,6 +301,16 @@ public class PlayerStats : MonoBehaviourPun
         savedStats.guns[1] = PlayerShootScript.SecondaryGun;
         savedStats.ammo[0] = PlayerShootScript.CurrentAmmo;
         savedStats.ammo[1] = PlayerShootScript.CurrentSecondaryAmmo;
+
+        if (TankTauntScript != null)
+        {
+            savedStats.abilityCharge = TankTauntScript.Charge;
+        }
+
+        if (SupportBurstHealScript != null)
+        {
+            savedStats.abilityCharge = SupportBurstHealScript.Charge;
+        }
 
         PlayersStatsHolder playersStatsHolder = PlayersStatsHolder.instance;
 
