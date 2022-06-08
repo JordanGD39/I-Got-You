@@ -21,6 +21,12 @@ public class TankTaunt : MonoBehaviourPun
     {
         GetComponent<PlayerStats>().TankTauntScript = this;
         enemyManager = FindObjectOfType<EnemyManager>();
+
+        if (PhotonNetwork.IsConnected && !photonView.IsMine)
+        {
+            return;
+        }
+
         playerUI = FindObjectOfType<PlayerUI>();
 
         if (PlayersStatsHolder.instance.PlayerStatsSaved.Length > 0 && PlayersStatsHolder.instance.PlayerStatsSaved[!PhotonNetwork.IsConnected ? 0 : photonView.OwnerActorNr - 1] != null)

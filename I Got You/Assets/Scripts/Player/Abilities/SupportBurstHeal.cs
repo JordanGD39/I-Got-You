@@ -17,6 +17,11 @@ public class SupportBurstHeal : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
+        if (PhotonNetwork.IsConnected && !photonView.IsMine)
+        {
+            return;
+        }
+
         GetComponent<PlayerStats>().SupportBurstHealScript = this;
         playerUI = FindObjectOfType<PlayerUI>();
         playerHealing = GetComponent<PlayerHealing>();
