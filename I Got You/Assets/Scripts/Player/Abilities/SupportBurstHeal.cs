@@ -6,7 +6,7 @@ using Photon.Pun;
 public class SupportBurstHeal : MonoBehaviourPun
 {
     private int soupToRemove = 40;
-    private float charge = 0;
+    [SerializeField] private float charge = 0;
     public float Charge { get { return charge; } }
     public GameObject BurstArea { get; set; } = null;
     private HealSphere healSphere;

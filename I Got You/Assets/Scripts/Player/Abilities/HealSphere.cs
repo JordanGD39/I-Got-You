@@ -39,7 +39,7 @@ public class HealSphere : MonoBehaviour
 
     private void DoneChecking()
     {
-        OnFoundAllInRange?.Invoke(playersInRange);
+        OnFoundAllInRange?.Invoke(new List<PlayerStats>(playersInRange));
         playersInRange.Clear();
     }
 }
