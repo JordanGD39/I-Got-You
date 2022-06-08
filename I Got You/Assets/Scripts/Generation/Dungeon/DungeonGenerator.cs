@@ -347,7 +347,7 @@ public class DungeonGenerator : MonoBehaviourPun
 
                     GameObject hallway = Instantiate(hallwayPrefab, openingPos, Quaternion.identity);
                     HallwayTile tile = hallway.GetComponent<HallwayTile>();
-                    tile.CheckSurroundings(dungeonGrid, this, true);
+                    tilesToCheck.Add(tile);
                     placedHallwaysPos.Add(openingPos);
 
                     DungeonCell cell;
