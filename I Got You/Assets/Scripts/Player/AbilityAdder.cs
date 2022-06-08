@@ -37,9 +37,10 @@ public class AbilityAdder : MonoBehaviourPun
                 break;
         }
 
-        if (playerStats.CurrentClass != PlayerStats.ClassNames.SCOUT)
+        if (playerStats.CurrentClass != PlayerStats.ClassNames.SCOUT && photonView.IsMine)
         {
-            GameObject.FindGameObjectWithTag("ScoutVolume").SetActive(false);
+            GameObject scoutVolume = GameObject.FindGameObjectWithTag("ScoutVolume");
+            scoutVolume.SetActive(false);
         }
     }
 }
