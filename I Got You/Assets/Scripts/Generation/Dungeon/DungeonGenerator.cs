@@ -396,7 +396,7 @@ public class DungeonGenerator : MonoBehaviourPun
             tile.CheckSurroundings(dungeonGrid, this, false);
 
             tilesToRecheck.Add(tile);
-            tilesToSend.Add(new Vector2Int(Mathf.RoundToInt(tile.transform.position.x), Mathf.RoundToInt(tile.transform.position.y)));
+            tilesToSend.Add(new Vector2Int(Mathf.RoundToInt(tile.transform.position.x), Mathf.RoundToInt(tile.transform.position.z)));
             placedHallwaysPos.Add(node.dungeonCell.transform.position);
         }
 
@@ -412,7 +412,7 @@ public class DungeonGenerator : MonoBehaviourPun
             tile.CheckSurroundings(dungeonGrid, this, true);
             placedHallwaysPos.Add(cell.transform.position);
             tilesToRecheck.Add(tile);
-            tilesToSend.Add(new Vector2Int(Mathf.RoundToInt(tile.transform.position.x), Mathf.RoundToInt(tile.transform.position.y)));
+            tilesToSend.Add(new Vector2Int(Mathf.RoundToInt(tile.transform.position.x), Mathf.RoundToInt(tile.transform.position.z)));
         }
 
         foreach (GenerationRoomData generationRoomData in rooms)
