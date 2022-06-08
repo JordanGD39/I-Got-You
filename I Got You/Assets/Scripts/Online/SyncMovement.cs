@@ -116,5 +116,11 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
         transform.position = syncPos;
         transform.rotation = Quaternion.Euler(syncRot);
         model.SetActive(true);
+        ChasePlayerAI chasePlayerAI = GetComponent<ChasePlayerAI>();
+
+        if (chasePlayerAI != null)
+        {
+            chasePlayerAI.StartFadeIn();
+        }
     }
 }

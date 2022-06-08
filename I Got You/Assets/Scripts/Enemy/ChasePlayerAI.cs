@@ -36,8 +36,7 @@ public class ChasePlayerAI : MonoBehaviour
     {
         if (skinnedMeshRenderer != null)
         {
-            skinnedMeshRenderer.material = normalMat;
-            StartCoroutine(nameof(FadeInEnemy));
+            StartFadeIn();
         }
         else
         {
@@ -56,6 +55,12 @@ public class ChasePlayerAI : MonoBehaviour
         
         agent = GetComponent<NavMeshAgent>();
         startingAvoidancePriority = agent.avoidancePriority;
+    }
+
+    public void StartFadeIn()
+    {
+        skinnedMeshRenderer.material = normalMat;
+        StartCoroutine(nameof(FadeInEnemy));
     }
 
     private IEnumerator FadeInEnemy()
