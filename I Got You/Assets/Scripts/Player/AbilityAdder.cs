@@ -18,11 +18,6 @@ public class AbilityAdder : MonoBehaviourPun
 
     private void AddAbility()
     {
-        if (playerStats.CurrentClass != PlayerStats.ClassNames.SCOUT)
-        {
-            GameObject.FindGameObjectWithTag("ScoutVolume").SetActive(false);
-        }
-
         switch (playerStats.CurrentClass)
         {
             case PlayerStats.ClassNames.SCOUT:
@@ -40,6 +35,11 @@ public class AbilityAdder : MonoBehaviourPun
                 break;
             case PlayerStats.ClassNames.BOMBER:
                 break;
+        }
+
+        if (playerStats.CurrentClass != PlayerStats.ClassNames.SCOUT)
+        {
+            GameObject.FindGameObjectWithTag("ScoutVolume").SetActive(false);
         }
     }
 }
