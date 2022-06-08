@@ -1,32 +1,8 @@
 fileFormatVersion: 2
-guid: 5ff52aefa66099a4d9506269596ebe93
+guid: eaad98eb72356dd4c914d32e7a3cbfe3
 ModelImporter:
   serializedVersion: 20200
-  internalIDToNameTable:
-  - first:
-      74: 904056126367743141
-    second: E.A.T. Run
-  - first:
-      74: 7616062892375561756
-    second: E.A.T. Idle 1
-  - first:
-      74: 5662459506405742735
-    second: E.A.T. Idle 2
-  - first:
-      74: 4292140191828594523
-    second: E.A.T. Idle 3
-  - first:
-      74: 4870711797706878313
-    second: E.A.T. Attack Antic
-  - first:
-      74: 858326478076967711
-    second: E.A.T. Attack
-  - first:
-      74: -3728772635194586921
-    second: E.A.T. Attack Recover
-  - first:
-      74: 1827226128182048838
-    second: Take 001
+  internalIDToNameTable: []
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -58,7 +34,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 25
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -109,7 +85,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 25
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
