@@ -86,6 +86,11 @@ public class ChasePlayerAI : MonoBehaviour
             return;
         }
 
+        if (skinnedMeshRenderer.material != normalMat)
+        {
+            skinnedMeshRenderer.material = normalMat;
+        }
+
         if (playerManager.Players.Count == 0)
         {
             return;
