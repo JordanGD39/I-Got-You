@@ -275,6 +275,7 @@ public class DungeonGenerator : MonoBehaviourPun
 
         if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
         {
+            Debug.Log("Requesting hallways");
             photonView.RPC("RequestHallwayData", RpcTarget.MasterClient, (byte)(PhotonNetwork.LocalPlayer.ActorNumber - 1));
             return;
         }
@@ -302,6 +303,7 @@ public class DungeonGenerator : MonoBehaviourPun
     {
         foreach (Player player in playersToSendDataToHallway)
         {
+            Debug.Log("Sending hallways");
             photonView.RPC("CreateHallwayOthers", player, tilesToSend.ToArray());
         }
 
@@ -315,6 +317,7 @@ public class DungeonGenerator : MonoBehaviourPun
 
         foreach (Vector2Int pos in hallwayPos)
         {
+            Debug.Log("Placing hallways");
             GameObject hallway = Instantiate(hallwayPrefab, new Vector3(pos.x, 0, pos.y), Quaternion.identity);
             HallwayTile tile = hallway.GetComponent<HallwayTile>();
             tilesToCheck.Add(tile);
@@ -466,8 +469,8 @@ public class DungeonGenerator : MonoBehaviourPun
 
         dungeonGrid.Grid.Clear();
 
-        OnHallwaysMade?.Invoke();
         hallwaysMade = true;
+        OnHallwaysMade?.Invoke();
     }
 
     private DungeonCell ChooseDoor(GameObject currentRoom, Vector3 targetPos)
