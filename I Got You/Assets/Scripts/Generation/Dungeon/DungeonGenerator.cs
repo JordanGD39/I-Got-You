@@ -56,7 +56,7 @@ public class DungeonGenerator : MonoBehaviourPun
 
     private List<Player> playersToSendDataTo = new List<Player>();
     private List<Player> playersToSendDataToHallway = new List<Player>();
-    private List<Vector2Int> tilesToSend;
+    private List<Vector2> tilesToSend;
 
     // Start is called before the first frame update
     void Start()
@@ -382,7 +382,7 @@ public class DungeonGenerator : MonoBehaviourPun
         allHallwayNodes = allHallwayNodes.Distinct().ToList();
 
         List<HallwayTile> tilesToRecheck = new List<HallwayTile>();
-        tilesToSend = new List<Vector2Int>();
+        tilesToSend = new List<Vector2>();
 
         foreach (GridNode node in allHallwayNodes)
         {
