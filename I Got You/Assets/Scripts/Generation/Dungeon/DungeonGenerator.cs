@@ -311,11 +311,13 @@ public class DungeonGenerator : MonoBehaviourPun
     [PunRPC]
     void CreateHallwayOthers(Vector2Int[] hallwayPos)
     {
+        List<HallwayTile> tilesToCheck = new List<HallwayTile>();
+
         foreach (Vector2Int pos in hallwayPos)
         {
             GameObject hallway = Instantiate(hallwayPrefab, new Vector3(pos.x, 0, pos.y), Quaternion.identity);
             HallwayTile tile = hallway.GetComponent<HallwayTile>();
-            tile.CheckSurroundings(dungeonGrid, this, false);
+            tilesToCheck.Add(tile);
         }
 
         foreach (GenerationRoomData generationRoomData in rooms)
@@ -355,6 +357,11 @@ public class DungeonGenerator : MonoBehaviourPun
                     }
                 }
             }
+        }
+
+        foreach (HallwayTile tile in tilesToCheck)
+        {
+            tile.CheckSurroundings(dungeonGrid, this, true);
         }
 
         OnGenerationDone?.Invoke();
