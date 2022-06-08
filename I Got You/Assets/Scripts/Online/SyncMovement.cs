@@ -102,11 +102,6 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
             transform.position = Vector3.Lerp(transform.position, syncPos, lerpPosSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(syncRot), lerpRotSpeed * Time.deltaTime);
 
-            if (animator != null && !teleport)
-            {
-                animator.SetFloat("Speed", (transform.position - prevPos).magnitude / Time.deltaTime);
-            }
-
             prevPos = transform.position;
         }
     }
