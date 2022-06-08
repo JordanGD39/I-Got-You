@@ -597,6 +597,31 @@ public class PlayerShoot : MonoBehaviourPun
             weaponsHolder = FindObjectOfType<WeaponsHolder>();
         }
 
+        if (weaponReference.Count == 0)
+        {
+            foreach (GunHolder item in GetComponentsInChildren<GunHolder>(true))
+            {
+                weaponReference.Add(item.OwningGun.name, item);
+                if (weaponReference.Count > 0)
+                {
+                    if (!photonView.IsMine)
+                    {
+                        item.gameObject.layer = 3;
+
+                        foreach (Transform child in item.GetComponentsInChildren<Transform>(true))
+                        {
+                            child.gameObject.layer = 3;
+                        }
+                    }
+                }
+
+                if (weaponReference.Count > 1)
+                {
+                    item.gameObject.SetActive(false);
+                }
+            }
+        }
+
         currentGun = primary ? weaponsHolder.PrimaryGuns[weaponIndex] : weaponsHolder.SecondaryGuns[weaponIndex];
 
         if (currentGunHolder != null)
