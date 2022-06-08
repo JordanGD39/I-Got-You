@@ -9,6 +9,7 @@ TagManager:
   - PlayerCol
   - ScoutVolume
   - ExcludeGround
+  - StartingRoom
   layers:
   - Default
   - TransparentFX
@@ -23,9 +24,9 @@ TagManager:
   - DontRender
   - Ground
   - Icon
-  - 
-  - 
-  - 
+  - Map
+  - NoNavmeshGround
+  - NavmeshOnly
   - 
   - 
   - 

@@ -10,6 +10,7 @@ public class SpawnPlayerOnNetwork : MonoBehaviourPun
     [SerializeField] private Vector3 minPos;
     [SerializeField] private Vector3 maxPos;
     private PlayerManager playerManager;
+    private DungeonGenerator dungeonGenerator;
 
     // Start is called before the first frame update
     void Start()
@@ -18,34 +19,31 @@ public class SpawnPlayerOnNetwork : MonoBehaviourPun
         {
             playerManager = GetComponent<PlayerManager>();
         }
-        PlayerStats playerStats;
 
-        if (!PhotonFunctionHandler.IsPlayerOnline())
+        dungeonGenerator = FindObjectOfType<DungeonGenerator>();
+
+        if (dungeonGenerator.StartingRoom == null)
         {
-            playerOffline.SetActive(true);
-
-            playerStats = playerOffline.GetComponent<PlayerStats>();
-
-            playerManager.Players.Add(playerStats);
-            playerManager.PlayersInGame.Add(playerStats);
-            playerManager.StatsOfAllPlayers.Add(playerOffline.GetComponentInChildren<CapsuleCollider>(), playerStats);
-            return;
+            if (PhotonNetwork.IsConnected)
+            {
+                dungeonGenerator.OnGenerationDone += PlaceOnlinePlayer;
+            }
+            else
+            {
+                dungeonGenerator.OnGenerationDone += PlaceOfflinePlayer;
+            }
         }
-
-        Vector3 randomPos = new Vector3(Random.Range(minPos.x, maxPos.x), 1, Random.Range(minPos.z, maxPos.z));
-        GameObject player = PhotonNetwork.Instantiate(playerPrefab.name, randomPos, Quaternion.identity);
-
-        playerStats = player.GetComponent<PlayerStats>();
-
-        playerManager.Players.Add(playerStats);
-        playerManager.PlayersInGame.Add(playerStats);
-
-        Debug.Log(player.GetComponentInChildren<CapsuleCollider>());
-
-        playerManager.StatsOfAllPlayers.Add(player.GetComponentInChildren<CapsuleCollider>(), playerStats);
-        int photonId = player.GetComponent<PhotonView>().ViewID;
-
-        photonView.RPC("AddPlayerToManager", RpcTarget.OthersBuffered, photonId);
+        else
+        {
+            if (PhotonNetwork.IsConnected)
+            {
+                PlaceOnlinePlayer();
+            }
+            else
+            {
+                PlaceOfflinePlayer();
+            }
+        }
     }
 
     [PunRPC]
@@ -61,5 +59,39 @@ public class SpawnPlayerOnNetwork : MonoBehaviourPun
         playerManager.Players.Add(playerStats);
         playerManager.PlayersInGame.Add(playerStats);
         playerManager.StatsOfAllPlayers.Add(playerStats.GetComponentInChildren<CapsuleCollider>(), playerStats);
+    }
+
+    private void PlaceOfflinePlayer()
+    {
+        Vector3 randomPos = new Vector3(Random.Range(minPos.x, maxPos.x), 1, Random.Range(minPos.z, maxPos.z));
+
+        playerOffline.transform.position = dungeonGenerator.StartingRoom.transform.position + randomPos;
+
+        playerOffline.SetActive(true);
+
+        PlayerStats playerStats = playerOffline.GetComponent<PlayerStats>();
+        playerManager.LocalPlayer = playerStats;
+
+        playerManager.Players.Add(playerStats);
+        playerManager.PlayersInGame.Add(playerStats);
+        playerManager.StatsOfAllPlayers.Add(playerOffline.GetComponentInChildren<CapsuleCollider>(), playerStats);
+    }
+
+    private void PlaceOnlinePlayer()
+    {
+        Vector3 startingRoomPos = dungeonGenerator.StartingRoom.transform.position;
+        Vector3 randomPos = new Vector3(Random.Range(minPos.x, maxPos.x), 1, Random.Range(minPos.z, maxPos.z));
+        GameObject player = PhotonNetwork.Instantiate(playerPrefab.name, startingRoomPos + randomPos, Quaternion.identity);
+
+        PlayerStats playerStats = player.GetComponent<PlayerStats>();
+        playerManager.LocalPlayer = playerStats;
+
+        playerManager.Players.Add(playerStats);
+        playerManager.PlayersInGame.Add(playerStats);
+
+        playerManager.StatsOfAllPlayers.Add(player.GetComponentInChildren<CapsuleCollider>(), playerStats);
+        int photonId = player.GetComponent<PhotonView>().ViewID;
+
+        photonView.RPC("AddPlayerToManager", RpcTarget.OthersBuffered, photonId);
     }
 }

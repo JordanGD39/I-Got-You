@@ -125,6 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8dea07d9c8723942847e335c10ddda8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onlyForDeath: 0
 --- !u!1 &615900521100986864
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,6 +142,7 @@ GameObject:
   - component: {fileID: 8446402261544813549}
   - component: {fileID: 8459402345535183903}
   - component: {fileID: 8492645322141974620}
+  - component: {fileID: 6944613078866055459}
   m_Layer: 6
   m_Name: EAT
   m_TagString: Untagged
@@ -190,7 +192,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.58
-  m_Speed: 10
+  m_Speed: 6
   m_Acceleration: 30
   avoidancePriority: 50
   m_AngularSpeed: 999
@@ -222,6 +224,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 6323229354269772858}
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -240,9 +243,9 @@ MonoBehaviour:
   lerpPosSpeed: 5
   lerpRotSpeed: 5
   distanceToTeleport: 3
-  checkMasterClient: 0
+  checkMasterClient: 1
   model: {fileID: 4275329711273623453}
-  animator: {fileID: 4842886506046649266}
+  animator: {fileID: 0}
 --- !u!114 &8446402261544813549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,6 +261,13 @@ MonoBehaviour:
   startingHealth: 50
   health: 100
   damage: 999
+  invincible: 1
+  weaknesses: []
+  weaknessesRenderers: []
+  lootPrefab: {fileID: 0}
+  lootSpawnY: 0.021
+  lootSpawnChance: 5
+  healthDropChance: 30
 --- !u!114 &8459402345535183903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,14 +281,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyes: {fileID: 7297306680003065096}
-  target: {fileID: 0}
   viewDistance: 50
   fov: 105
   forgetPlayerTime: 3
   layerDetectPlayer:
     serializedVersion: 2
     m_Bits: 9
-  speedWhenSeeing: 12
+  speedWhenSeeing: 8
   rotSpeedWhenSeeing: 999
   standStillTime: 0
 --- !u!114 &8492645322141974620
@@ -297,7 +306,25 @@ MonoBehaviour:
   distanceToAttack: 2
   distanceToStop: 1.25
   turnSpeed: 5
+  fadeDelay: 0.1
+  fadeTime: 3
+  normalMat: {fileID: 0}
+  fadeMat: {fileID: 0}
+  skinnedMeshRenderer: {fileID: 0}
+  fadedIn: 0
   animsDone: 0
+--- !u!114 &6944613078866055459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615900521100986864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9ba8082f08c8e4dac976a9bcdd92f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3305885592032613717
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,8 +459,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1582283079376880872}
-  - component: {fileID: 4842886506046649266}
-  - component: {fileID: 4414307186922323882}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -458,37 +483,6 @@ Transform:
   m_Father: {fileID: 615900521100986867}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &4842886506046649266
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4275329711273623453}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 37ad1762c2461a648b91f6b3f724f04f, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4414307186922323882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4275329711273623453}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df1200b8986ac214aa4b9b9810696996, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8849038227018065581
 GameObject:
   m_ObjectHideFlags: 0
@@ -655,6 +649,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a2232b2d43919a345bb5310f5a49491c, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a2232b2d43919a345bb5310f5a49491c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a2232b2d43919a345bb5310f5a49491c, type: 3}
       propertyPath: m_TagString

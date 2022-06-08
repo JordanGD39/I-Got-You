@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
+using Photon.Pun;
 
-public class SettingsUI : MonoBehaviour
+public class SettingsUI : MonoBehaviourPun
 {
     [SerializeField] private Slider sensitivitySlider;
     [SerializeField] private TextMeshProUGUI sensitivityValueText;
@@ -24,5 +26,21 @@ public class SettingsUI : MonoBehaviour
         sensitivityValueText.text = val.ToString();
         PlayerPrefs.SetInt("Sensitivity", val);
         OnChangedSensitivity?.Invoke(val);
+    }
+
+    public void Disconnect()
+    {
+        LeaveRoom();
+    }
+
+    private void LeaveRoom()
+    {
+        if (PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.LeaveRoom();
+        }
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        SceneManager.LoadScene("Lobby");
     }
 }

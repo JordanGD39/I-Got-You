@@ -16,6 +16,7 @@ public class PlayerStats : MonoBehaviourPun
     [SerializeField] private int startingShieldHealth = 50;
     [SerializeField] private float regenDelay = 1;
     [SerializeField] private float regenSpeed = 0.25f;
+    [SerializeField] private float invincibilityTime = 1;
     [SerializeField] private Transform classModels;
     public Transform ClassModels { get { return classModels; } }
     public bool HasShieldHealth { get; set; } = false;
@@ -29,11 +30,17 @@ public class PlayerStats : MonoBehaviourPun
     private bool isDown = false;
     public bool IsDown { get { return isDown; } }
     public bool IsDead { get; set; } = false;
+    private bool invincible = false;
 
     public delegate void Interact(PlayerStats playerStats);
     public Interact OnInteract;
+    public delegate void InteractHoldStop(PlayerStats playerStats);
+    public InteractHoldStop OnInteractHoldStop;
     [SerializeField] private List<InteractableObject> inventoryOfInteractables = new List<InteractableObject>();
     public List<InteractableObject> InventoryOfInteractables { get { return inventoryOfInteractables; } }
+
+    public TankTaunt TankTauntScript { get; set; } = null;
+    public SupportBurstHeal SupportBurstHealScript { get; set; } = null;
 
     private void Awake()
     {
@@ -51,7 +58,23 @@ public class PlayerStats : MonoBehaviourPun
     private void Start()
     {
         shieldHealth = startingShieldHealth;
-        health = maxHealth;
+
+        SavedPlayerStats savedStats = null;
+
+        if (PlayersStatsHolder.instance.PlayerStatsSaved.Length > 0)
+        {
+            savedStats = PlayersStatsHolder.instance.PlayerStatsSaved[PhotonNetwork.IsConnected ? (photonView.OwnerActorNr - 1) : 0];
+        }        
+
+        if (savedStats == null)
+        {
+            health = maxHealth;
+        }
+        else
+        {
+            health = savedStats.health;
+        }
+
         currentMaxHealth = maxHealth;
         anim = GetComponentInChildren<Animator>();
         PlayerShootScript = GetComponent<PlayerShoot>();
@@ -73,9 +96,16 @@ public class PlayerStats : MonoBehaviourPun
             playerUI.UpdateHealth(health, maxHealth);
             //playerUI.UpdateMaxHealth(maxHealth);
             playerUI.UpdateShieldHealth(shieldHealth, startingShieldHealth);
-            playerUI.UpdateMaxShieldHealth(startingShieldHealth);
             playerRevive = GetComponent<PlayerRevive>();
         }      
+    }
+
+    private void Update()
+    {
+        if (photonView.IsMine && Input.GetButtonUp("Interact"))
+        {
+            OnInteractHoldStop?.Invoke(this);
+        }
     }
 
     public void PickUpInteractable(InteractableObject interactable)
@@ -99,7 +129,7 @@ public class PlayerStats : MonoBehaviourPun
 
         foreach (Transform child in obj.transform)
         {
-            if (child == null)
+            if (child == null || child.GetComponent<SpriteRenderer>() != null)
             {
                 continue;
             }
@@ -126,12 +156,29 @@ public class PlayerStats : MonoBehaviourPun
 
     public void Damage(int dmg)
     {
-        if (!photonView.IsMine)
+        if (!photonView.IsMine || invincible)
         {
             return;
         }
 
         playerUI.ShowBloodScreen();
+
+        if (TankTauntScript != null)
+        {
+            if (TankTauntScript.Taunting)
+            {
+                dmg = Mathf.RoundToInt((float)dmg * TankTauntScript.DamageMultiplier);
+            }
+            else
+            {
+                TankTauntScript.AddCharge(0.005f);
+            }
+        }
+
+        if (SupportBurstHealScript != null)
+        {
+            SupportBurstHealScript.AddCharge(0.02f);
+        }
 
         if (isDown)
         {
@@ -172,12 +219,50 @@ public class PlayerStats : MonoBehaviourPun
             health = 0;
             isDown = true;
             anim.SetBool("Down", true);
+
+            if (PhotonNetwork.IsConnected)
+            {
+                photonView.RPC("ShowDownOthers", RpcTarget.Others);
+            }
+
             playerRevive.StartTimer();
             StopCoroutine(nameof(StartShieldRegeneration));
             playerUI.UpdateShieldHealth(0, startingShieldHealth);
+            OnInteractHoldStop?.Invoke(this);
         }
 
         playerUI.UpdateHealth(health, maxHealth);
+    }
+
+    [PunRPC]
+    void ShowDownOthers()
+    {
+        anim.SetBool("Down", true);
+    }
+
+    public void Revived()
+    {
+        health = maxHealth;
+        shieldHealth = startingShieldHealth;
+        isDown = false;
+        anim.SetBool("Down", false);
+
+        if (photonView.IsMine)
+        {
+            invincible = true;
+            Invoke(nameof(RemoveInvincibility), invincibilityTime);
+
+            if (playerUI != null)
+            {
+                playerUI.UpdateHealth(health, maxHealth);
+                playerUI.UpdateShieldHealth(shieldHealth, startingShieldHealth);
+            }
+        }    
+    }
+
+    private void RemoveInvincibility()
+    {
+        invincible = false;
     }
 
     private IEnumerator StartShieldRegeneration()
@@ -206,5 +291,29 @@ public class PlayerStats : MonoBehaviourPun
         currentMaxHealth = Mathf.RoundToInt(maxHealth * (1 + (0.25f * (float)healthIncreaseCounter)));
 
         //playerUI.UpdateMaxHealth(currentMaxHealth);
+    }
+
+    public void SavePlayerStats()
+    {
+        SavedPlayerStats savedStats = new SavedPlayerStats();
+        savedStats.health = health;
+        savedStats.guns[0] = PlayerShootScript.CurrentGun;
+        savedStats.guns[1] = PlayerShootScript.SecondaryGun;
+        savedStats.ammo[0] = PlayerShootScript.CurrentAmmo;
+        savedStats.ammo[1] = PlayerShootScript.CurrentSecondaryAmmo;
+
+        if (TankTauntScript != null)
+        {
+            savedStats.abilityCharge = TankTauntScript.Charge;
+        }
+
+        if (SupportBurstHealScript != null)
+        {
+            savedStats.abilityCharge = SupportBurstHealScript.Charge;
+        }
+
+        PlayersStatsHolder playersStatsHolder = PlayersStatsHolder.instance;
+
+        playersStatsHolder.PlayerStatsSaved[PhotonNetwork.IsConnected ? (photonView.OwnerActorNr - 1) : 0] = savedStats;
     }
 }

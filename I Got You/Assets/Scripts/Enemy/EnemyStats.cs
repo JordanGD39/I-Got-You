@@ -11,7 +11,9 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     [SerializeField] private int health = 100;
     public int Health { get { return health; } set { health = value; } }
     [SerializeField] private int damage = 20;
+    [SerializeField] private bool invincible = false;
     public int ListIndex { get; set; } = -1;
+    public int WeaknessIndex { get; set; } = -1;
 
     private EnemyManager enemyManager;
     private PlayerManager playerManager;
@@ -19,10 +21,19 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     private NavMeshAgent agent;
     private List<MonoBehaviour> componentsToWork = new List<MonoBehaviour>();
     private List<Hitbox> hitboxes = new List<Hitbox>();
+    [SerializeField] private List<GameObject> weaknesses = new List<GameObject>();
+    public List<GameObject> Weaknesses { get { return weaknesses; } }
+    [SerializeField] private List<MeshRenderer> weaknessesRenderers = new List<MeshRenderer>();
+    [SerializeField] private GameObject lootPrefab;
+    [SerializeField] private float lootSpawnY = 0.021f;
+    [SerializeField] private float lootSpawnChance = 5;
+    [SerializeField] private float healthDropChance = 30;
 
     public delegate void EnemyDied(GameObject enemy, int index);
     public EnemyDied OnEnemyDied;
     private bool dead = false;
+    private bool scoutHasAnalyzed = false;
+    private bool turnedRenderersOn = false;
 
     private SyncMovement syncMovement;
 
@@ -36,7 +47,7 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
         if (!PhotonNetwork.IsMasterClient)
         {
             enemyManager.StatsOfAllEnemies.Add(transform, this);
-        }        
+        }
     }
 
     // Start is called before the first frame update
@@ -45,13 +56,29 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
         dead = false;
         health = startingHealth;
         ragdollController = GetComponentInChildren<RagdollController>(true);
+        scoutHasAnalyzed = false;
+
+        if (enemyManager == null)
+        {
+            enemyManager = FindObjectOfType<EnemyManager>();
+        }
+
+        if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("SyncWeaknessIndexOthers", RpcTarget.Others, (byte)WeaknessIndex);
+        }
+
+        foreach (MeshRenderer renderer in weaknessesRenderers)
+        {
+            renderer.enabled = false;
+        }
 
         if (ragdollController != null)
         {
             ragdollController.SetRagdollActive(false);
         }        
 
-        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
+        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected && GetComponent<EnemyRoam>() == null)
         {
             gameObject.SetActive(false);
         }
@@ -79,13 +106,84 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
 
         foreach (Hitbox hitbox in hitboxes)
         {
-            hitbox.OnHitBoxCollided += DamagePlayer;
+            hitbox.OnHitBoxCollided = DamagePlayer;
             hitbox.gameObject.SetActive(false);
         }
     }
 
+    private void Update()
+    {
+        if (WeaknessIndex < 0)
+        {
+            return;
+        }
+
+        if (enemyManager.ScoutAnalyzing)
+        {
+            if (!scoutHasAnalyzed)
+            {
+                scoutHasAnalyzed = true;
+                TurnOnWeakness(true);
+
+                if (PhotonNetwork.IsConnected)
+                {
+                    photonView.RPC("TurnOnWeaknessOthers", RpcTarget.Others);
+                }
+            }
+
+            if (!turnedRenderersOn)
+            {
+                turnedRenderersOn = true;
+
+                foreach (MeshRenderer renderer in weaknessesRenderers)
+                {
+                    renderer.enabled = true;
+                }
+            }
+        }    
+        else
+        {
+            if (turnedRenderersOn)
+            {
+                turnedRenderersOn = false;
+
+                foreach (MeshRenderer renderer in weaknessesRenderers)
+                {
+                    renderer.enabled = false;
+                }
+            }
+        }
+    }
+
+    public void TurnOnWeakness(bool show)
+    {
+        foreach (MeshRenderer renderer in weaknessesRenderers)
+        {
+            renderer.enabled = show;
+        }
+
+        weaknesses[WeaknessIndex].SetActive(true);
+    }
+
+    [PunRPC]
+    void SyncWeaknessIndexOthers(byte weaknessIndex)
+    {
+        WeaknessIndex = weaknessIndex;
+    }
+
+    [PunRPC]
+    void TurnOnWeaknessOthers()
+    {
+        TurnOnWeakness(false);
+    }
+
     public void Damage(int dmg, Vector3 shootDir)
     {
+        if (invincible)
+        {
+            return;
+        }
+
         health -= dmg;
 
         if (dead)
@@ -106,7 +204,7 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
                 OnEnemyDied?.Invoke(gameObject, ListIndex);
             }               
 
-            KillEnemy(dmg, shootDir);
+            KillEnemy(dmg, shootDir, true);
         }
         else
         {
@@ -118,7 +216,7 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
         }
     }
 
-    private void KillEnemy(int dmg, Vector3 shootDir)
+    private void KillEnemy(int dmg, Vector3 shootDir, bool local)
     {
         dead = true;
 
@@ -128,6 +226,18 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
         if (syncMovement != null)
         {
             syncMovement.IsSyncing = false;
+        }
+
+        float rand = Random.Range(0, 100);
+
+        if (rand < lootSpawnChance && local)
+        {
+            GameObject loot = PhotonFunctionHandler.InstantiateGameObject(lootPrefab,
+            new Vector3(transform.position.x, lootSpawnY, transform.position.z), Quaternion.identity);
+
+            rand = Random.Range(0, 100);
+
+            loot.GetComponent<LootObject>().UpdateLootType(rand < healthDropChance ? LootObject.LootTypes.HEALTH : LootObject.LootTypes.SMALLAMMO, -1);
         }
 
         if (ragdollController == null)
@@ -160,6 +270,7 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     public void CallDisableRagdoll()
     {
+        scoutHasAnalyzed = false;
         dead = false;
 
         if (agent == null)
@@ -237,7 +348,7 @@ public class EnemyStats : MonoBehaviourPun, IPunInstantiateMagicCallback
     void SyncDeathOthersRPC(int dmg, Vector3 shootDir)
     {
         OnEnemyDied?.Invoke(gameObject, ListIndex);
-        KillEnemy(dmg, shootDir);
+        KillEnemy(dmg, shootDir, false);
     }
 
     private void DamagePlayer(Collider other)

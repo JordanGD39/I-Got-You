@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using Photon.Pun;
 using TMPro;
 
-public class ClockScript : MonoBehaviour
+public class ClockScript : MonoBehaviourPun
 {
     private int randomHour;
     private int randomMinute;
@@ -30,63 +30,102 @@ public class ClockScript : MonoBehaviour
     }
 
 
-    public void Clock() 
+    private void StartRandomClock(int randHour, int randMinute, int goHour, int goMinute)
     {
-        if (button.IsPressed)
+        if (randHour < 0)
         {
+            randomHour = Random.Range(1, 24);
+            randomMinute = Random.Range(1, 60);
+            goalHour = randomHour;
+            goalMinute = randomMinute + Random.Range(10, 40);
 
-            if (!pressedOnce)
+            if (goalMinute >= 60)
             {
-                randomHour = Random.Range(1, 24);
-                randomMinute = Random.Range(1, 60);
-                goalHour = randomHour + Random.Range(1, 4);
-                goalMinute = randomMinute + Random.Range(1, 60);
-                startHour = randomHour;
-                startMinute = randomMinute;
-                pressedOnce = true;
-
-                string goalHourZero = "";
-                string goalMinuteZero = "";
-
-                if (goalHour >= 24)
-                {
-                    goalHour -= 24;
-                }
-
-                if (goalMinute >= 60)
-                {
-                    goalMinute -= 60;
-                }
-
-                if (goalHour >= 0 && goalHour < 10)
-                {
-                    goalHourZero = "0";
-                }
-
-                if (goalMinute >= 0 && goalMinute < 10)
-                {
-                    goalMinuteZero = "0";
-                }
-
-                goalTime.text = goalHourZero + goalHour + ":" + goalMinuteZero + goalMinute;
-
+                goalHour++;
             }
-            InvokeRepeating("UpdateClock", 0, 1);
 
-            
+            if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
+            {
+                byte[] times = { (byte)randomHour, (byte)randomMinute, (byte)goalHour, (byte)goalMinute };
+                photonView.RPC("StartRandomClockOthers", RpcTarget.Others, times);
+            }
+        }
+        else
+        {
+            randomHour = randHour;
+            randomMinute = randMinute;
+            goalHour = goHour;
+            goalMinute = goMinute;
+        }
+       
+        startHour = randomHour;
+        startMinute = randomMinute;
+        pressedOnce = true;
 
-            UpdateClock();
+        string goalHourZero = "";
+        string goalMinuteZero = "";
+
+        if (goalHour >= 24)
+        {
+            goalHour -= 24;
         }
 
+        if (goalMinute >= 60)
+        {
+            goalMinute -= 60;
+        }
+
+        if (goalHour >= 0 && goalHour < 10)
+        {
+            goalHourZero = "0";
+        }
+
+        if (goalMinute >= 0 && goalMinute < 10)
+        {
+            goalMinuteZero = "0";
+        }
+
+        goalTime.text = goalHourZero + goalHour + ":" + goalMinuteZero + goalMinute;
+    }
+
+    [PunRPC]
+    void StartRandomClockOthers(byte[] times)
+    {
+        StartRandomClock(times[0], times[1], times[2], times[3]);
+    }
+
+    public void Clock() 
+    {
+        if (clockComplete)
+        {
+            return;
+        }
+
+        if (button.IsPressed)
+        {
+            if (!pressedOnce)
+            {
+                if (!PhotonNetwork.IsConnected || (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient))
+                {
+                    StartRandomClock(-1, -1, -1, -1);
+                }
+            }
+
+            if (!PhotonNetwork.IsConnected || (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient))
+            {
+                InvokeRepeating("UpdateClockRepeatedly", 0, 1);
+            }
+            
+            UpdateClock(false);
+        }
         else if (!button.IsPressed)
         {
             CancelInvoke();
 
             if (goalHour == randomHour && goalMinute == randomMinute && !clockComplete)
             {
-                manager.FinishedClocks++;
                 clockComplete = true;
-                manager.CheckAllCompleted();
+                manager.CheckAllCompleted(true);
             }
 
             if (randomMinute > goalMinute || randomHour > goalHour)
@@ -97,8 +136,27 @@ public class ClockScript : MonoBehaviour
         }
     }
 
-    private void UpdateClock()
+    private void UpdateClockRepeatedly()
     {
+        UpdateClock(true);
+    }
+
+    [PunRPC]
+    void UpdateClockOthers(int hour, int min)
+    {
+        randomHour = hour;
+        randomMinute = min;
+
+        UpdateClock(false);
+    }
+
+    private void UpdateClock(bool masterClient)
+    {
+        if (masterClient && PhotonNetwork.IsConnected)
+        {
+            photonView.RPC("UpdateClockOthers", RpcTarget.Others, randomHour, randomMinute);
+        }
+
         randomMinute++;
 
         if (randomMinute == 60)

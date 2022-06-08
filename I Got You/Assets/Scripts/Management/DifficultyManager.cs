@@ -7,17 +7,25 @@ public class DifficultyManager : MonoBehaviour
     private PlayerUI playerUI;
 
     [SerializeField] private int difficultyLevel = 1;
-    public int DifficultyLevel { get { return difficultyLevel; } }
+    public int DifficultyLevel { get { return difficultyLevel; } set { if (value > difficultyLevel) { difficultyLevel = value; } } }
+    public static DifficultyManager instance;
 
-    private void Start()
+    private void Awake()
     {
-        playerUI = FindObjectOfType<PlayerUI>();
-        playerUI.UpdateRoundText(difficultyLevel);
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        DontDestroyOnLoad(gameObject);
     }
 
     public void IncreaseDifficulty()
     {
         difficultyLevel++;
-        playerUI.UpdateRoundText(difficultyLevel);
     }
 }

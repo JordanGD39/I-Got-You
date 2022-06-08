@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class ButtonScript : MonoBehaviour
+public class ButtonScript : MonoBehaviourPun
 {
     [SerializeField]
     private bool isPressed = false;
@@ -14,10 +15,13 @@ public class ButtonScript : MonoBehaviour
     [SerializeField]
     private ClockScript clock;
     private Animator anim;
-    
+    private PlayerUI playerUI;
+    private PlayerManager playerManager;
 
     private void Start()
     {
+        playerUI = FindObjectOfType<PlayerUI>();
+        playerManager = FindObjectOfType<PlayerManager>();
         anim = GetComponent<Animator>();
     }
 
@@ -25,20 +29,43 @@ public class ButtonScript : MonoBehaviour
 
     private void Update()
     {
-        if (inRange && Input.GetKeyDown(KeyCode.E))
+        if (inRange && Input.GetButtonDown("Interact"))
         {
-            isPressed = !isPressed;
-            hasTime = true;
-            anim.Play("Pressed");
-            Debug.Log("Clock starting!");
-            clock.Clock();
+            StartClock(true);
           //  clockObject[buttonIndex].GetComponent<ClockScript>().Clock();
         }
     }
-    private void OnTriggerEnter(Collider other)
+
+    private void StartClock(bool localPlayer)
+    {
+        if (localPlayer && PhotonNetwork.IsConnected)
+        {
+            photonView.RPC("StartClockOthers", RpcTarget.Others);
+        }
+
+        playerUI.HideInteractPanel();
+        isPressed = !isPressed;
+        hasTime = true;
+        anim.Play("Pressed");
+        Debug.Log("Clock starting!");
+        clock.Clock();
+    }
+
+    [PunRPC]
+    void StartClockOthers()
+    {
+        StartClock(false);
+    }
+
+    private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("PlayerCol"))
         {
+            if (playerManager.StatsOfAllPlayers[other] == playerManager.LocalPlayer)
+            {
+                playerUI.ShowInteractPanel(!isPressed ? " to start the clock" : " to pause the clock");
+            }
+                
             inRange = true;
         }
     }
@@ -47,6 +74,10 @@ public class ButtonScript : MonoBehaviour
     {
         if (other.CompareTag("PlayerCol"))
         {
+            if (playerManager.StatsOfAllPlayers[other] == playerManager.LocalPlayer)
+            {
+                playerUI.HideInteractPanel();
+            }
             inRange = false;
         }
     }

@@ -46,7 +46,6 @@ public class LootRoomGenerator : MonoBehaviourPun
         if (doorOpen != null)
         {
             doorOpen.OnOpenedDoor += PlaceLoot;
-            doorOpen.gameObject.SetActive(false);
         }
 
         if (doorOutHere != null)

@@ -1,18 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class ClockManager : MonoBehaviour
+public class ClockManager : MonoBehaviourPun
 {
     [SerializeField]
     private List<GameObject> clockObject;
-    public int FinishedClocks { get; set; } = 0;
+    [SerializeField] private RoomManager roomManager;
+    private int finishedClocks = 0;
 
-    public void CheckAllCompleted()
+    public void CheckAllCompleted(bool localPlayer)
     {
-        if (FinishedClocks >= clockObject.Count)
+        if (PhotonNetwork.IsConnected && localPlayer)
         {
-            Debug.Log("Door opens!");
+            photonView.RPC("CheckAllCompletedOthers", RpcTarget.Others);
         }
+
+        finishedClocks++;
+
+        if (finishedClocks >= clockObject.Count)
+        {
+            roomManager.OpenAllDoors();
+        }
+    }
+
+    [PunRPC]
+    void CheckAllCompletedOthers()
+    {
+        CheckAllCompleted(false);
     }
 }

@@ -9,8 +9,10 @@ public class RoomManager : MonoBehaviourPun
     private DifficultyManager difficultyManager;
     private EnemyGenerator enemyGenerator;
 
-    public enum RoomModes {NONE, BATTLEONLY, PUZZLEEAT}
+    public enum RoomModes {NONE, BATTLEONLY, PUZZLEEAT, PUZZLECLOCK, PUZZLESIMON}
     [SerializeField] private RoomModes roomMode;
+    public RoomModes RoomMode { get { return roomMode; } }
+    [SerializeField] private GameObject[] puzzleObjects;
     [SerializeField] private List<EnemyGenerator.GeneratedEnemyInfo> enemiesInRoom;
     [SerializeField] private List<int> enemiesNotPlacedCount = new List<int>();
     [SerializeField] private float enemyPlaceAtY = 0;
@@ -20,13 +22,24 @@ public class RoomManager : MonoBehaviourPun
     [SerializeField] private int healthIncreasePerLevel = 20;
     [SerializeField] private DoorOpen[] doorsToThisRoom;
     [SerializeField] private DoorOpen[] doorsToOtherRoom;
+    [SerializeField] private float puzzleEnemyCountMultiplier = 0.8f;
     private int currentNotPlacedIndex = 0;
+
+    private bool puzzlesCompleted = false;
+    private bool battleStarted = false;
 
     // Start is called before the first frame update
     void Start()
     {
         difficultyManager = FindObjectOfType<DifficultyManager>();
-        doorsToOtherRoom[0].OnOpenedDoor += PlaceDoorToThisRoom;
+
+        if (roomMode != RoomModes.PUZZLEEAT)
+        {
+            for (int i = 0; i < doorsToOtherRoom.Length; i++)
+            {
+                doorsToOtherRoom[i].OnOpenedDoor += PlaceDoorToThisRoom;
+            }
+        }
 
         if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
         {
@@ -35,37 +48,59 @@ public class RoomManager : MonoBehaviourPun
 
         boxHolder = GetComponentInChildren<EnemySpawnBoxHolder>();
         enemyGenerator = FindObjectOfType<EnemyGenerator>();
+    }
 
-        switch (roomMode)
+    public void SetRoomMode(RoomModes aRoomMode)
+    {
+        foreach (GameObject puzzle in puzzleObjects)
         {
-            case RoomModes.NONE:
-                break;
-            case RoomModes.BATTLEONLY:
-                doorsToThisRoom[0].OnOpenedDoor += PlaceEnemies;
-                break;
-            case RoomModes.PUZZLEEAT:
-                //doorsToThisRoom[0].OnOpenedDoor += GetComponent<PuzzleEat>().StartPuzzle;
-                break;
-            default:
-                break;
-        }     
+            puzzle.SetActive(false);
+        }
+
+        roomMode = aRoomMode;
+
+        if (roomMode != RoomModes.PUZZLEEAT && (!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient))
+        {
+            for (int i = 0; i < doorsToThisRoom.Length; i++)
+            {
+                doorsToThisRoom[i].OnOpenedDoor += PlaceEnemies;
+            }
+        }
+
+        if (roomMode == RoomModes.BATTLEONLY)
+        {
+            puzzlesCompleted = true;
+        }
+        else if (roomMode != RoomModes.NONE && roomMode != RoomModes.PUZZLEEAT)
+        {
+            puzzleObjects[(int)roomMode - 3].SetActive(true);
+            puzzlesCompleted = false;
+
+            if (roomMode == RoomModes.PUZZLESIMON)
+            {
+                for (int i = 0; i < doorsToThisRoom.Length; i++)
+                {
+                    doorsToThisRoom[i].OnOpenedDoor += GetComponentInChildren<PuzzleManager>().RemoveScreensWhenEnteredRoom;
+                }
+            }
+        }
     }
 
     private void PlaceEnemies()
     {
-        if (enemiesInRoom != null && enemiesInRoom.Count > 0)
+        if (enemiesInRoom != null && enemiesInRoom.Count > 0 || battleStarted)
         {
             return;
         }
 
         int enemiesPlaced = 0;
-        int enemyTypesPlaced = 0;
+        battleStarted = true;
 
         enemyDeathsInRoom = 0;
         currentNotPlacedIndex = 0;
         enemyDeathsToClearRoom = 0;
         enemiesNotPlacedCount.Clear();
-        enemiesInRoom = enemyGenerator.GenerateEnemies();
+        enemiesInRoom = enemyGenerator.GenerateEnemies(roomMode == RoomModes.BATTLEONLY ? 1 : puzzleEnemyCountMultiplier);
 
         for (int i = enemiesInRoom.Count - 1; i >= 0; i--)
         {
@@ -100,8 +135,13 @@ public class RoomManager : MonoBehaviourPun
             {
                 EnemyStats enemyStats = enemy.GetComponent<EnemyStats>();
                 enemyStats.ListIndex = i;
-                enemyStats.OnEnemyDied = CountEnemyDeath;
-                enemyStats.OnEnemyDied += PlaceNotYetSpawnedEnemy;
+
+                enemyStats.OnEnemyDied = PlaceNotYetSpawnedEnemy;
+
+                if (roomMode == RoomModes.BATTLEONLY)
+                {
+                    enemyStats.OnEnemyDied += CountEnemyDeath;
+                }               
             }
 
             foreach (GameObject enemy in enemyInfo.availableEnemiesList)
@@ -121,7 +161,7 @@ public class RoomManager : MonoBehaviourPun
             ClearRoom();
             enemyDeathsInRoom = 0;
 
-            if (PhotonNetwork.IsConnected)
+            if (PhotonNetwork.IsConnected && puzzlesCompleted)
             {
                 photonView.RPC("ClearRoomForOthers", RpcTarget.Others);
             }
@@ -131,28 +171,48 @@ public class RoomManager : MonoBehaviourPun
     [PunRPC]
     void ClearRoomForOthers()
     {
+        puzzlesCompleted = true;
+
         ClearRoom();
     }
 
     private void ClearRoom()
     {
-        difficultyManager.IncreaseDifficulty();
+        Debug.Log("Clearing room! " + puzzlesCompleted);
 
-        foreach (DoorOpen door in doorsToOtherRoom)
+        if (!puzzlesCompleted)
         {
-            door.gameObject.SetActive(true);
-            door.CloseOpeningDoor();
+            return;
         }
 
-        foreach (DoorOpen door in doorsToThisRoom)
+        difficultyManager.IncreaseDifficulty();
+        
+        if (!PhotonNetwork.IsConnected || PhotonNetwork.IsMasterClient)
         {
-            door.gameObject.SetActive(false);
+            OpenAllDoors();
         }
 
         if (enemiesInRoom != null)
         {
             enemiesInRoom.Clear();
         }        
+    }
+
+    public void OpenAllDoors()
+    {
+        puzzlesCompleted = true;
+
+        foreach (DoorOpen door in doorsToOtherRoom)
+        {
+            door.CloseOpeningDoor();
+        }
+
+        foreach (DoorOpen door in doorsToThisRoom)
+        {
+            door.OpenOnly = true;
+            door.OpenDoor();
+            door.OpenClosedDoor();
+        }
     }
 
     private void PlaceDoorToThisRoom()
@@ -177,47 +237,77 @@ public class RoomManager : MonoBehaviourPun
 
     private void PlaceNotYetSpawnedEnemy(GameObject enemyDied, int listIndex)
     {
-        if (listIndex >= 0 && listIndex < enemiesInRoom.Count)
+        if (listIndex >= 0 && listIndex < enemiesInRoom.Count && enemiesInRoom.Count > 0)
         {
             EnemyGenerator.GeneratedEnemyInfo generatedEnemyInfo = enemiesInRoom[listIndex];
 
             generatedEnemyInfo.availableEnemiesList.Add(enemyDied);
             generatedEnemyInfo.enemiesList.Remove(enemyDied);
         }
-       
+
         //enemyDied.SetActive(false);
 
-        if ((currentNotPlacedIndex < 0 || currentNotPlacedIndex > enemiesNotPlacedCount.Count - 1) || enemiesInRoom.Count == 0)
+        if (roomMode != RoomModes.BATTLEONLY && puzzlesCompleted)
         {
             return;
         }
 
-        if (enemiesNotPlacedCount[currentNotPlacedIndex] <= 0 && currentNotPlacedIndex >= enemiesNotPlacedCount.Count - 1)
-        {
-            return;
-        }
+        EnemyGenerator.GeneratedEnemyInfo chosenEnemyType = enemiesInRoom[0];
 
-        while (enemiesNotPlacedCount[currentNotPlacedIndex] <= 0)
+        if (roomMode == RoomModes.BATTLEONLY)
         {
-            currentNotPlacedIndex++;
-
-            if (currentNotPlacedIndex < 0 || currentNotPlacedIndex > enemiesNotPlacedCount.Count - 1)
+            if ((currentNotPlacedIndex < 0 || currentNotPlacedIndex > enemiesNotPlacedCount.Count - 1) || enemiesInRoom.Count == 0)
             {
-                Debug.Log("Too far");
                 return;
             }
-        }
 
-        GameObject enemy = enemiesInRoom[currentNotPlacedIndex].availableEnemiesList[0];
+            if (enemiesNotPlacedCount[currentNotPlacedIndex] <= 0 && currentNotPlacedIndex >= enemiesNotPlacedCount.Count - 1)
+            {
+                return;
+            }
+
+            while (enemiesNotPlacedCount[currentNotPlacedIndex] <= 0)
+            {
+                currentNotPlacedIndex++;
+
+                if (currentNotPlacedIndex < 0 || currentNotPlacedIndex > enemiesNotPlacedCount.Count - 1)
+                {
+                    Debug.Log("Too far");
+                    return;
+                }
+            }
+
+            enemiesNotPlacedCount[currentNotPlacedIndex]--;
+            chosenEnemyType = enemiesInRoom[currentNotPlacedIndex];
+        }
+        else
+        {
+            float rand = Random.value;
+            float percent = 0;
+
+            for (int i = 0; i < enemiesInRoom.Count; i++)
+            {
+                percent += enemiesInRoom[i].spawnPercent;
+
+                if (rand < percent)
+                {
+                    chosenEnemyType = enemiesInRoom[i];
+                    currentNotPlacedIndex = i;
+                    break;
+                }
+            }            
+        } 
+
+        GameObject enemy = chosenEnemyType.availableEnemiesList[0];
         PlaceEnemy(enemy);
         enemiesInRoom[currentNotPlacedIndex].enemiesList.Add(enemy);
         enemiesInRoom[currentNotPlacedIndex].availableEnemiesList.RemoveAt(0);
-        enemiesNotPlacedCount[currentNotPlacedIndex]--;
     }
 
     private void PlaceEnemy(GameObject enemy)
     {
-        BoxCollider chosenBox = boxHolder.SpawnBoxes[Random.Range(0, boxHolder.SpawnBoxes.Count)];
+        int rand = Random.Range(0, boxHolder.SpawnBoxes.Count);
+        BoxCollider chosenBox = boxHolder.SpawnBoxes[rand];
         Vector3 center = chosenBox.transform.position;
         Vector3 randomPosInBox = center + new Vector3(Random.Range(-chosenBox.size.x, chosenBox.size.x), 0, Random.Range(-chosenBox.size.z, chosenBox.size.z));
         randomPosInBox.y = enemyPlaceAtY;
@@ -242,6 +332,7 @@ public class RoomManager : MonoBehaviourPun
         stats.OnEnemyDied += CountEnemyDeath;
 
         enemy.transform.position = randomPosInBox;
+        Debug.Log("Enemy with index: " + stats.ListIndex + " spawned in box: " + rand + " pos: " + randomPosInBox);
         enemy.SetActive(true);
     }
 

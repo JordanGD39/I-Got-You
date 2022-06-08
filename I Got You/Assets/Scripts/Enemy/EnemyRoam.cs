@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
 public class EnemyRoam : MonoBehaviour
 {
@@ -20,6 +21,11 @@ public class EnemyRoam : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
+        {
+            return;
+        }
+
         enemyPlayerSpotter = GetComponent<EnemyPlayerSpotter>();
         agent = GetComponent<NavMeshAgent>();
         Invoke(nameof(ChooseRandomLocation), delayRoamSearchSeconds);
@@ -49,7 +55,7 @@ public class EnemyRoam : MonoBehaviour
 
     private void ChooseRandomLocation()
     {
-        if (alreadyInvoking)
+        if (alreadyInvoking || enemyPlayerSpotter.PlayerSpotted)
         {
             return;
         }
@@ -88,7 +94,6 @@ public class EnemyRoam : MonoBehaviour
 
         if (Vector3.Distance(maybeTargetPos, transform.position) < minimumDistance)
         {
-            Debug.Log("Not far enough");
             alreadyInvoking = false;
             return;
         }
@@ -101,7 +106,6 @@ public class EnemyRoam : MonoBehaviour
         {
             if (hit.collider.gameObject.CompareTag("ExcludeGround"))
             {
-                Debug.Log("Exclusion zone");
                 alreadyInvoking = false;
                 return;
             }
@@ -109,7 +113,6 @@ public class EnemyRoam : MonoBehaviour
             if (hit.collider != null)
             {
                 alreadyInvoking = false;
-                Debug.Log("Something is there " + hit.collider.gameObject);
                 return;
             }
         }
@@ -126,7 +129,6 @@ public class EnemyRoam : MonoBehaviour
             else
             {
                 alreadyInvoking = false;
-                Debug.Log("Someting is nearby the target pos");
             }
         }
     }

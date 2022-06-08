@@ -1,0 +1,64 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PuzzleStartButton : MonoBehaviour
+{
+    [SerializeField]
+    private bool isPressed = false;
+
+    [SerializeField]
+    private bool inTrigger = false;
+
+    [SerializeField]
+    private PuzzleManager manager;
+    private PlayerUI playerUI;
+    private PlayerManager playerManager;
+    private Animator anim;
+
+    private void Start()
+    {
+        playerUI = FindObjectOfType<PlayerUI>();
+        playerManager = FindObjectOfType<PlayerManager>();
+        anim = GetComponent<Animator>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (manager.RandomInt.Count == 0 && inTrigger && Input.GetButtonDown("Interact") && !manager.OpenDoor)
+        {
+            manager.ScreenSequence(true);
+            playerUI.HideInteractPanel();
+            anim.SetTrigger("Press");
+            // start screen sequence
+            isPressed = true;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("PlayerCol") && !manager.ShownPuzzle)
+        {
+            if (playerManager.StatsOfAllPlayers[other] == playerManager.LocalPlayer)
+            {
+                playerUI.ShowInteractPanel(" to start Simon Says");
+            }
+            
+            inTrigger = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("PlayerCol"))
+        {
+            if (playerManager.StatsOfAllPlayers[other] == playerManager.LocalPlayer)
+            {
+                playerUI.HideInteractPanel();
+            }
+            
+            inTrigger = false;
+        }
+    }
+}

@@ -57,18 +57,23 @@ public class EnemyGenerator : MonoBehaviour
         }
     }
 
-    public List<GeneratedEnemyInfo> GenerateEnemies()
+    public List<GeneratedEnemyInfo> GenerateEnemies(float countMultiplier)
     {
         List<GeneratedEnemyInfo> generatedEnemyInfos = new List<GeneratedEnemyInfo>();
 
-        int randomEnemyCount = Random.Range(enemiesToSpawnInRoomMin, enemiesToSpawnInRoomMax);
+        int randomEnemyCount = Mathf.RoundToInt(Random.Range(enemiesToSpawnInRoomMin, enemiesToSpawnInRoomMax) * countMultiplier);
 
         for (int i = 0; i < playerManager.PlayersInGame.Count - 1; i++)
         {
-            randomEnemyCount += Random.Range(extraEnemiesPerPlayerMin, extraEnemiesPerPlayerMax);
+            randomEnemyCount += Mathf.RoundToInt(Random.Range(extraEnemiesPerPlayerMin, extraEnemiesPerPlayerMax) * countMultiplier);
         }
 
-        randomEnemyCount += difficultyManager.DifficultyLevel;
+        randomEnemyCount += Mathf.RoundToInt(difficultyManager.DifficultyLevel * countMultiplier);
+
+        if (randomEnemyCount == 0)
+        {
+            randomEnemyCount = 1;
+        }
 
         int wrummelCount = 0;
         int wraptorCount = 0;
@@ -98,6 +103,37 @@ public class EnemyGenerator : MonoBehaviour
         
         GenerateEnemy(generatedEnemyInfos, wrummels, wrummelCount);
         GenerateEnemy(generatedEnemyInfos, wraptors, wraptorCount);
+        float combinedPercentages = 0;
+
+        for (int i = 1; i < generatedEnemyInfos.Count; i++)
+        {
+            GeneratedEnemyInfo generatedEnemyInfo = generatedEnemyInfos[i];
+
+            float basePercent = 1 / generatedEnemyInfos.Count;
+            generatedEnemyInfo.spawnPercent = generatedEnemyInfo.enemyCount / generatedEnemyInfos[0].enemyCount * basePercent;
+            combinedPercentages += generatedEnemyInfo.spawnPercent;
+        }
+
+        generatedEnemyInfos[0].spawnPercent = 1 - combinedPercentages;
+
+        foreach (GeneratedEnemyInfo item in generatedEnemyInfos)
+        {
+            int rand = Random.Range(0, item.availableEnemiesList[0].GetComponent<EnemyStats>().Weaknesses.Count);
+
+            foreach (GameObject enemy in item.enemiesList)
+            {
+                EnemyStats stats = enemy.GetComponent<EnemyStats>();
+                stats.WeaknessIndex = rand;
+                Debug.Log("rand: " + rand);
+            }
+
+            foreach (GameObject enemy in item.availableEnemiesList)
+            {
+                EnemyStats stats = enemy.GetComponent<EnemyStats>();
+                stats.WeaknessIndex = rand;
+                Debug.Log("rand: " + rand);
+            }
+        }
 
         return generatedEnemyInfos;
     }
@@ -122,6 +158,9 @@ public class EnemyGenerator : MonoBehaviour
             enemy.enemiesList.Remove(item);
         }
 
+        enemy.startingEnemiesList = new List<GameObject>(enemy.enemiesList);
+        enemy.startingAvailableEnemiesList = new List<GameObject>(enemy.availableEnemiesList);
+        
         generatedEnemyInfos.Add(enemy);
 
         enemy.enemyCount += count;
@@ -132,7 +171,10 @@ public class EnemyGenerator : MonoBehaviour
     {
         public List<GameObject> enemiesList;
         public List<GameObject> availableEnemiesList = new List<GameObject>();
+        public List<GameObject> startingEnemiesList = new List<GameObject>();
+        public List<GameObject> startingAvailableEnemiesList = new List<GameObject>();
         public int enemyCount = 0;
         public int priority = 0;
+        public float spawnPercent = 0;
     }
 }

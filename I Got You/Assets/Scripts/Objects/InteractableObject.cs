@@ -6,16 +6,19 @@ using Photon.Pun;
 public class InteractableObject : MonoBehaviourPun
 {
     protected PlayerManager playerManager;
+    protected PlayerUI playerUI;
+    protected string interactText = " to interact";
 
     // Start is called before the first frame update
     private void Start()
     {
-        if (playerManager != null)
+        if (playerManager != null && playerUI != null)
         {
             return;
         }
 
         playerManager = FindObjectOfType<PlayerManager>();
+        playerUI = FindObjectOfType<PlayerUI>(true);
 
         AfterStart();
     }
@@ -36,6 +39,11 @@ public class InteractableObject : MonoBehaviourPun
         {
             PlayerStats playerStats = playerManager.StatsOfAllPlayers[other];
 
+            if (playerStats != playerManager.LocalPlayer)
+            {
+                return;
+            }
+
             PlayerTriggerEntered(playerStats);
             //playerStats.OnInteract = (PlayerStats stats) => { pickedUp = true; };
         }
@@ -43,9 +51,12 @@ public class InteractableObject : MonoBehaviourPun
 
     protected virtual void PlayerTriggerEntered(PlayerStats playerStats)
     {
+        playerUI.ShowInteractPanel(interactText);
+
         playerStats.OnInteract = (PlayerStats stats) => {
             string playerName = PhotonNetwork.IsConnected ? stats.photonView.Owner.NickName : "LocalPlayer";
             Debug.Log(playerName + " interacted with " + gameObject.name);
+            playerUI.HideInteractPanel();
         };
     }
 
@@ -58,7 +69,15 @@ public class InteractableObject : MonoBehaviourPun
 
         if (other.CompareTag("PlayerCol"))
         {
+            playerUI.HideInteractPanel();
             PlayerStats playerStats = playerManager.StatsOfAllPlayers[other];
+
+            if (playerStats != playerManager.LocalPlayer)
+            {
+                return;
+            }
+
+            playerStats.OnInteractHoldStop?.Invoke(playerStats);
 
             playerStats.OnInteract = null;
         }

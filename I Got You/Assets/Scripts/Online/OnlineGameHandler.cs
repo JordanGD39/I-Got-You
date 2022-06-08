@@ -31,6 +31,7 @@ public class OnlineGameHandler : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        PlayersStatsHolder.instance.ClearSavedStats();
         SceneManager.LoadScene("Lobby");
     }
 }

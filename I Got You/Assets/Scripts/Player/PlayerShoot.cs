@@ -11,11 +11,14 @@ public class PlayerShoot : MonoBehaviourPun
     public GunObject SecondaryGun { get { return secondaryGun; } }
     [SerializeField] private GunHolder currentGunHolder;
     [SerializeField] private int currentAmmo = 0;
+    public int CurrentAmmo { get { return currentAmmo; } }
     [SerializeField] private int currentMaxAmmo = 0;
     [SerializeField] private int secondaryGunAmmo = 0;
+    public int CurrentSecondaryAmmo { get { return secondaryGunAmmo; } }
     [SerializeField] private int secondaryGunMaxAmmo = 0;
     [SerializeField] private bool canShoot = true;
     [SerializeField] private bool switching = false;
+    private bool weaponGone = false;
     [SerializeField] private Transform shootPoint;
     [SerializeField] private LayerMask hitLayer;
     [SerializeField] private AudioClip emptyAmmo;
@@ -29,7 +32,6 @@ public class PlayerShoot : MonoBehaviourPun
     private bool holdingTrigger = false;
     private bool prevHoldTrigger = false;
     private bool reloading = false;
-    private bool interacting = false;
 
     private PlayerUI playerUI;
     private PlayerStats playerStats;
@@ -46,6 +48,27 @@ public class PlayerShoot : MonoBehaviourPun
         {
             audioSource = GetComponent<AudioSource>();
         }
+        SavedPlayerStats savedStats = null;
+
+        if (PlayersStatsHolder.instance.PlayerStatsSaved.Length > 0)
+        {
+            savedStats = PlayersStatsHolder.instance.PlayerStatsSaved[PhotonNetwork.IsConnected ? (photonView.OwnerActorNr - 1) : 0];
+
+            if (savedStats != null && savedStats.guns[0] != null)
+            {
+                currentGun = savedStats.guns[0];
+                secondaryGun = savedStats.guns[1];
+                currentAmmo = savedStats.ammo[0];
+                secondaryGunAmmo = savedStats.ammo[1];
+
+                currentMaxAmmo = currentGun.MaxAmmoCount;
+
+                if (secondaryGun != null)
+                {
+                    secondaryGunMaxAmmo = secondaryGun.MaxAmmoCount;
+                }
+            }
+        }
 
         if (PhotonNetwork.IsConnected && !photonView.IsMine)
         {
@@ -60,7 +83,15 @@ public class PlayerShoot : MonoBehaviourPun
         playerStats = GetComponent<PlayerStats>();
         playerUI = FindObjectOfType<PlayerUI>();
 
-        GiveFullAmmo(true);
+        if (savedStats == null || savedStats.guns[0] == null)
+        {
+            GiveFullAmmo(true);
+        }
+        else
+        {
+            playerUI.UpdateAmmo(currentAmmo, currentMaxAmmo);
+        }
+        
         switching = true;
         StartChangingCurrentGun();
     }
@@ -126,14 +157,14 @@ public class PlayerShoot : MonoBehaviourPun
             return;
         }
 
-        if (canShoot && !switching)
+        if (canShoot && !switching && !weaponGone)
         {
             CheckShoot();
         }
         
         CheckInteract();
 
-        if (!interacting)
+        if (playerStats.OnInteract == null && !weaponGone)
         {
             CheckReload();
 
@@ -141,10 +172,6 @@ public class PlayerShoot : MonoBehaviourPun
             {
                 CheckChangeSelectedWeapon();
             }            
-        }
-        else
-        {
-            interacting = false;
         }
     }
 
@@ -238,6 +265,17 @@ public class PlayerShoot : MonoBehaviourPun
         foreach (EnemyStats enemy in damageToEnemies.Keys)
         {
             DamageInfo damageInfo = damageToEnemies[enemy];
+
+            if (playerStats.TankTauntScript != null && !playerStats.TankTauntScript.Taunting)
+            {
+                playerStats.TankTauntScript.AddCharge(damageInfo.weakspot ? 0.02f : 0.01f);
+            }
+
+            if (playerStats.SupportBurstHealScript != null)
+            {
+                playerStats.SupportBurstHealScript.AddCharge(damageInfo.weakspot ? 0.06f : 0.03f);
+            }
+
             enemy.Damage(damageInfo.damage, damageInfo.direction);
         }
     }
@@ -319,6 +357,7 @@ public class PlayerShoot : MonoBehaviourPun
         DamageInfo damageInfo = new DamageInfo();
         damageInfo.damage = Mathf.RoundToInt(currentGun.Damage * damageMultiplier * shootingDamageMultiplier);
         damageInfo.direction = dir;
+        damageInfo.weakspot = headShot;
 
         damageToEnemies.Add(enemyManager.StatsOfAllEnemies[enemyRoot], damageInfo);
     }
@@ -401,6 +440,7 @@ public class PlayerShoot : MonoBehaviourPun
             currentGunHolder.GunAnim.speed = 1;
             currentGunHolder.GunAnim.ResetTrigger("Reload");
             PutWeaponAway();
+            weaponGone = false;
             currentGunHolder.OnGunPutAway = ChangeWeaponAndAmmo;
 
             StartChangingCurrentGun();
@@ -496,7 +536,10 @@ public class PlayerShoot : MonoBehaviourPun
 
         audioSource.PlayOneShot(currentGun.SwitchSFX);
 
-        currentGunHolder.gameObject.SetActive(true);
+        if (!weaponGone)
+        {
+            currentGunHolder.gameObject.SetActive(true);
+        }
 
         if (currentGunHolder.GunAnim != null)
         {
@@ -527,21 +570,28 @@ public class PlayerShoot : MonoBehaviourPun
         if (Input.GetButtonDown("Interact") && playerStats.OnInteract != null)
         {
             playerStats.OnInteract(playerStats);
-            interacting = true;
         }
     }
 
     public void PutWeaponAway()
     {
-        switching = true;
+        if (switching)
+        {
+            currentGunHolder.gameObject.SetActive(false);
+            return;
+        }
+
         currentGunHolder.GunAnim.SetTrigger("PutAwayGun");
+        switching = true;
+        weaponGone = true;  
     }
 
     public void PutWeaponBack()
     {
-        switching = false;
         currentGunHolder.gameObject.SetActive(false);
         currentGunHolder.gameObject.SetActive(true);
+        switching = false;
+        weaponGone = false;        
     }
 }
 
@@ -549,4 +599,5 @@ public class DamageInfo
 {
     public int damage = 0;
     public Vector3 direction = Vector3.zero;
+    public bool weakspot = false;
 }

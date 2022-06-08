@@ -9,6 +9,7 @@ public class ChasePlayerAI : MonoBehaviour
     private AttackAnimationHandler attackAnimationHandler;
     private EnemyRoam enemyRoam;
     private PlayerManager playerManager;
+    private EnemyManager enemyManager;
     private NavMeshAgent agent;
     private NavMeshObstacle navMeshObstacle;
     private GameObject navMeshObstacleObject;
@@ -17,6 +18,12 @@ public class ChasePlayerAI : MonoBehaviour
     [SerializeField] private float distanceToAttack = 2;
     [SerializeField] private float distanceToStop = 1.25f;
     [SerializeField] private float turnSpeed = 5;
+    [SerializeField] private float fadeDelay = 0.1f;
+    [SerializeField] private float fadeTime = 3;
+    [SerializeField] private Material normalMat;
+    [SerializeField] private Material fadeMat;
+    [SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer;
+    [SerializeField] private bool fadedIn = false;
     [SerializeField] private bool animsDone = false;
     private Animator anim;
     private Vector3 previousAttackingSpot = Vector3.zero;
@@ -33,19 +40,55 @@ public class ChasePlayerAI : MonoBehaviour
         }
 
         enemyRoam = GetComponentInChildren<EnemyRoam>();
+        enemyManager = FindObjectOfType<EnemyManager>();
         anim = GetComponentInChildren<Animator>();
         playerManager = FindObjectOfType<PlayerManager>();
         
         agent = GetComponent<NavMeshAgent>();
         startingAvoidancePriority = agent.avoidancePriority;
+        skinnedMeshRenderer.material = normalMat;
+
+        if (skinnedMeshRenderer != null)
+        {
+            StartCoroutine(nameof(FadeInEnemy));
+        }        
+    }
+
+    private IEnumerator FadeInEnemy()
+    {
+        skinnedMeshRenderer.material = fadeMat;
+
+        float startingTime = Time.time;
+        float frac = 0;
+
+        while (frac < 1)
+        {
+            frac = (Time.time - startingTime) / fadeTime;
+
+            Color color = skinnedMeshRenderer.material.color;
+
+            color.a = Mathf.Lerp(0, 1, frac);
+
+            skinnedMeshRenderer.material.color = color;
+
+            yield return null;
+        }
+
+        skinnedMeshRenderer.material = normalMat;
+        fadedIn = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
+        if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected || !agent.isOnNavMesh || !fadedIn)
         {
             return;
+        }
+
+        if (skinnedMeshRenderer.material != normalMat)
+        {
+            skinnedMeshRenderer.material = normalMat;
         }
 
         if (playerManager.Players.Count == 0)
@@ -53,22 +96,29 @@ public class ChasePlayerAI : MonoBehaviour
             return;
         }
 
-        float closestDist = Mathf.Infinity;        
-
-        foreach (PlayerStats player in playerManager.Players)
+        if (enemyManager.EnemiesTarget == null)
         {
-            if (player == null)
-            {
-                continue;
-            }
+            float closestDist = Mathf.Infinity;
 
-            float dist = Vector3.Distance(player.transform.position, transform.position);
-
-            if (dist < closestDist)
+            foreach (PlayerStats player in playerManager.Players)
             {
-                closestDist = dist;
-                target = player.transform;
+                if (player == null)
+                {
+                    continue;
+                }
+
+                float dist = Vector3.Distance(player.transform.position, transform.position);
+
+                if (dist < closestDist)
+                {
+                    closestDist = dist;
+                    target = player.transform;
+                }
             }
+        }
+        else
+        {
+            target = enemyManager.EnemiesTarget;
         }
 
         if (target != null && agent.enabled && enemyRoam == null)
@@ -83,7 +133,9 @@ public class ChasePlayerAI : MonoBehaviour
 
         float distance = Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(target.position.x, 0, target.position.z));
 
-        if (distance <= agent.stoppingDistance)
+        agent.updateRotation = distance > distanceToAttack;
+
+        if (distance <= distanceToAttack)
         {
             FaceTarget();
         }

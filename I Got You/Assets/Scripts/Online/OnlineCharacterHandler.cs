@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Voice.PUN;
+using Photon.Voice.Unity;
 
 public class OnlineCharacterHandler : MonoBehaviourPun
 {
@@ -27,11 +29,17 @@ public class OnlineCharacterHandler : MonoBehaviourPun
         foreach (MonoBehaviour item in scripts)
         {
             if (item is PhotonView) { continue; }
+            if (item is PhotonVoiceView) { continue; }
+            if (item is Recorder) { continue; }
             if (item is PlayerStats){ continue; }
             if (item is SyncMovement){ continue; }
             if (item is EnemyStats){ continue; }
             if (item is PlayerRevive){ continue; }
             if (item is PlayerShoot){ continue; }
+            if (item is PlayerHealing){ continue; }
+            if (item is AbilityAdder){ continue; }
+            if (item is TankTaunt){ continue; }
+            if (item is SupportBurstHeal){ continue; }
 
             if (item != this)
             {
@@ -46,11 +54,17 @@ public class OnlineCharacterHandler : MonoBehaviourPun
 
         GetComponentInChildren<AudioListener>().enabled = false;
 
-        Camera[] cam = GetComponentsInChildren<Camera>();
-        cam[0].enabled = false;
-        cam[1].enabled = false;
+        Camera[] cams = GetComponentsInChildren<Camera>();
 
-        cam[0].gameObject.layer = 3;
-        cam[0].transform.GetChild(0).gameObject.layer = 3;
+        foreach (Camera cam in cams)
+        {
+            cam.enabled = false;
+
+            if (cam.CompareTag("MainCamera"))
+            {
+                cam.gameObject.layer = 3;
+                cam.transform.GetChild(0).gameObject.layer = 3;
+            }
+        }
     }
 }
