@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class OnlineGameHandler : MonoBehaviourPunCallbacks
 {
     [SerializeField] private float timeBeforeDisconnectAfterMcSwitch = 3;
+    [SerializeField] private float fadeTime = 1;
     private PlayerUI playerUI;
 
     private void Start()
@@ -28,12 +29,6 @@ public class OnlineGameHandler : MonoBehaviourPunCallbacks
 
     private void LeaveRoom()
     {
-        PhotonNetwork.LeaveRoom();
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        PlayersStatsHolder.instance.ClearSavedStats();
-        GameManager.instance.ResetFloorLevel();
-        DifficultyManager.instance.DifficultyLevel = 0;
-        SceneManager.LoadScene("Lobby");
+        GameManager.instance.LeaveRoom();
     }
 }

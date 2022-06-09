@@ -24,6 +24,7 @@ public class PlayerRevive : MonoBehaviourPun
     private PlayerShoot playerShoot;
     private PlayerHealing playerHealing;
     private PlayerManager playerManager;
+    private PlayerUI playerUI;
     private SyncMovement syncMovement;
     private Camera cam;
 
@@ -46,6 +47,7 @@ public class PlayerRevive : MonoBehaviourPun
         playerRotation = GetComponent<PlayerRotation>();
         playerShoot = GetComponent<PlayerShoot>();
         playerHealing = GetComponent<PlayerHealing>();
+        playerUI = FindObjectOfType<PlayerUI>();
         deathCam.gameObject.SetActive(false);
 
         if (!PhotonNetwork.IsConnected || photonView.IsMine)
@@ -179,6 +181,11 @@ public class PlayerRevive : MonoBehaviourPun
         playerManager.DeadPlayers.Add(playerStats);
         playerManager.Players.Remove(playerStats);
         playerStats.IsDead = true;
+
+        if (playerManager.IsEveryoneDead())
+        {
+            playerUI.ShowGameover();
+        }
 
         if (!PhotonNetwork.IsConnected || photonView.IsMine)
         {

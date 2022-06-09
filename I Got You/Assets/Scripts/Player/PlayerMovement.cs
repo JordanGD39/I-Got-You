@@ -68,9 +68,9 @@ public class PlayerMovement : MonoBehaviour
         }
 
         anim.SetFloat("SpeedX", movement.x * speed, dampTime, Time.deltaTime);
-        anim.SetFloat("SpeedX", Mathf.Round(anim.GetFloat("SpeedX")));
+        anim.SetFloat("SpeedX", Mathf.Round(anim.GetFloat("SpeedX") * 10) * 0.1f);
         anim.SetFloat("SpeedZ", movement.z * speed, dampTime, Time.deltaTime);
-        anim.SetFloat("SpeedZ", Mathf.Round(anim.GetFloat("SpeedZ")));
+        anim.SetFloat("SpeedZ", Mathf.Round(anim.GetFloat("SpeedZ") * 10) * 0.1f);
 
         movement = transform.TransformDirection(movement);
         movement.y = 0;

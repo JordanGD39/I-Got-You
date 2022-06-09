@@ -40,6 +40,7 @@ public class OnlineCharacterHandler : MonoBehaviourPun
             if (item is AbilityAdder){ continue; }
             if (item is TankTaunt){ continue; }
             if (item is SupportBurstHeal){ continue; }
+            if (item is ChasePlayerAI){ continue; }
 
             if (item != this)
             {

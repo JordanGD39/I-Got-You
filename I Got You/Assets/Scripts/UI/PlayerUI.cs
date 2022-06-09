@@ -28,6 +28,10 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Image circleRevive;
     [SerializeField] private Image[] abilities;
     [SerializeField] private TextMeshProUGUI abilityText;
+    [SerializeField] private GameObject fadeIn;
+    public GameObject FadeIn { get { return fadeIn; } }
+    [SerializeField] private GameObject gameOver;
+    [SerializeField] private float waitGameOverTime = 3;
     //private Vector2 uiOffset;
 
     private int itemCount = 0;
@@ -41,6 +45,7 @@ public class PlayerUI : MonoBehaviour
         interactPanel.SetActive(false);
         circleRevive.gameObject.SetActive(false);
         abilityText.gameObject.SetActive(false);
+        gameOver.SetActive(false);
 
         foreach (Image image in abilities)
         {
@@ -251,5 +256,17 @@ public class PlayerUI : MonoBehaviour
     {
         StopCoroutine(CountDownRevive(0));
         circleRevive.gameObject.SetActive(false);
+    }
+
+    public void ShowGameover()
+    {
+        gameOver.SetActive(true);
+
+        Invoke(nameof(WaitLoadLobby), waitGameOverTime);
+    }
+
+    private void WaitLoadLobby()
+    {
+        GameManager.instance.LeaveRoom();
     }
 }
