@@ -1781,7 +1781,7 @@ MonoBehaviour:
   healthItemPanel: {fileID: 3668264146803763719}
   errorText: {fileID: 3668264145987930150}
   roundText: {fileID: 0}
-  hitMarker: {fileID: 3668264146667222704}
+  hitMarker: {fileID: 3668264146667222705}
   canvas: {fileID: 3668264146598513633}
   bloodScreen: {fileID: 3668264147207366931}
   errorPopup: {fileID: 3668264146892036051}
@@ -4032,13 +4032,45 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3668264146598513633}
     m_Modifications:
+    - target: {fileID: 1665559847641690567, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3623521099549936085, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 441.3481
+      objectReference: {fileID: 0}
+    - target: {fileID: 3623521099549936085, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 209.5868
+      objectReference: {fileID: 0}
+    - target: {fileID: 3623521099549936085, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.00078964
+      objectReference: {fileID: 0}
+    - target: {fileID: 3623521099549936085, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -146.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7273795433003478466, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7273795433003478466, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9539bc87ce103464fafc24eb1efbc925, type: 3}
+    - target: {fileID: 7273795433003478466, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7574137012111715928, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
       propertyPath: m_Name
       value: SettingsPanel
       objectReference: {fileID: 0}
     - target: {fileID: 7574137012111715928, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7574137012111715929, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
       propertyPath: m_Pivot.x
@@ -4126,23 +4158,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7574137012799193733, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.45454547
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7574137012799193733, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7574137013152465545, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.45454547
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7574137013152465545, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7574137013152465545, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.45454547
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
