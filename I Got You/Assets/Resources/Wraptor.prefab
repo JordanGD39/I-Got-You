@@ -844,6 +844,7 @@ MonoBehaviour:
   skinnedMeshRenderer: {fileID: 2555197653266533594}
   fadedIn: 0
   animsDone: 1
+  attacking: 0
 --- !u!114 &1581653927533037792
 MonoBehaviour:
   m_ObjectHideFlags: 0

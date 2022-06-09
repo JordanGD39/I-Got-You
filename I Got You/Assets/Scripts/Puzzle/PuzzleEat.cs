@@ -18,13 +18,32 @@ public class PuzzleEat : MonoBehaviourPun
     [SerializeField] private DoorOpen[] doorsOut;
 
     private bool puzzleStarted = false;
+    private bool addedKeycards = false;
     private int keycardsDelivered = 0;
 
     private void Start()
     {
         playerManager = FindObjectOfType<PlayerManager>();
 
-        int playerCount = PhotonNetwork.IsConnected ? PhotonNetwork.CountOfPlayersInRooms : 1;
+        if (!PhotonNetwork.IsConnected)
+        {
+            AddKeycardsToPool();
+        }
+    }
+
+    private void Update()
+    {
+        if (!addedKeycards && playerManager.PlayersInGame.Count >= PhotonNetwork.CurrentRoom.PlayerCount)
+        {
+            AddKeycardsToPool();
+        }
+    }
+
+    private void AddKeycardsToPool()
+    {
+        addedKeycards = true;
+
+        int playerCount = PhotonNetwork.IsConnected ? PhotonNetwork.CurrentRoom.PlayerCount : 1;
 
         if (playerCount <= 1)
         {
@@ -53,7 +72,7 @@ public class PuzzleEat : MonoBehaviourPun
         if (PhotonNetwork.IsConnected)
         {
             controlRoomDoor.OnOpenedDoor += StartPuzzle;
-        }        
+        }
         else
         {
             mazeDoor.OnOpenedDoor += StartPuzzle;

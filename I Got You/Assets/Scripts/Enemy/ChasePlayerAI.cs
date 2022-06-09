@@ -25,10 +25,10 @@ public class ChasePlayerAI : MonoBehaviour
     [SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer;
     [SerializeField] private bool fadedIn = false;
     [SerializeField] private bool animsDone = false;
+    [SerializeField] private bool attacking = false;
     private Animator anim;
     private Vector3 previousAttackingSpot = Vector3.zero;
-
-    private bool attacking = false;
+    
     private int startingAvoidancePriority = 0;
 
     // Start is called before the first frame update
@@ -153,8 +153,12 @@ public class ChasePlayerAI : MonoBehaviour
         {
             FaceTarget();
         }
-        
-        anim.SetBool("Attacking", distance < distanceToAttack);
+
+        attacking = distance < distanceToAttack;
+
+        Debug.Log("Distance: " + distance + " target: " + target); 
+
+        anim.SetBool("Attacking", attacking);
 
         if (distance < distanceToStop)
         {

@@ -156,7 +156,7 @@ public class PlayerStats : MonoBehaviourPun
 
     public void Damage(int dmg)
     {
-        if (!photonView.IsMine || invincible)
+        if (!photonView.IsMine || (invincible && dmg < 500))
         {
             return;
         }
@@ -171,7 +171,7 @@ public class PlayerStats : MonoBehaviourPun
             }
             else
             {
-                TankTauntScript.AddCharge(0.005f);
+                TankTauntScript.AddCharge(0.01f);
             }
         }
 
@@ -185,7 +185,7 @@ public class PlayerStats : MonoBehaviourPun
             playerRevive.ResetDamageTimer();
             return;
         }
-
+        
         if (HasShieldHealth && shieldHealth > 0)
         {
             shieldHealth -= dmg;
@@ -212,7 +212,14 @@ public class PlayerStats : MonoBehaviourPun
             }            
         }
 
-        health -= dmg;
+        if (dmg > 500)
+        {
+            health = 0;
+        }
+        else
+        {
+            health -= dmg;
+        }
 
         if (health <= 0)
         {

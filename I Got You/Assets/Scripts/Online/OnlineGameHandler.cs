@@ -32,6 +32,8 @@ public class OnlineGameHandler : MonoBehaviourPunCallbacks
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         PlayersStatsHolder.instance.ClearSavedStats();
+        GameManager.instance.ResetFloorLevel();
+        DifficultyManager.instance.DifficultyLevel = 0;
         SceneManager.LoadScene("Lobby");
     }
 }

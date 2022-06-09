@@ -29,6 +29,8 @@ public class DoorOpen : MonoBehaviourPun
     public delegate void OpenedDoor();
     public OpenedDoor OnOpenedDoor;
 
+    private LimitPlayersDoor limitPlayersDoor;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -62,6 +64,7 @@ public class DoorOpen : MonoBehaviourPun
             return;
         }
 
+        limitPlayersDoor = GetComponentInChildren<LimitPlayersDoor>();
         playersInRange.Clear();
         Invoke(nameof(OpenResetDelay), 0.5f);
     }
@@ -115,7 +118,7 @@ public class DoorOpen : MonoBehaviourPun
 
     public void OpenDoor()
     {
-        if (!canOpen)
+        if (!canOpen || (limitPlayersDoor != null && limitPlayersDoor.TooManyPlayers))
         {
             return;
         }
@@ -165,6 +168,7 @@ public class DoorOpen : MonoBehaviourPun
     [PunRPC]
     void OpenDoorOthers(bool openingPossible, bool onlyOpen)
     {
+        opened = false;
         canOpen = openingPossible;
         openOnly = onlyOpen;
         OpenDoor();

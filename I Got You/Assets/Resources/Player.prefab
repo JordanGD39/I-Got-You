@@ -7770,10 +7770,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentClass: 0
-  health: 100
-  maxHealth: 100
-  shieldHealth: 40
-  startingShieldHealth: 40
+  health: 150
+  maxHealth: 150
+  shieldHealth: 60
+  startingShieldHealth: 60
   regenDelay: 3
   regenSpeed: 12
   invincibilityTime: 1
@@ -7959,9 +7959,9 @@ MonoBehaviour:
   healingItems: 0
   maxHealthItems: 2
   healDelay: 1.25
-  startingHealthGain: 60
-  healthGain: 60
-  healthGainPerSip: 2
+  startingHealthGain: 100
+  healthGain: 100
+  healthGainPerSip: 6
   healthGainInterval: 0.5
   afterHealthGainInterval: 0.1
   healing: 0

@@ -286,7 +286,7 @@ public class PlayerShoot : MonoBehaviourPun
 
             if (playerStats.TankTauntScript != null && !playerStats.TankTauntScript.Taunting)
             {
-                playerStats.TankTauntScript.AddCharge(damageInfo.weakspot ? 0.02f : 0.01f);
+                playerStats.TankTauntScript.AddCharge(damageInfo.weakspot ? 0.04f : 0.02f);
             }
 
             if (playerStats.SupportBurstHealScript != null)
@@ -496,11 +496,6 @@ public class PlayerShoot : MonoBehaviourPun
 
     private void StartChangingCurrentGun()
     {
-        if (PhotonNetwork.IsConnected && photonView.IsMine)
-        {
-            photonView.RPC("UpdateCurrentVisibleGunOthers", RpcTarget.Others, (byte)weaponsHolder.SearchWeaponIndex(currentGun.name, currentGun.Primary), currentGun.Primary, (byte)currentRarity);
-        }
-
         if (weaponReference.Count == 0)
         {
             foreach (GunHolder item in GetComponentsInChildren<GunHolder>(true))
@@ -524,6 +519,11 @@ public class PlayerShoot : MonoBehaviourPun
                     item.gameObject.SetActive(false);
                 }
             }
+        }
+
+        if (PhotonNetwork.IsConnected && photonView.IsMine)
+        {
+            photonView.RPC("UpdateCurrentVisibleGunOthers", RpcTarget.OthersBuffered, (byte)weaponsHolder.SearchWeaponIndex(currentGun.name, currentGun.Primary), currentGun.Primary, (byte)currentRarity);
         }
 
         if (currentGunHolder == null)
@@ -636,6 +636,8 @@ public class PlayerShoot : MonoBehaviourPun
         {
             Transform weaponParent = currentGunHolder.transform.GetChild(0)
                 .GetChild(currentGunHolder.transform.GetChild(0).childCount > 1 ? 1 : 0);
+
+            Debug.Log(weaponParent.gameObject.name);
 
             for (int i = 0; i < weaponParent.childCount; i++)
             {
