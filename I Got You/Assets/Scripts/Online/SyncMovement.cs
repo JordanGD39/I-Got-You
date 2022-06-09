@@ -23,6 +23,8 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
 
     public bool IsSyncing { get; set; } = true;
 
+    private bool isPlayer = false;
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
@@ -49,6 +51,8 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
         playerRevive = GetComponent<PlayerRevive>();
 
         IsSyncing = gameObject.CompareTag("Player");
+
+        isPlayer = IsSyncing;
 
         if (gameObject.CompareTag("Player"))
         {
@@ -101,6 +105,11 @@ public class SyncMovement : MonoBehaviourPun, IPunObservable
 
             transform.position = Vector3.Lerp(transform.position, syncPos, lerpPosSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(syncRot), lerpRotSpeed * Time.deltaTime);
+
+            if (animator != null && !teleport && !isPlayer)
+            {
+                animator.SetFloat("Speed", (transform.position - prevPos).magnitude / Time.deltaTime);
+            }
 
             prevPos = transform.position;
         }
