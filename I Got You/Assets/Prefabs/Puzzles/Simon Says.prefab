@@ -48,7 +48,7 @@ MonoBehaviour:
   - {fileID: 7298941963878280983}
   - {fileID: 4277378918521693477}
   - {fileID: 5256153358796992912}
-  monitor: {fileID: 240950898986638755}
+  monitor: {fileID: 7333322487086409533}
   playerInput: 
   randomInt: 
   maxSequence: 4
@@ -670,6 +670,42 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -2.72
       objectReference: {fileID: 0}
+    - target: {fileID: 6437468163994357765, guid: f904ee51783f54147a6e7c73b0a7cccf, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6437468163994357765, guid: f904ee51783f54147a6e7c73b0a7cccf, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 6437468163994357765, guid: f904ee51783f54147a6e7c73b0a7cccf, type: 3}
+      propertyPath: m_LocalScale.z
+      value: -141
+      objectReference: {fileID: 0}
+    - target: {fileID: 6437468163994357765, guid: f904ee51783f54147a6e7c73b0a7cccf, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6437468163994357765, guid: f904ee51783f54147a6e7c73b0a7cccf, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6437468163994357765, guid: f904ee51783f54147a6e7c73b0a7cccf, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6437468163994357765, guid: f904ee51783f54147a6e7c73b0a7cccf, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6437468163994357765, guid: f904ee51783f54147a6e7c73b0a7cccf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6437468163994357765, guid: f904ee51783f54147a6e7c73b0a7cccf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7485756131036727212, guid: f904ee51783f54147a6e7c73b0a7cccf, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -721,9 +757,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7485756131036727212, guid: f904ee51783f54147a6e7c73b0a7cccf, type: 3}
   m_PrefabInstance: {fileID: 7658010574021603842}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &240950898986638755 stripped
+--- !u!1 &7333322487086409533 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 7574702299630989217, guid: f904ee51783f54147a6e7c73b0a7cccf, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1117888838355998015, guid: f904ee51783f54147a6e7c73b0a7cccf, type: 3}
   m_PrefabInstance: {fileID: 7658010574021603842}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &8994033967016107644 stripped
@@ -805,7 +841,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   codeInput: 1
-  monitor: {fileID: 240950898986638755}
+  monitor: {fileID: 7333322487086409533}
   manager: {fileID: 3347431499061971722}
 --- !u!54 &4405507364037914569
 Rigidbody:
@@ -849,7 +885,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   codeInput: 2
-  monitor: {fileID: 240950898986638755}
+  monitor: {fileID: 7333322487086409533}
   manager: {fileID: 3347431499061971722}
 --- !u!114 &7614486029120244201
 MonoBehaviour:
@@ -915,7 +951,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   codeInput: 3
-  monitor: {fileID: 240950898986638755}
+  monitor: {fileID: 7333322487086409533}
   manager: {fileID: 3347431499061971722}
 --- !u!114 &3887396021047710839
 MonoBehaviour:
