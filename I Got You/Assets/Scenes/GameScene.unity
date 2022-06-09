@@ -3702,6 +3702,10 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 7162548949459417633, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
+      propertyPath: eatGenChance
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 7162548949459417660, guid: d82171684748eaa49a7316eec13e61ad, type: 3}
       propertyPath: m_Name
       value: ProceduralGenerator

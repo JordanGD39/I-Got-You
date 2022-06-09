@@ -1781,7 +1781,7 @@ MonoBehaviour:
   healthItemPanel: {fileID: 3668264146803763719}
   errorText: {fileID: 3668264145987930150}
   roundText: {fileID: 0}
-  hitMarker: {fileID: 3668264146667222705}
+  hitMarker: {fileID: 3668264146667222704}
   canvas: {fileID: 3668264146598513633}
   bloodScreen: {fileID: 3668264147207366931}
   errorPopup: {fileID: 3668264146892036051}
@@ -4043,6 +4043,18 @@ PrefabInstance:
     - target: {fileID: 3623521099549936085, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
       propertyPath: m_SizeDelta.y
       value: 75.4476
+      objectReference: {fileID: 0}
+    - target: {fileID: 3623521099549936085, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3623521099549936085, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3623521099549936085, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3623521099549936085, guid: 6ff7975b66ef6a54792627d4184f5caa, type: 3}
       propertyPath: m_AnchoredPosition.x
