@@ -34,6 +34,11 @@ public class ChasePlayerAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (skinnedMeshRenderer != null)
+        {
+            fadedIn = true;
+        }
+
         if (!PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected)
         {
             return;
