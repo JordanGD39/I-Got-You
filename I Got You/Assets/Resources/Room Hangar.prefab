@@ -24461,6 +24461,10 @@ PrefabInstance:
       propertyPath: openingIndex
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8802004519938303430, guid: 437e397d8e03573478ae8b78c49a94fa, type: 3}
+      propertyPath: generationRoomData
+      value: 
+      objectReference: {fileID: 3898461755695934086}
     - target: {fileID: 8802004519938303431, guid: 437e397d8e03573478ae8b78c49a94fa, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -24622,6 +24626,10 @@ PrefabInstance:
       propertyPath: openingIndex
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8802004519938303430, guid: 437e397d8e03573478ae8b78c49a94fa, type: 3}
+      propertyPath: generationRoomData
+      value: 
+      objectReference: {fileID: 3898461755695934086}
     - target: {fileID: 8802004519938303431, guid: 437e397d8e03573478ae8b78c49a94fa, type: 3}
       propertyPath: m_RootOrder
       value: 0

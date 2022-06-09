@@ -40,7 +40,7 @@ public class DoorOpen : MonoBehaviourPun
 
         DungeonGenerator dungeonGenerator = FindObjectOfType<DungeonGenerator>();
 
-        if (dungeonGenerator == null)
+        if (dungeonGenerator.StartingRoom == null)
         {
             dungeonGenerator.OnGenerationDone += CheckIfDoorLeadsToHallway;
         }

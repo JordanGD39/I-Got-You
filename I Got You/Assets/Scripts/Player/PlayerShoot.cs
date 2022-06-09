@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class PlayerShoot : MonoBehaviourPun
 {
@@ -76,6 +77,7 @@ public class PlayerShoot : MonoBehaviourPun
 
         if (PhotonNetwork.IsConnected && !photonView.IsMine)
         {
+            photonView.RPC("RequestCallCurrentGunOthers", photonView.Owner, (byte)PhotonNetwork.LocalPlayer.ActorNumber);
             return;
         }
 
@@ -371,7 +373,13 @@ public class PlayerShoot : MonoBehaviourPun
             damageMultiplier = currentGun.HeadShotMultiplier;
         }
 
-        EnemyStats enemy = enemyManager.StatsOfAllEnemies[enemyRoot];
+        EnemyStats enemy;
+
+        if (!enemyManager.StatsOfAllEnemies.TryGetValue(enemyRoot, out enemy))
+        {
+            return;
+        }
+
         if (damageToEnemies.ContainsKey(enemy))
         {
             damageToEnemies[enemy].damage += Mathf.RoundToInt(currentGun.Damage * damageMultiplier * shootingDamageMultiplier * rarityMulitiplier);
@@ -521,11 +529,6 @@ public class PlayerShoot : MonoBehaviourPun
             }
         }
 
-        if (PhotonNetwork.IsConnected && photonView.IsMine)
-        {
-            photonView.RPC("UpdateCurrentVisibleGunOthers", RpcTarget.OthersBuffered, (byte)weaponsHolder.SearchWeaponIndex(currentGun.name, currentGun.Primary), currentGun.Primary, (byte)currentRarity);
-        }
-
         if (currentGunHolder == null)
         {
             UpdateCurrentVisibleGun();
@@ -556,7 +559,7 @@ public class PlayerShoot : MonoBehaviourPun
         {
             currentGunHolder.OnGunPutAway = null;
             currentGunHolder.OnGunCanShoot = () => { switching = false; };
-        }        
+        }   
 
         if (audioSource == null)
         {
@@ -569,6 +572,8 @@ public class PlayerShoot : MonoBehaviourPun
         {
             currentGunHolder.gameObject.SetActive(true);
         }
+
+        CallUpdateCurrentGunOthers(null);
 
         if (currentGun.HasRarity)
         {
@@ -586,6 +591,31 @@ public class PlayerShoot : MonoBehaviourPun
         if (currentGunHolder.GunAnim != null)
         {
             currentGunHolder.GunAnim.ResetTrigger("Reload");
+        }
+    }
+
+    [PunRPC]
+    void RequestCallCurrentGunOthers(byte playerIndex)
+    {
+        CallUpdateCurrentGunOthers(PhotonNetwork.CurrentRoom.Players[playerIndex - 1]);
+    }
+
+    private void CallUpdateCurrentGunOthers(Player player)
+    {
+        if (PhotonNetwork.IsConnected && photonView.IsMine)
+        {
+            if (player == null)
+            {
+                photonView.RPC("UpdateCurrentVisibleGunOthers", RpcTarget.Others,
+                    (byte)weaponsHolder.SearchWeaponIndex(currentGun.name, currentGun.Primary), 
+                        currentGun.Primary, (byte)currentRarity);
+            }
+            else
+            {
+                photonView.RPC("UpdateCurrentVisibleGunOthers", player,
+                    (byte)weaponsHolder.SearchWeaponIndex(currentGun.name, currentGun.Primary), 
+                        currentGun.Primary, (byte)currentRarity);
+            }            
         }
     }
 

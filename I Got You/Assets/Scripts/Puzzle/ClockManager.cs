@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class ClockManager : MonoBehaviourPun
+public class ClockManager : MonoBehaviour
 {
     [SerializeField]
     private List<GameObject> clockObject;
@@ -12,9 +12,9 @@ public class ClockManager : MonoBehaviourPun
 
     public void CheckAllCompleted(bool localPlayer)
     {
-        if (PhotonNetwork.IsConnected && localPlayer)
+        if (PhotonNetwork.IsConnected && !PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC("CheckAllCompletedOthers", RpcTarget.Others);
+            return;
         }
 
         finishedClocks++;
@@ -23,11 +23,5 @@ public class ClockManager : MonoBehaviourPun
         {
             roomManager.OpenAllDoors();
         }
-    }
-
-    [PunRPC]
-    void CheckAllCompletedOthers()
-    {
-        CheckAllCompleted(false);
     }
 }

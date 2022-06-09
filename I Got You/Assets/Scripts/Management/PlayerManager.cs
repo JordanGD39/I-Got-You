@@ -26,6 +26,7 @@ public class PlayerManager : MonoBehaviour
 
     public bool IsEveryoneDead()
     {
+        deadPlayers = deadPlayers.Where(item => item != null).ToList();
         return deadPlayers.Count == playersInGame.Count;
     }
 }

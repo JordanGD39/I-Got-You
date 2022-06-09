@@ -287,7 +287,7 @@ MonoBehaviour:
   layerDetectPlayer:
     serializedVersion: 2
     m_Bits: 9
-  speedWhenSeeing: 8
+  speedWhenSeeing: 9
   rotSpeedWhenSeeing: 999
   standStillTime: 0
 --- !u!114 &8492645322141974620
@@ -313,6 +313,7 @@ MonoBehaviour:
   skinnedMeshRenderer: {fileID: 0}
   fadedIn: 0
   animsDone: 1
+  attacking: 0
 --- !u!114 &6944613078866055459
 MonoBehaviour:
   m_ObjectHideFlags: 0

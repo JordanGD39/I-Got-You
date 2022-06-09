@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using TMPro;
 
 public class PlayerStats : MonoBehaviourPun
 {
@@ -19,6 +20,7 @@ public class PlayerStats : MonoBehaviourPun
     [SerializeField] private float invincibilityTime = 1;
     [SerializeField] private Transform classModels;
     public Transform ClassModels { get { return classModels; } }
+    [SerializeField] private TextMeshProUGUI usernameText;
     public bool HasShieldHealth { get; set; } = false;
 
     private PlayerUI playerUI;
@@ -84,6 +86,7 @@ public class PlayerStats : MonoBehaviourPun
 
         if (photonView.IsMine || !PhotonNetwork.IsConnected)
         {
+            usernameText.transform.parent.gameObject.SetActive(false);
             SetLayerRecursively(classModels.GetChild((int)currentClass).gameObject, 10);
 
             playerUI = FindObjectOfType<PlayerUI>();
@@ -97,7 +100,11 @@ public class PlayerStats : MonoBehaviourPun
             //playerUI.UpdateMaxHealth(maxHealth);
             playerUI.UpdateShieldHealth(shieldHealth, startingShieldHealth);
             playerRevive = GetComponent<PlayerRevive>();
-        }      
+        }    
+        else
+        {
+            usernameText.text = photonView.Owner.NickName;
+        }
     }
 
     private void Update()
@@ -111,6 +118,16 @@ public class PlayerStats : MonoBehaviourPun
     public void PickUpInteractable(InteractableObject interactable)
     {
         inventoryOfInteractables.Add(interactable);
+    }
+
+    public void ModifyHealthStat(float multiplier)
+    {
+        if (health >= maxHealth)
+        {
+            health = Mathf.RoundToInt((float)health * multiplier);
+        }
+        
+        maxHealth = Mathf.RoundToInt((float)maxHealth * multiplier);
     }
 
     public void RemoveInteractable(InteractableObject interactable)

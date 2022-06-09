@@ -7,7 +7,8 @@ public class PassiveApplyer : MonoBehaviourPun
 {
     [SerializeField] private float scoutSpeedBuff = 1.1f;
     [SerializeField] private float supportHealBuff = 1.5f;
-    [SerializeField] private float bomberDamageNerf = 0.75f;
+    [SerializeField] private float bomberDamageBuff = 1.25f;
+    [SerializeField] private float bomberHealthNerf = 0.75f;
     private PlayerStats playerStats;
 
     // Start is called before the first frame update
@@ -37,7 +38,8 @@ public class PassiveApplyer : MonoBehaviourPun
                 GetComponent<PlayerHealing>().ModifyHealingStat(supportHealBuff);
                 break;
             case PlayerStats.ClassNames.BOMBER:
-                GetComponent<PlayerShoot>().ModifyDamageStat(bomberDamageNerf);
+                GetComponent<PlayerStats>().ModifyHealthStat(bomberHealthNerf);
+                GetComponent<PlayerShoot>().ModifyDamageStat(bomberDamageBuff);
                 break;
         }
     }

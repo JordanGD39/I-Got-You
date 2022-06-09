@@ -2221,7 +2221,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 143.3295
+      value: 143.3854
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_SizeDelta.y
@@ -2257,7 +2257,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 308.32373
+      value: 308.4635
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2604,9 +2604,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'The Bomber Class deals more damage to enemies using explosives, but instead
-    deals less damage using ordinary weapons. Stay with your teammates and plan in
-    advance!
+  m_Text: 'The Bomber Class deals more damage to enemies with his explosive bullets,
+    but has the least HP! Stay with your teammates and plan in advance!
 
 '
 --- !u!222 &1105540299
@@ -2952,6 +2951,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BomberButton
       objectReference: {fileID: 0}
+    - target: {fileID: 7613868399338753010, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2982,7 +2985,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 143.3295
+      value: 143.3854
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_SizeDelta.y
@@ -3018,7 +3021,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 426.65326
+      value: 426.84894
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -3880,7 +3883,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 143.3295
+      value: 143.3854
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_SizeDelta.y
@@ -3916,7 +3919,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 189.99425
+      value: 190.07811
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -4548,7 +4551,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2752758585724045231, guid: 8da3a0d53a22a3c4e8d84503569b949b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -313.05408
+      value: -312.94403
       objectReference: {fileID: 0}
     - target: {fileID: 2752758585724045231, guid: 8da3a0d53a22a3c4e8d84503569b949b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4824,7 +4827,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2752758585724045231, guid: 8da3a0d53a22a3c4e8d84503569b949b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -223.61006
+      value: -223.53143
       objectReference: {fileID: 0}
     - target: {fileID: 2752758585724045231, guid: 8da3a0d53a22a3c4e8d84503569b949b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5443,7 +5446,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2752758585724045231, guid: 8da3a0d53a22a3c4e8d84503569b949b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -134.16603
+      value: -134.11887
       objectReference: {fileID: 0}
     - target: {fileID: 2752758585724045231, guid: 8da3a0d53a22a3c4e8d84503569b949b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5941,7 +5944,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2752758585724045231, guid: 8da3a0d53a22a3c4e8d84503569b949b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -44.72201
+      value: -44.706287
       objectReference: {fileID: 0}
     - target: {fileID: 2752758585724045231, guid: 8da3a0d53a22a3c4e8d84503569b949b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6274,7 +6277,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 143.3295
+      value: 143.3854
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_SizeDelta.y
@@ -6310,7 +6313,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 71.66475
+      value: 71.6927
       objectReference: {fileID: 0}
     - target: {fileID: 7613868399338753011, guid: e67baf447aca7364eb9732bc13f3b749, type: 3}
       propertyPath: m_AnchoredPosition.y

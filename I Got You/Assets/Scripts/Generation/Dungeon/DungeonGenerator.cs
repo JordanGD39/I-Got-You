@@ -625,7 +625,7 @@ public class DungeonGenerator : MonoBehaviourPun
 
         float extraScale = 0.4f;
 
-        if (chosenRoom.RoomScaleObject.localScale.y >= 1)
+        if (chosenRoom.RoomScaleObject.localScale.y > 1)
         {
             extraScale = 0;
         }
