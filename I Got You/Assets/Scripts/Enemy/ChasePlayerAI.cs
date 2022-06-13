@@ -34,7 +34,7 @@ public class ChasePlayerAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (skinnedMeshRenderer != null)
+        if (skinnedMeshRenderer == null)
         {
             fadedIn = true;
         }

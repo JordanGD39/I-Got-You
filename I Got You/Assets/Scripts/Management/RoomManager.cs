@@ -7,6 +7,7 @@ public class RoomManager : MonoBehaviourPun
 {
     private EnemySpawnBoxHolder boxHolder;
     private DifficultyManager difficultyManager;
+    private PlayerUI playerUI;
     private EnemyGenerator enemyGenerator;
 
     public enum RoomModes {NONE, BATTLEONLY, PUZZLEEAT, PUZZLECLOCK, PUZZLESIMON}
@@ -27,11 +28,13 @@ public class RoomManager : MonoBehaviourPun
 
     private bool puzzlesCompleted = false;
     private bool battleStarted = false;
+    private bool showedMode = false;
 
     // Start is called before the first frame update
     void Start()
     {
         difficultyManager = FindObjectOfType<DifficultyManager>();
+        playerUI = FindObjectOfType<PlayerUI>();
 
         if (roomMode != RoomModes.PUZZLEEAT)
         {
@@ -64,6 +67,7 @@ public class RoomManager : MonoBehaviourPun
             for (int i = 0; i < doorsToThisRoom.Length; i++)
             {
                 doorsToThisRoom[i].OnOpenedDoor += PlaceEnemies;
+                doorsToThisRoom[i].OnOpenedDoor += ShowRoomMode;
             }
         }
 
@@ -84,6 +88,46 @@ public class RoomManager : MonoBehaviourPun
                 }
             }
         }
+    }
+
+    private void ShowRoomMode()
+    {
+        if (showedMode)
+        {
+            return;
+        }
+
+        if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("ShowRoomModeOthers", RpcTarget.Others);
+        }
+
+        showedMode = true;
+
+        switch (roomMode)
+        {
+            case RoomModes.NONE:
+                break;
+            case RoomModes.BATTLEONLY:
+                playerUI.ShowRoomMode("BATTLE");
+                break;
+            case RoomModes.PUZZLEEAT:
+                break;
+            case RoomModes.PUZZLECLOCK:
+                playerUI.ShowRoomMode("STOP THE CLOCKS");
+                break;
+            case RoomModes.PUZZLESIMON:
+                playerUI.ShowRoomMode("SIMON SAYS");
+                break;
+            default:
+                break;
+        }
+    }
+    
+    [PunRPC]
+    void ShowRoomModeOthers()
+    {
+        ShowRoomMode();
     }
 
     private void PlaceEnemies()

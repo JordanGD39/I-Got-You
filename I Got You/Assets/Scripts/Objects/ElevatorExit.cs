@@ -20,14 +20,6 @@ public class ElevatorExit : MonoBehaviourPun
         playerManager = FindObjectOfType<PlayerManager>();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            ShutElevatorDoors();
-        }
-    }
-
     private void ShutElevatorDoors()
     {
         if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)

@@ -32,6 +32,7 @@ public class PlayerUI : MonoBehaviour
     public GameObject FadeIn { get { return fadeIn; } }
     [SerializeField] private GameObject gameOver;
     [SerializeField] private float waitGameOverTime = 3;
+    [SerializeField] private TextMeshProUGUI roomModeText;
     //private Vector2 uiOffset;
 
     private int itemCount = 0;
@@ -268,5 +269,12 @@ public class PlayerUI : MonoBehaviour
     private void WaitLoadLobby()
     {
         GameManager.instance.LeaveRoom();
+    }
+
+    public void ShowRoomMode(string roomModeString)
+    {
+        roomModeText.gameObject.SetActive(false);
+        roomModeText.gameObject.SetActive(true);
+        roomModeText.text = roomModeString;
     }
 }

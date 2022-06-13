@@ -24,7 +24,7 @@ public class PlayersStatsHolder : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private void Start()
+    public void CreateSavedStatsList()
     {
         savedPlayerStats = new SavedPlayerStats[PhotonNetwork.IsConnected ? PhotonNetwork.CurrentRoom.PlayerCount : 1];
     }

@@ -101,6 +101,7 @@ MonoBehaviour:
   - CreateHallwayOthers
   - RequestHallwayData
   - RequestCallCurrentGunOthers
+  - ShowRoomModeOthers
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

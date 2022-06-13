@@ -26,7 +26,7 @@ public class ClockScript : MonoBehaviourPun
 
     private void Start()
     {
-        manager = FindObjectOfType<ClockManager>();
+        manager = transform.parent.parent.GetComponentInChildren<ClockManager>();
     }
 
 

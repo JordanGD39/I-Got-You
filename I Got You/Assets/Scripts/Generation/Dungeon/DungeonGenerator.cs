@@ -282,6 +282,8 @@ public class DungeonGenerator : MonoBehaviourPun
 
         CreateHallways(allHallwayNodes);
         OnGenerationDone?.Invoke();
+
+        PlayersStatsHolder.instance.CreateSavedStatsList();
     }
 
     [PunRPC]

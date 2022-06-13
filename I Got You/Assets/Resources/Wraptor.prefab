@@ -2617,6 +2617,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -14.663958
       objectReference: {fileID: 0}
+    - target: {fileID: 233716128430182146, guid: 307f5f19b0ca5ec4ea08582d26a22d07, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 398864093259268279, guid: 307f5f19b0ca5ec4ea08582d26a22d07, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -3240,8 +3244,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.5879601, y: 0.25480497, z: 0.2647201}
-  m_Center: {x: 0.028132971, y: 0.15724823, z: 0.05156113}
+  m_Size: {x: 0.25921932, y: 0.25480497, z: 0.2647201}
+  m_Center: {x: -0.017327834, y: 0.1572487, z: 0.0515619}
 --- !u!144 &4223615690371339704
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -3543,8 +3547,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.29314148
-  m_Center: {x: -0.11728568, y: -0.167904, z: -0.00000001994116}
+  m_Radius: 0.22689435
+  m_Center: {x: -0.14101167, y: -0.20480068, z: -0.000000024147937}
 --- !u!144 &5048745454000009614
 CharacterJoint:
   m_ObjectHideFlags: 0
